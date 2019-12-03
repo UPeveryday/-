@@ -1,0 +1,294 @@
+﻿<Window x:Class="PortableEquipment.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:local="clr-namespace:PortableEquipment.Views"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+        xmlns:model="clr-namespace:PortableEquipment.Models"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local1:MainViewModel}"
+        Title="MainView" Height="500" Width="800" WindowStyle="None" 
+            WindowState="Maximized" >
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <model:NumberValidationRule x:Key="NumberValidation"></model:NumberValidationRule>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="/PortableEquipment;component/Resources/便携式首页.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
+            <RowDefinition Height="0.6*"></RowDefinition>
+            <RowDefinition Height="1.4*"></RowDefinition>
+            <RowDefinition Height="0.6*"></RowDefinition>
+            <RowDefinition  Height="1.4*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="0.08*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" HorizontalAlignment="Center"  MaxHeight="40"  ToolTip="关闭窗口" Style="{StaticResource ExitGrid}" x:Name="Gr" Margin="4" Width="{Binding ElementName=Gr, Path=ActualHeight}">
+                <Button BorderThickness="0" Style="{StaticResource MainClose}" Click="Gr_MouseDown">
+                    <Button.Background>
+                        <ImageBrush   ImageSource="/PortableEquipment;component/Resources/关闭 退出.png"/>
+                    </Button.Background>
+                </Button>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="11*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="1" >
+                <Grid >
+                    <TextBlock HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center">便携式现场变压器局放感应耐压实验装置</TextBlock>
+                </Grid>
+            </Viewbox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Viewbox>
+                    <TextBlock Foreground="LightGray"  HorizontalAlignment="Center"  VerticalAlignment="Center">
+                    —PORTABLE LOCAL DISCHARGE INDUCTION VOLTAGE WITHSTAND TEST DEVICE FOR FIELD TRANSFORMER—
+                    </TextBlock>
+                </Viewbox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1">
+                    <Button  Style="{StaticResource CircleButton}" Click="{s:Action ShowWithstand}" ToolTip="进入变压器实验" Height="60" Width="60" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#13db7e" Offset="0"/>
+                                <GradientStop Color="#3de5a0" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="100,100,100,100" Name="PART_Background">
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid Style="{StaticResource GGrid}">
+                            <Grid.Background>
+                                <ImageBrush Stretch="Uniform" ImageSource="/PortableEquipment;component/Resources/变压器运行评价.png"/>
+                            </Grid.Background>
+                        </Grid>
+                    </Button>
+                </Viewbox>
+
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1">
+                    <Button   Style="{StaticResource CircleButton}" Click="{s:Action ShowParameter}" ToolTip="进入互感器实验" Height="60" Width="60" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#fbc499" Offset="0"/>
+                                <GradientStop Color="#fd9be8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"   CornerRadius="100,100,100,100" Name="PART_Background">
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid Style="{StaticResource GGrid}" Margin="1,0,0,0">
+                            <Grid.Background>
+                                <ImageBrush Stretch="Uniform" ImageSource="/PortableEquipment;component/Resources/光线感应.png"/>
+                            </Grid.Background>
+                        </Grid>
+                    </Button>
+                </Viewbox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1">
+                    <Button    Height="60" Width="60" Click="{s:Action ShowManuallySet}" ToolTip="进入手动调压" Style="{StaticResource CircleButton}" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#fa931a" Offset="0"/>
+                                <GradientStop Color="#feb356" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"   CornerRadius="100,100,100,100" Name="PART_Background">
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid Style="{StaticResource GGrid}" Margin="0">
+                            <Grid.Background>
+                                <ImageBrush Stretch="UniformToFill"  ImageSource="/PortableEquipment;component/Resources/手动.png"/>
+                            </Grid.Background>
+                        </Grid>
+                    </Button>
+                </Viewbox>
+
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1">
+                    <Button  Style="{StaticResource CircleButton}"  Click="{s:Action ShowDataMannege}"  ToolTip="数据管理" Height="60" Width="60" >
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#a94dfc" Offset="0"/>
+                                <GradientStop Color="#b673ff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"  CornerRadius="100,100,100,100" Name="PART_Background">
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid Style="{StaticResource GGrid}" Margin="0,0,0,0">
+                            <Grid.Background>
+                                <ImageBrush ImageSource="/PortableEquipment;component/Resources/数据管理.png"/>
+                            </Grid.Background>
+                        </Grid>
+                    </Button>
+                </Viewbox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="1.3*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Viewbox Grid.Row="1">
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">变压器实验</TextBlock>
+                    <!--<TextBox Name="textBox1" Width="50" FontSize="15" Margin="2">
+                        <TextBox.Text>
+                            <Binding Path="Age" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <model:NumberValidationRule ValidatesOnTargetUpdated="False"  Min="21" Max="130"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>-->
+
+                </Viewbox>
+            </Grid>
+
+
+
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="1.3*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Viewbox Grid.Row="1">
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">互感器器实验</TextBlock>
+                </Viewbox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="1.6*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Viewbox Grid.Row="1">
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">手动调压</TextBlock>
+                </Viewbox>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="1.6*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Viewbox Grid.Row="1">
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">数据管理</TextBlock>
+                </Viewbox>
+            </Grid>
+
+
+        </Grid>
+        <Grid Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3</TextBlock>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Window>

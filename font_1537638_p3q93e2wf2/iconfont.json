@@ -1,0 +1,79 @@
+{
+  "id": "1537638",
+  "name": "WPF",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1262381",
+      "name": "wpforms",
+      "font_class": "wpforms",
+      "unicode": "e740",
+      "unicode_decimal": 59200
+    },
+    {
+      "icon_id": "1987000",
+      "name": "数据管理",
+      "font_class": "shujuguanli",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "2468121",
+      "name": "变压器运行评价",
+      "font_class": "bianyaqiyunhangpingjia",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "4808438",
+      "name": "采购",
+      "font_class": "caigou",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "4808441",
+      "name": "检查",
+      "font_class": "jiancha",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "4809107",
+      "name": "门诊",
+      "font_class": "menzhen",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "8791338",
+      "name": "手动",
+      "font_class": "shoudong",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
+      "icon_id": "10937693",
+      "name": "链接",
+      "font_class": "relevance",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "10937694",
+      "name": "分组",
+      "font_class": "grouping",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "11738517",
+      "name": "云谷内网",
+      "font_class": "tubiaozhizuomoban",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    }
+  ]
+}

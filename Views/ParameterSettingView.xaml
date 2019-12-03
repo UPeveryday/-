@@ -1,0 +1,378 @@
+﻿<Controls:MetroWindow x:Class="PortableEquipment.Views.ParameterSettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortableEquipment.Views"
+        xmlns:s="https://github.com/canton7/Stylet"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+        xmlns:model="clr-namespace:PortableEquipment.Models"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local1:ParameterSettingViewModel}"
+        Title="ParameterSettingView" Height="500" Width="800" UseNoneWindowStyle="True"
+              Name="Mywindow"        WindowStyle="None" MouseDown="MetroWindow_MouseDown">
+    <Window.Resources>
+        <ResourceDictionary>
+            <model:Convert x:Key="cvt"></model:Convert>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Background="White" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1" Margin="0,2">
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压实验装置</TextBlock>
+                </Viewbox>
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1" Margin="8,4" ToolTip="退出" MouseDown="Grid_MouseDown">
+                        <Grid.Background >
+                            <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
+                        </Grid.Background>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Background="#f4f4f4">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="11*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    <ColumnDefinition Width="8*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="2.5*"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Viewbox  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" >
+                    <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器实验</TextBlock>
+                </Viewbox>
+                <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
+                    <Button Background="#2070ea" Click="{s:Action ShowVoltageTestViewModel}" Style="{StaticResource ButtonF}">
+                        <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">开始实验</TextBlock>
+                    </Button>
+                </Viewbox>
+            </Grid>
+            <Grid  Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="0.3*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验编号</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="1" Name="cc" Grid.Column="1">
+                        <TextBox Margin="20,5" Padding="0,5,0,0" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}"  VerticalAlignment="Center" TextAlignment="Center"></TextBox>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">电压等级</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    </Grid>
+
+                    <Grid Grid.Row="5" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">环境湿度</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.Column="1">
+                        <TextBox Margin="20,5" BorderThickness="0" Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    </Grid>
+                    <Grid Grid.Row="7" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">环境温度</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="7" Grid.Column="1">
+                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    </Grid>
+                    <Grid Grid.Row="9" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验地点</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="9" Grid.Column="1">
+                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    </Grid>
+                    <Grid Grid.Row="11" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="2.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="1">
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验人员</TextBlock>
+                        </Viewbox>
+                    </Grid>
+                    <Grid Grid.Row="11" Grid.Column="1">
+                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.4*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+                        <RowDefinition Height="3.0*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+
+                        <RowDefinition  Height="0.4*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+
+                        <RowDefinition Height="0.6*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+
+                        <RowDefinition  Height="0.4*"></RowDefinition>
+                        <RowDefinition Height="0.2*"></RowDefinition>
+
+                        <RowDefinition  Height="0.6*"></RowDefinition>
+                        <RowDefinition  Height="1.5*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Viewbox  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                        <CheckBox IsChecked="{Binding KeepVolateCheck}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
+                        </CheckBox>
+                    </Viewbox>
+                    <Grid Grid.Row="2" Opacity="{Binding KeepVoltageOpacity}" IsEnabled="{Binding KeepVolateEnable}"  Background="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.2*"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="0.2*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">出厂试验电压</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Viewbox Grid.Row="1" Grid.Column="3" Margin="7,2">
+                            <RadioButton GroupName="Same" Content="低压耐压检测"></RadioButton>
+                        </Viewbox>
+                        <Viewbox Grid.Row="1" Grid.Column="2"  Margin="7,2">
+                            <RadioButton GroupName="Same"  Content="高压耐压检测"></RadioButton>
+                        </Viewbox>
+                        <Grid Grid.Row="3" Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="3">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="3" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">高压过压值</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="5" Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="5" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验频率</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="5" Grid.Column="3">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="5" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验时间</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="7" Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="7" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">变比设置</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="7" Grid.Column="3">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="7" Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="2.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox Grid.Row="1">
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">荣升系数</TextBlock>
+                            </Viewbox>
+                        </Grid>
+                    </Grid>
+                    <Viewbox Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                        <CheckBox IsChecked="{Binding LiciCheck}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
+                    </Viewbox>
+                    <Grid Grid.Row="6" Background="White" IsEnabled="{Binding LiciEnable}" Opacity="{Binding LiciOpacity}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition  Width="1.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Margin="6">
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">实验电压</TextBlock>
+                        </Viewbox>
+                        <Grid Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        </Grid>
+                        <Viewbox Margin="6" Grid.Column="2">
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
+                        </Viewbox>
+                        <Grid Grid.Column="3">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        </Grid>
+                    </Grid>
+                    <Viewbox Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                        <CheckBox  IsChecked="{Binding CurrentCheck}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
+                    </Viewbox>
+                    <Grid Grid.Row="10" IsEnabled="{Binding CurrentEnable}" Opacity="{Binding CurrentOpacity}" Background="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition  Width="1.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Viewbox Margin="6">
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">实验电压</TextBlock>
+                        </Viewbox>
+                        <Grid Grid.Column="1">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        </Grid>
+                        <Viewbox Margin="6" Grid.Column="2">
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
+                        </Viewbox>
+                        <Grid Grid.Column="3">
+                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Controls:MetroWindow>
