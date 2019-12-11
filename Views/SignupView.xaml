@@ -1,0 +1,98 @@
+﻿<Controls:MetroWindow x:Class="PortableEquipment.Views.SignupView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortableEquipment.Views"
+        xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:s="https://github.com/canton7/Stylet"
+                      xmlns:model="clr-namespace:PortableEquipment.Models"
+                      mc:Ignorable="d"
+         d:DataContext="{d:DesignInstance local1:SignupViewModel}"
+                      WindowStyle="None" UseNoneWindowStyle="True"
+        Title="Login" Height="520" Width="300" IsEnabled="{Binding WindowIsEable,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      IsEnabledChanged="MetroWindow_IsEnabledChanged" Closing="{s:Action InitData}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="dtextbox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+                <Setter Property="FontFamily" Value="思源"></Setter>
+                <Setter Property="materialDesign:HintAssist.FloatingScale" Value="0.6"></Setter>
+                <Setter Property="Margin" Value=" 8,2,30,8 "></Setter>
+                <Setter Property="materialDesign:HintAssist.HintOpacity" Value="0.4"></Setter>
+                <Setter Property="FontSize" Value="15"></Setter>
+                <Setter Property="BorderBrush" Value="White"></Setter>
+            </Style>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+        <Grid.Background>
+            <ImageBrush ImageSource="/PortableEquipment;component/Resources/10.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition  Height="1.0*"></RowDefinition>
+            <RowDefinition  Height="1.0*"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="White" Grid.RowSpan="10" CornerRadius="13,13,13,13"  Margin="20,40,20,20">
+
+        </Border>
+        <Button Grid.Column="1" Height="30" Width="30" Margin="0,4,4,0" Click="{s:Action Close}" Style="{StaticResource ButtonLogin}" ToolTip="Exit" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button.Background>
+                <ImageBrush ImageSource="/PortableEquipment;component/Resources/closes.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+        <TextBlock HorizontalAlignment="Right" Foreground="#cbcbcb"  Margin="0,0,-25,10" VerticalAlignment="Bottom" >功能选择：</TextBlock>
+        <ComboBox HorizontalAlignment="Right" SelectedIndex="{Binding NeedDo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="#011a47"  Style="{StaticResource MaterialDesignFloatingHintComboBox}" Margin="0,0,-100,5">
+            <ComboBoxItem>账号注册</ComboBoxItem>
+            <ComboBoxItem>账号更新</ComboBoxItem>
+            <ComboBoxItem></ComboBoxItem>
+        </ComboBox>
+        <TextBox  Grid.Row="1" Grid.Column="1"  Text="{Binding Username ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                  materialDesign:HintAssist.Hint="{Binding hnit, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource dtextbox}"  />
+        <TextBox  Grid.Row="4" Grid.Column="1"   Text="{Binding MarkId ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  materialDesign:HintAssist.Hint="标志ID" 
+                    Style="{StaticResource dtextbox}"  />
+
+        <TextBox Grid.Row="2" Grid.Column="1"  Text="{Binding Password ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  materialDesign:HintAssist.Hint="登录密码" 
+                Style="{StaticResource dtextbox}"  />
+        <TextBox Grid.Row="3" Grid.Column="1"  Text="{Binding ConfirePassWord ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  materialDesign:HintAssist.Hint="确认密码" 
+                  Style="{StaticResource dtextbox}"  />
+        <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding PhoneNum ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged ,ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"  materialDesign:HintAssist.Hint="手机号码" 
+                 Style="{StaticResource dtextbox}"  />
+        <TextBox  Grid.Row="6" Grid.Column="1"  Text="{Binding Emial ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  materialDesign:HintAssist.Hint="邮箱" 
+              Style="{StaticResource dtextbox}"  />
+        <TextBox  Margin="8,2,30,8" Grid.Row="7" Grid.Column="1" Text="{Binding other ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  materialDesign:HintAssist.Hint="用途备注" 
+                  Style="{StaticResource dtextbox}"  />
+        <Grid Grid.Row="8" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Click="{s:Action Adduser}"  Content="{Binding ZcMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="White" Width="130" BorderThickness="0" Background="#FF5D96F1" FontWeight="Bold" Margin="10,2" materialDesign:ButtonAssist.CornerRadius="19"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"  ToolTip="立即注册用户？">
+            </Button>
+        </Grid>
+        <TextBlock Grid.Row="1" FontSize="25" Foreground="#e5e5e5" Text="&#xe650;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="2" FontSize="25" Foreground="#e5e5e5" Text="&#xe638;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="3" FontSize="25" Foreground="#e5e5e5" Text="&#xe638;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="4" FontSize="25" Foreground="#e5e5e5" Text="&#xe62d;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="5" FontSize="25" Foreground="#e5e5e5" Text="&#xe66c;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="6" FontSize="25" Foreground="#e5e5e5" Text="&#xe62f;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+        <TextBlock Grid.Row="7" FontSize="25" Foreground="#e5e5e5" Text="&#xe65e;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" Margin="8,10,-14,8"></TextBlock>
+    </Grid>
+</Controls:MetroWindow>

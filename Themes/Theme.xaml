@@ -108,6 +108,36 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ButtonLogin" TargetType="Button">
+        <Setter Property="Background" Value="#FF00EEFF"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Blue"></Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Background" Value="#2070ea"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ButtonClose" TargetType="Button">
+        <Setter Property="Foreground" Value="Transparent"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Transparent"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ButtonClosetext" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"></Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Red"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="OrdenaryButton1" TargetType="Button">
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="Control.Template">

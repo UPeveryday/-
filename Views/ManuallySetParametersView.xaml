@@ -6,7 +6,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:s="https://github.com/canton7/Stylet"
-                      
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment.Models"
         mc:Ignorable="d"
