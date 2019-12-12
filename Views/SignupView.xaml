@@ -13,7 +13,7 @@
          d:DataContext="{d:DesignInstance local1:SignupViewModel}"
                       WindowStyle="None" UseNoneWindowStyle="True"
         Title="Login" Height="520" Width="300" IsEnabled="{Binding WindowIsEable,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                      IsEnabledChanged="MetroWindow_IsEnabledChanged" Closing="{s:Action InitData}">
+                      >
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="dtextbox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">

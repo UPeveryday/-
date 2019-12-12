@@ -105,6 +105,9 @@
     <Compile Include="Convert.cs" />
     <Compile Include="Models\Convert.cs" />
     <Compile Include="Models\NumberValidationRule.cs" />
+    <Compile Include="Models\Publisher.cs" />
+    <Compile Include="Models\StaticClass.cs" />
+    <Compile Include="Models\Subscriber.cs" />
     <Compile Include="ViewModels\DataManagementViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

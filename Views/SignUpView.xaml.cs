@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace PortableEquipment.Views
     /// <summary>
     /// SignUpView.xaml 的交互逻辑
     /// </summary>
-    public partial class SignupView :MetroWindow
+    public partial class SignupView : MetroWindow 
     {
         public SignupView()
         {
@@ -29,18 +30,6 @@ namespace PortableEquipment.Views
         {
             this.DragMove();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void MetroWindow_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if(IsEnabled==false)
-            {
-                this.Close();
-            }
-        }
+      
     }
 }

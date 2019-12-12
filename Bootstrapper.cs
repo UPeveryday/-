@@ -8,8 +8,11 @@ namespace PortableEquipment
     public class Bootstrapper : Bootstrapper<ViewModels.LoginViewModel>
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
-       {
+        {
             // Configure the IoC container in here
+            //builder.Bind<IEventAggregator>();
+            //builder.BuildContainer();
+          
         }
 
         protected override void Configure()

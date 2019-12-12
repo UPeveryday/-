@@ -11,13 +11,14 @@ using System.Windows;
 
 namespace PortableEquipment.ViewModels
 {
-    public class LoginViewModel : Screen
+    public class LoginViewModel : Screen,IHandle<string>,IHandle<int>
     {
+        private IEventAggregator _eventAggregator;
         private jsEntities _jsEntities;
         private IWindowManager _windowManger;
         private SignupViewModel _SignupViewModel;
         private MainViewModel _MainViewModel;
-        public string LoginName { get; set; } 
+        public string LoginName { get; set; }
         public string PassWord { get; set; }
         public string HidePassword { get; set; }
         public string Usernamehnit { get; set; }
@@ -25,9 +26,17 @@ namespace PortableEquipment.ViewModels
         public Visibility WindowVisibility { get; set; } = Visibility.Visible;
 
         public ObservableCollection<string> UserList { get; set; }
-        public LoginViewModel(IWindowManager windowManager, SignupViewModel signupViewModel, MainViewModel mainViewModel)
+        public LoginViewModel(IWindowManager windowManager, SignupViewModel signupViewModel, MainViewModel mainViewModel, IEventAggregator eventAggregator)
         {
-            _windowManger = windowManager;
+
+            //Models.StaticClass._eventAggregator = eventAggregator;
+            //Models.StaticClass._publisher = new Models.Publisher(Models.StaticClass._eventAggregator);
+            //Models.StaticClass._subscriber = new Models.Subscriber(Models.StaticClass._eventAggregator);
+
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);//订阅事件聚合器
+
+           _windowManger = windowManager;
             _SignupViewModel = signupViewModel;
             _MainViewModel = mainViewModel;
             _jsEntities = new jsEntities();
@@ -40,14 +49,14 @@ namespace PortableEquipment.ViewModels
             if (UserList.Count >= 1)
                 LoginName = UserList.ToArray()[0];
         }
-        public LoginViewModel(IWindowManager windowManager,string name)
+        public LoginViewModel(IWindowManager windowManager, string name)
         {
             _windowManger = windowManager;
             LoginName = name;
         }
         public void ShowSignupViewModel()
         {
-            _SignupViewModel = new SignupViewModel(_windowManger);
+             //_SignupViewModel = new SignupViewModel(_windowManger);
             _windowManger.ShowDialog(_SignupViewModel);
 
         }
@@ -83,10 +92,16 @@ namespace PortableEquipment.ViewModels
             Usernamehnit = "UserName";
         }
 
-        public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello","警告",MessageBoxButton.YesNo,MessageBoxImage.Information);
+        public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
         public void Close() => this.RequestClose();
 
-        
+        public void Handle(string message)
+        {
+        }
+
+        public void Handle(int message)
+        {
+        }
     }
 }

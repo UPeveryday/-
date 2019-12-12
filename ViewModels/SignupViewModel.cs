@@ -12,10 +12,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PortableEquipment.ViewModels
 {
-    public class SignupViewModel : Screen, IDataErrorInfo
+    public class SignupViewModel : Screen, IDataErrorInfo, IDisposable
     {
         private jsEntities _jsEntities;
-        public IWindowManager  _windowManager { get; set; }
+        private IEventAggregator _eventAggregator;
+        public IWindowManager _windowManager { get; set; }
         public LoginViewModel _LoginViewModel { get; private set; }
         public bool WindowIsEable { get; set; } = true;
         public string Username { get; set; }
@@ -45,10 +46,11 @@ namespace PortableEquipment.ViewModels
                 return string.Empty;
             }
         }
-        public SignupViewModel(IWindowManager windowManager)
+        public SignupViewModel(IWindowManager windowManager, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
+            DisplayName = "SignupViewModelDisplayName";
             _windowManager = windowManager;
-            //_LoginViewModel = new LoginViewModel(_windowManager, "hello");
             _jsEntities = new jsEntities();
             _jsEntities.usertables.Load();
         }
@@ -119,19 +121,12 @@ namespace PortableEquipment.ViewModels
                 Close();
             });
         }
-        public void InitData()
-        {
-            _jsEntities = new jsEntities();
-            _jsEntities.usertables.Load();
-            Username = "";
-            Password = "";
-            MarkId = "";
-            Emial = "";
-            PhoneNum = "";
-            other = "";
-            ConfirePassWord = "";
-        }
         public void Close() => this.RequestClose();
-
+        public void Pisher() => _eventAggregator.Publish("hello");
+        public void Pisherint() => _eventAggregator.Publish(5);
+        public void Dispose()
+        {
+            GC.Collect();
+        }
     }
 }
