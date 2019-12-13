@@ -14,6 +14,7 @@ namespace PortableEquipment.ViewModels
 {
     public class LoginViewModel : Screen
     {
+        #region 依赖注入
         [Inject]//特性注入
         private IEventAggregator _eventAggregator;
         [Inject]//特性注入
@@ -24,14 +25,21 @@ namespace PortableEquipment.ViewModels
         private SignupViewModel _SignupViewModel;
         [Inject]
         private MainViewModel _MainViewModel;
+        [Inject(Key = "Lrs")]
+        private IEnumerable<Servers.ILogin<string>> _login;
+
+        [Inject]//特性注入
+        private StyletLogger.IWriteFile _writeFile;
+        #endregion
+
+        #region 绑定
         public string LoginName { get; set; }
         public string PassWord { get; set; }
         public string HidePassword { get; set; }
         public string Usernamehnit { get; set; }
         public Visibility WindowVisibility { get; set; } = Visibility.Visible;
         public ObservableCollection<string> UserList { get; set; }
-        [Inject]
-        private IEnumerable<Servers.ILogin<string>> _login;
+        #endregion
         public LoginViewModel()
         {
             //Servers.IEntityServer jsEntities
@@ -60,7 +68,7 @@ namespace PortableEquipment.ViewModels
         }
         public void Login()
         {
-            //  _login.ToArray()[0].Login();
+            //_login.ToArray()[0].Login();
             var un = _jsEntities.entitiesmodel.usertables.Where(p => p.username == LoginName).ToList();
             if (un.Count >= 1)
             {

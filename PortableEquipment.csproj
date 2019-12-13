@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Hv9003.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
@@ -113,6 +116,10 @@
     <Compile Include="Servers\ILogin.cs" />
     <Compile Include="Servers\LoginRespontory.cs" />
     <Compile Include="Servers\LoginSingalRespontitory.cs" />
+    <Compile Include="StyletIocModules\LoginModules.cs" />
+    <Compile Include="StyletLogger\IWriteFile.cs" />
+    <Compile Include="StyletLogger\MyLogger.cs" />
+    <Compile Include="StyletLogger\WriteDataToFile.cs" />
     <Compile Include="ViewModels\DataManagementViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -245,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dll\" />
+    <Folder Include="StyletLogger\Logger\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\便携式首页.png" />
@@ -312,6 +320,8 @@
     <Content Include="font_1537638_p3q93e2wf2\iconfont.css" />
     <Content Include="font_1537638_p3q93e2wf2\iconfont.js" />
     <Content Include="font_1537638_p3q93e2wf2\iconfont.svg" />
+    <Resource Include="Hv9003.ico" />
+    <Resource Include="Resources\Hv9003.ico" />
     <Resource Include="Resources\10.png" />
     <Resource Include="Resources\88.png" />
     <Resource Include="Resources\55.png" />
