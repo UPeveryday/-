@@ -15,12 +15,12 @@ namespace PortableEquipment.StyletLogger
         private string _LoggerBasePath;
         public void Error(Exception exception, string message = null)
         {
-            Loaded();
             _writeFile.WriteFile(_LoggerBasePath, "Error  :" + message + "\t\t\t" + DateTime.Now.ToString() + "\t\t\t" + "\r\n");
         }
         public MyLogger()
         {
             _writeFile = new WriteDataToFile();
+            Loaded();
         }
         private void Loaded()
         {
@@ -32,14 +32,12 @@ namespace PortableEquipment.StyletLogger
         }
         public void Info(string format, params object[] args)
         {
-            Loaded();
             _writeFile.WriteFile(_LoggerBasePath, "Info  :" + string.Join("-", args) + "\t\t\t" + DateTime.Now.ToString() + "\t\t\t" + "\r\n");
         }
 
         public void Warn(string format, params object[] args)
         {
 
-            Loaded();
             _writeFile.WriteFile(_LoggerBasePath, "Warn  :" + string.Join("-", args) + "\t\t\t" + DateTime.Now.ToString() +  "\r\n");
         }
     }
