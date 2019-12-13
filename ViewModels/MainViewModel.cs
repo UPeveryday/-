@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
 {
-    public class MainViewModel : Screen
+    public class MainViewModel : Screen,IHandle<string>
     {
+        private IEventAggregator _eventAggregator;
         private IWindowManager _windowManger;
         private DataManagementViewModel _ChildDialog;
         private ManuallySetParametersViewModel _ManuallySetParametersViewModel;
@@ -21,8 +22,11 @@ namespace PortableEquipment.ViewModels
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
-            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel)
+            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel,IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+
             _windowManger = windowManager;
             _ChildDialog = ChildDialog;
             _ManuallySetParametersViewModel = manuallySetParametersViewModel;
@@ -32,7 +36,6 @@ namespace PortableEquipment.ViewModels
             _VoltageTestViewModel = voltageTestViewModel;
             _WithstandVoltageViewModel = withstandVoltageViewModel;
         }
-
         public string FName { get; set; } = "ly";
 
         public void BtnCommand()
@@ -57,7 +60,10 @@ namespace PortableEquipment.ViewModels
         public void ShowVoltageTest() => _windowManger.ShowDialog(_VoltageTestViewModel);
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
 
-
+        public void Handle(string message)
+        {
+            Age = message;
+        }
 
         public string Age { get; set; }
 

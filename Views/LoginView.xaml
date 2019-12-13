@@ -14,8 +14,9 @@
                       WindowStyle="None" UseNoneWindowStyle="True"
         Title="Login" Height="520" Width="300"
                       IsEnabled="{Binding WindowEnable,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                      IsEnabledChanged="MetroWindow_IsEnabledChanged"
-                      Visibility="{Binding WindowVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                      Visibility="{Binding WindowVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     Loaded="{s:Action WindowLoad}"
+                      >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

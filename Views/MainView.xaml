@@ -259,7 +259,7 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="1">
-                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">手动调压</TextBlock>
+                    <TextBlock Text="{Binding Age,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock> <!--手动调压-->
                 </Viewbox>
             </Grid>
             <Grid Grid.Column="1">

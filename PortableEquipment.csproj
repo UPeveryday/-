@@ -108,6 +108,11 @@
     <Compile Include="Models\Publisher.cs" />
     <Compile Include="Models\StaticClass.cs" />
     <Compile Include="Models\Subscriber.cs" />
+    <Compile Include="Servers\EntityModelServer.cs" />
+    <Compile Include="Servers\IEntityServer.cs" />
+    <Compile Include="Servers\ILogin.cs" />
+    <Compile Include="Servers\LoginRespontory.cs" />
+    <Compile Include="Servers\LoginSingalRespontitory.cs" />
     <Compile Include="ViewModels\DataManagementViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

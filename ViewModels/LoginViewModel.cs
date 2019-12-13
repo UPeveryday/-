@@ -8,56 +8,50 @@ using Model;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Windows;
+using StyletIoC;
 
 namespace PortableEquipment.ViewModels
 {
-    public class LoginViewModel : Screen,IHandle<string>,IHandle<int>
+    public class LoginViewModel : Screen
     {
+        [Inject]//特性注入
         private IEventAggregator _eventAggregator;
-        private jsEntities _jsEntities;
+        [Inject]//特性注入
+        private Servers.IEntityServer _jsEntities;
+        [Inject]
         private IWindowManager _windowManger;
+        [Inject]
         private SignupViewModel _SignupViewModel;
+        [Inject]
         private MainViewModel _MainViewModel;
         public string LoginName { get; set; }
         public string PassWord { get; set; }
         public string HidePassword { get; set; }
         public string Usernamehnit { get; set; }
-
         public Visibility WindowVisibility { get; set; } = Visibility.Visible;
-
         public ObservableCollection<string> UserList { get; set; }
-        public LoginViewModel(IWindowManager windowManager, SignupViewModel signupViewModel, MainViewModel mainViewModel, IEventAggregator eventAggregator)
+        [Inject]
+        private IEnumerable<Servers.ILogin<string>> _login;
+        public LoginViewModel()
         {
-
-            //Models.StaticClass._eventAggregator = eventAggregator;
-            //Models.StaticClass._publisher = new Models.Publisher(Models.StaticClass._eventAggregator);
-            //Models.StaticClass._subscriber = new Models.Subscriber(Models.StaticClass._eventAggregator);
-
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);//订阅事件聚合器
-
-           _windowManger = windowManager;
-            _SignupViewModel = signupViewModel;
-            _MainViewModel = mainViewModel;
-            _jsEntities = new jsEntities();
-            _jsEntities.usertables.Load();
+            //Servers.IEntityServer jsEntities
+            //  _eventAggregator = eventAggregator;//构造函数注入
+        }
+        public void WindowLoad()
+        {
+            _jsEntities.entitiesmodel.usertables.Load();
             UserList = new ObservableCollection<string>();
-            foreach (var item in _jsEntities.usertables.Select(a => a.username).ToList())
+            foreach (var item in _jsEntities.entitiesmodel.usertables.Select(a => a.username).ToList())
             {
                 UserList.Add(item);
             }
             if (UserList.Count >= 1)
                 LoginName = UserList.ToArray()[0];
         }
-        public LoginViewModel(IWindowManager windowManager, string name)
-        {
-            _windowManger = windowManager;
-            LoginName = name;
-        }
         public void ShowSignupViewModel()
         {
-             //_SignupViewModel = new SignupViewModel(_windowManger);
-            _windowManger.ShowDialog(_SignupViewModel);
+            //_SignupViewModel = new SignupViewModel(_windowManger);
+            _windowManger.ShowWindow(_SignupViewModel);
 
         }
         public void ShowMainViewModel()
@@ -66,12 +60,14 @@ namespace PortableEquipment.ViewModels
         }
         public void Login()
         {
-            var un = _jsEntities.usertables.Where(p => p.username == LoginName).ToList();
+            //  _login.ToArray()[0].Login();
+            var un = _jsEntities.entitiesmodel.usertables.Where(p => p.username == LoginName).ToList();
             if (un.Count >= 1)
             {
                 Usernamehnit = "UserName";
                 if (un[0].password == PassWord)
                 {
+                    Pisher();
                     ShowMainViewModel();
                     Close();
                 }
@@ -91,17 +87,9 @@ namespace PortableEquipment.ViewModels
         {
             Usernamehnit = "UserName";
         }
-
         public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.YesNo, MessageBoxImage.Information);
-
         public void Close() => this.RequestClose();
+        public void Pisher() => _eventAggregator.Publish("手动调压");
 
-        public void Handle(string message)
-        {
-        }
-
-        public void Handle(int message)
-        {
-        }
     }
 }
