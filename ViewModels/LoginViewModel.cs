@@ -7,39 +7,16 @@ using System.Threading.Tasks;
 using Model;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using StyletIoC;
 
 namespace PortableEquipment.ViewModels
 {
-    public class LoginViewModel : Screen
+    public partial class LoginViewModel : Screen
     {
-        #region 依赖注入
-        [Inject]//特性注入
-        private IEventAggregator _eventAggregator;
-        [Inject]//特性注入
-        private Servers.IEntityServer _jsEntities;
-        [Inject]
-        private IWindowManager _windowManger;
-        [Inject]
-        private SignupViewModel _SignupViewModel;
-        [Inject]
-        private MainViewModel _MainViewModel;
-        [Inject(Key = "Lrs")]
-        private IEnumerable<Servers.ILogin<string>> _login;
-
-        [Inject]//特性注入
-        private StyletLogger.IWriteFile _writeFile;
-        #endregion
-
-        #region 绑定
-        public string LoginName { get; set; }
-        public string PassWord { get; set; }
-        public string HidePassword { get; set; }
-        public string Usernamehnit { get; set; }
-        public Visibility WindowVisibility { get; set; } = Visibility.Visible;
-        public ObservableCollection<string> UserList { get; set; }
-        #endregion
+        #region Invoke
+        
         public LoginViewModel()
         {
             //Servers.IEntityServer jsEntities
@@ -98,6 +75,38 @@ namespace PortableEquipment.ViewModels
         public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.YesNo, MessageBoxImage.Information);
         public void Close() => this.RequestClose();
         public void Pisher() => _eventAggregator.Publish("手动调压");
+        #endregion
+    }
 
+    public partial class LoginViewModel
+    {
+        #region 绑定
+        public string LoginName { get; set; }
+        public string PassWord { get; set; }
+        public string HidePassword { get; set; }
+        public string Usernamehnit { get; set; }
+        public Visibility WindowVisibility { get; set; } = Visibility.Visible;
+        public ObservableCollection<string> UserList { get; set; }
+        #endregion
+    }
+
+    public partial class LoginViewModel
+    {
+        #region 依赖注入
+        [Inject]//特性注入
+        public IEventAggregator _eventAggregator;
+        [Inject]//特性注入
+        public Servers.IEntityServer _jsEntities;
+        [Inject]
+        public IWindowManager _windowManger;
+        [Inject]
+        public SignupViewModel _SignupViewModel;
+        [Inject]
+        public MainViewModel _MainViewModel;
+        [Inject(Key = "Lrs")]
+        public IEnumerable<Servers.ILogin<string>> _login;
+        [Inject]//特性注入
+        public StyletLogger.IWriteFile _writeFile;
+        #endregion
     }
 }

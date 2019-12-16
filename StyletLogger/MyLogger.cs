@@ -1,6 +1,7 @@
 ﻿using Stylet;
 using StyletIoC;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace PortableEquipment.StyletLogger
     {
         private IWriteFile _writeFile;
         private string _LoggerBasePath;
+
+        public object Current => throw new NotImplementedException();
+
         public void Error(Exception exception, string message = null)
         {
             _writeFile.WriteFile(_LoggerBasePath, "Error  :" + message + "\t\t\t" + DateTime.Now.ToString() + "\t\t\t" + "\r\n");
@@ -40,5 +44,7 @@ namespace PortableEquipment.StyletLogger
 
             _writeFile.WriteFile(_LoggerBasePath, "Warn  :" + string.Join("-", args) + "\t\t\t" + DateTime.Now.ToString() +  "\r\n");
         }
+
+       
     }
 }

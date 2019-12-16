@@ -3,6 +3,7 @@ using Stylet;
 using StyletIoC;
 using PortableEquipment.Pages;
 using System.Collections.Generic;
+using PortableEquipment.StyletLogger;
 
 namespace PortableEquipment
 {
@@ -11,7 +12,10 @@ namespace PortableEquipment
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
             builder.AddModule(new StyletIocModules.LoginModules());//Login modules
+            //Container = builder.BuildContainer();
+
             #region IOC Test
+
             //builder.Bind(typeof(Servers.ILogin<>)).ToAllImplementations();//注入此接口所有的服务
             //builder.Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginRespontory<>)).WithKey("Lr");
             //builder.Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginSingalRespontitory<>)).WithKey("Lrs");
@@ -26,13 +30,14 @@ namespace PortableEquipment
             //builder.Bind<Servers.ILogin>().To<Servers.LoginRespontory>();//注册login服务
             //IContainer Ioc = builder.BuildContainer();
             //var Login = Ioc.Get<Servers.ILogin>();
+
             #endregion
         }
 
         protected override void Configure()
         {
             // Perform any other configuration before the application starts
-            //var vm = this.Container.Get<ViewManager>();
+            //var vm = this.Container.Get<IWriteFile>();
             //var vm1 = this.Container.Get<ViewModels.LoginViewModel>();
         }
 
