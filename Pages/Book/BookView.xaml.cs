@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PortableEquipment.Pages
+namespace PortableEquipment.Pages.Book
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// BookView.xaml 的交互逻辑
     /// </summary>
-    public partial class ShellView : System.Windows.Window
+    public partial class BookView : UserControl
     {
-        public ShellView()
+        public BookView()
         {
             InitializeComponent();
         }

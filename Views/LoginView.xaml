@@ -96,7 +96,7 @@
 
 
         </Grid>
-        <Button Margin="25,10" Grid.Row="5" Style="{StaticResource ButtonLogin}" Command="{s:Action Login}" BorderThickness="0">
+        <Button Margin="25,10" Grid.Row="5" Style="{StaticResource ButtonLogin}"  Click="{s:Action Login}" BorderThickness="0">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="20,20,20,20" Name="PART_Background">

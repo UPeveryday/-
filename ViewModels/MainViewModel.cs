@@ -22,7 +22,7 @@ namespace PortableEquipment.ViewModels
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
-            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel,IEventAggregator eventAggregator)
+            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);

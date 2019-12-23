@@ -116,7 +116,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Name="cc" Grid.Column="1">
-                        <TextBox Margin="20,5" Padding="0,5,0,0" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}"  VerticalAlignment="Center" TextAlignment="Center"></TextBox>
+                        <TextBox Margin="20,5" Padding="0,5,0,0" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}"  VerticalAlignment="Stretch" TextAlignment="Center"></TextBox>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <Grid.RowDefinitions>

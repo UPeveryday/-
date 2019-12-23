@@ -83,7 +83,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Click="{s:Action Adduser}"  Content="{Binding ZcMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="White" Width="130" BorderThickness="0" Background="#FF5D96F1" FontWeight="Bold" Margin="10,2" materialDesign:ButtonAssist.CornerRadius="19"
+            <Button Grid.Column="1" Click="{s:Action Adduser }"  Content="{Binding ZcMessage, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="White" Width="130" BorderThickness="0" Background="#FF5D96F1" FontWeight="Bold" Margin="10,2" materialDesign:ButtonAssist.CornerRadius="19"
                     Style="{StaticResource MaterialDesignRaisedDarkButton}"  ToolTip="立即注册用户？">
             </Button>
         </Grid>

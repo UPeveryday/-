@@ -3,17 +3,16 @@ using Stylet;
 using StyletIoC;
 using PortableEquipment.Pages;
 using System.Collections.Generic;
-using PortableEquipment.StyletLogger;
+using Model;
+using PortableEquipment.ViewModels;
 
 namespace PortableEquipment
 {
-    public class Bootstrapper : Bootstrapper<ViewModels.LoginViewModel>
+    public class Bootstrapper : Bootstrapper<LoginViewModel> 
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
             builder.AddModule(new StyletIocModules.LoginModules());//Login modules
-            //Container = builder.BuildContainer();
-
             #region IOC Test
 
             //builder.Bind(typeof(Servers.ILogin<>)).ToAllImplementations();//注入此接口所有的服务
@@ -46,5 +45,15 @@ namespace PortableEquipment
             Stylet.Logging.LogManager.LoggerFactory = name => new StyletLogger.MyLogger();
             Stylet.Logging.LogManager.Enabled = true;
         }
+        public static T GetObj<T>(T model)
+        {
+            T result = default(T);
+            if (model is T)
+            {
+                result = (T)(object)model; //或 (T)((object)model);
+            }
+            return result;
+        }
+
     }
 }

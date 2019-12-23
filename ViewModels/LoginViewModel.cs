@@ -16,7 +16,7 @@ namespace PortableEquipment.ViewModels
     public partial class LoginViewModel : Screen
     {
         #region Invoke
-        
+
         public LoginViewModel()
         {
             //Servers.IEntityServer jsEntities
@@ -41,11 +41,14 @@ namespace PortableEquipment.ViewModels
         }
         public void ShowMainViewModel()
         {
-            _windowManger.ShowDialog(_MainViewModel);
+            _windowManger.ShowWindow(_MainViewModel);
         }
         public void Login()
         {
-            //_login.ToArray()[0].Login();
+            //  _login.ToArray()[0].Login();
+            //var text = _writeFile.ReadFile(@"C:\Users\My\Desktop\1.txt");
+          //  var text = new Servers.test().read();
+
             var un = _jsEntities.entitiesmodel.usertables.Where(p => p.username == LoginName).ToList();
             if (un.Count >= 1)
             {
@@ -75,6 +78,9 @@ namespace PortableEquipment.ViewModels
         public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.YesNo, MessageBoxImage.Information);
         public void Close() => this.RequestClose();
         public void Pisher() => _eventAggregator.Publish("手动调压");
+
+        public bool CanLogin => !string.IsNullOrEmpty(LoginName) &&
+                                !string.IsNullOrEmpty(PassWord);
         #endregion
     }
 
@@ -87,6 +93,7 @@ namespace PortableEquipment.ViewModels
         public string Usernamehnit { get; set; }
         public Visibility WindowVisibility { get; set; } = Visibility.Visible;
         public ObservableCollection<string> UserList { get; set; }
+
         #endregion
     }
 
@@ -107,6 +114,7 @@ namespace PortableEquipment.ViewModels
         public IEnumerable<Servers.ILogin<string>> _login;
         [Inject]//特性注入
         public StyletLogger.IWriteFile _writeFile;
+
         #endregion
     }
 }

@@ -139,11 +139,20 @@
     <Compile Include="Models\Publisher.cs" />
     <Compile Include="Models\StaticClass.cs" />
     <Compile Include="Models\Subscriber.cs" />
+    <Compile Include="Pages\Book\BookView.xaml.cs">
+      <DependentUpon>BookView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Book\BookViewModel.cs" />
+    <Compile Include="Pages\Home\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Home\HomeViewModel.cs" />
     <Compile Include="Servers\EntityModelServer.cs" />
     <Compile Include="Servers\IEntityServer.cs" />
     <Compile Include="Servers\ILogin.cs" />
     <Compile Include="Servers\LoginRespontory.cs" />
     <Compile Include="Servers\LoginSingalRespontitory.cs" />
+    <Compile Include="Servers\test.cs" />
     <Compile Include="StyletIocModules\LoginModules.cs" />
     <Compile Include="StyletLogger\IWriteFile.cs" />
     <Compile Include="StyletLogger\MyLogger.cs" />
@@ -230,6 +239,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\Book\BookView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Home\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
