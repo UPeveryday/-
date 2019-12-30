@@ -219,7 +219,7 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="1">
-                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">变压器实验</TextBlock>
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">变压器试验</TextBlock>
                     <!--<TextBox Name="textBox1" Width="50" FontSize="15" Margin="2">
                         <TextBox.Text>
                             <Binding Path="Age" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
@@ -243,7 +243,7 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="1">
-                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">互感器器实验</TextBlock>
+                    <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">互感器试验</TextBlock>
                 </Viewbox>
             </Grid>
         </Grid>
@@ -259,7 +259,8 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Viewbox Grid.Row="1">
-                    <TextBlock Text="{Binding Age,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock> <!--手动调压-->
+                    <TextBlock Text="{Binding Age,UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock>
+                    <!--手动调压-->
                 </Viewbox>
             </Grid>
             <Grid Grid.Column="1">
@@ -289,6 +290,11 @@
             <Viewbox Grid.Row="1" Grid.Column="1">
                 <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3</TextBlock>
             </Viewbox>
+            <!--<TextBlock  Grid.Row="1" Grid.Column="2"  Margin="8"  HorizontalAlignment="Left"  VerticalAlignment="Center">
+                    <Hyperlink Hyperlink.NavigateUri="http://www.sceec.com">
+                        <Run Text="SCEEC" Foreground="Aqua"></Run>
+                    </Hyperlink>
+            </TextBlock>-->
         </Grid>
     </Grid>
 </Window>

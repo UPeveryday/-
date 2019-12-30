@@ -16,6 +16,8 @@
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Viewbox>
             <ContentControl s:View.Model="{Binding Items[0]}">
@@ -24,6 +26,18 @@
         </Viewbox>
         <StackPanel Grid.Row="1">
             <ContentControl s:View.Model="{Binding Items[1]}">
+            </ContentControl>
+        </StackPanel>
+
+
+
+        <Viewbox Grid.Row="2">
+            <ContentControl s:View.Model="{Binding Items[2]}">
+
+            </ContentControl>
+        </Viewbox>
+        <StackPanel Grid.Row="3">
+            <ContentControl s:View.Model="{Binding Items[3]}">
             </ContentControl>
         </StackPanel>
     </Grid>

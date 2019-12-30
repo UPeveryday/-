@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压实验装置</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压试验装置</TextBlock>
                 </Viewbox>
                 <Grid Grid.Column="4">
                     <Grid.ColumnDefinitions>

@@ -35,7 +35,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >配电变压器实验</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >配电变压器试验</TextBlock>
                 </Viewbox>
                 <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
@@ -277,7 +277,7 @@
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Viewbox Grid.Row="1">
-                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验编号</TextBlock>
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验编号</TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="0" Grid.Column="1">

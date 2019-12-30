@@ -9,7 +9,7 @@
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ManualVoltageViewModel}"
-        Title="ManualVoltageView" Height="500" Width="800" WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
+        Title="ManualVoltageView" Height="1080" Width="1920" WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="FontAwesome">
@@ -39,7 +39,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >手动调压实验</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >手动调压试验</TextBlock>
                 </Viewbox>
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
@@ -379,7 +379,7 @@
                     </Grid.RowDefinitions>
                     <Grid Background="Azure">
                         <Viewbox HorizontalAlignment="Left" >
-                            <TextBlock HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#2070ea" VerticalAlignment="Center"   >▌自动调频</TextBlock>
+                            <TextBlock HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#2070ea" VerticalAlignment="Center"   >▌手动调频</TextBlock>
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Background="White">

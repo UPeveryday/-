@@ -39,7 +39,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压实验装置</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压试验装置</TextBlock>
                 </Viewbox>
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
@@ -71,11 +71,11 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Viewbox  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" >
-                    <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器实验</TextBlock>
+                    <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器试验</TextBlock>
                 </Viewbox>
                 <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
                     <Button Background="#2070ea" Click="{s:Action ShowVoltageTestViewModel}" Style="{StaticResource ButtonF}">
-                        <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">开始实验</TextBlock>
+                        <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">开始试验</TextBlock>
                     </Button>
                 </Viewbox>
             </Grid>
@@ -112,7 +112,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Viewbox Grid.Row="1">
-                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验编号</TextBlock>
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验编号</TextBlock>
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Name="cc" Grid.Column="1">

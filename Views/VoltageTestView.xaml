@@ -38,7 +38,7 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >电压互感器实验</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >电压互感器试验</TextBlock>
                 </Viewbox>
                 <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
@@ -272,7 +272,7 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1" Background="Azure">
                         <Viewbox HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Left" Foreground="#545f79" FontWeight="Bold" VerticalAlignment="Center"> 实验项目</TextBlock>
+                            <TextBlock HorizontalAlignment="Left" Foreground="#545f79" FontWeight="Bold" VerticalAlignment="Center"> 试验项目</TextBlock>
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="2" Background="White">

@@ -23,5 +23,9 @@ namespace PortableEquipment.Views
         {
             this.Close();
         }
+
+       
     }
+
+    
 }

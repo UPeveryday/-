@@ -29,6 +29,8 @@ namespace PortableEquipment.Pages
             ActivateItem(bookvs);
             ActivateItem(homeViewModel1);
             ActivateItem(bookvs2);
+           
+            
             //DeactivateItem(homeViewModel);
             //var bookvs = _container.Get<BookViewModel>();
             //ActivateItem(bookvs);
