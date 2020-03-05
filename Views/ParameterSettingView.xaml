@@ -73,7 +73,7 @@
                 <Viewbox  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" >
                     <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器试验</TextBlock>
                 </Viewbox>
-                <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="2">
+                <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="1">
                     <Button Background="#2070ea" Click="{s:Action ShowVoltageTestViewModel}" Style="{StaticResource ButtonF}">
                         <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">开始试验</TextBlock>
                     </Button>
@@ -165,7 +165,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Viewbox Grid.Row="1">
-                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验地点</TextBlock>
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验地点</TextBlock>
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="9" Grid.Column="1">
@@ -178,7 +178,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Viewbox Grid.Row="1">
-                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验人员</TextBlock>
+                            <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验人员</TextBlock>
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="11" Grid.Column="1">
@@ -204,7 +204,7 @@
                         <RowDefinition  Height="0.6*"></RowDefinition>
                         <RowDefinition  Height="1.5*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Viewbox  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                    <Viewbox  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
                         <CheckBox IsChecked="{Binding KeepVolateCheck}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
                         </CheckBox>
                     </Viewbox>
@@ -281,7 +281,7 @@
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Viewbox Grid.Row="1">
-                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验频率</TextBlock>
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验频率</TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="3">
@@ -294,7 +294,7 @@
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <Viewbox Grid.Row="1">
-                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">实验时间</TextBlock>
+                                <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验时间</TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="1">
@@ -324,7 +324,7 @@
                             </Viewbox>
                         </Grid>
                     </Grid>
-                    <Viewbox Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                    <Viewbox Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
                         <CheckBox IsChecked="{Binding LiciCheck}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
                     </Viewbox>
                     <Grid Grid.Row="6" Background="White" IsEnabled="{Binding LiciEnable}" Opacity="{Binding LiciOpacity}">
@@ -335,7 +335,7 @@
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Viewbox Margin="6">
-                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">实验电压</TextBlock>
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="1">
                             <TextBox Margin="5,0" BorderThickness="1" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
@@ -347,7 +347,7 @@
                             <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                     </Grid>
-                    <Viewbox Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                    <Viewbox Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
                         <CheckBox  IsChecked="{Binding CurrentCheck}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
                     </Viewbox>
                     <Grid Grid.Row="10" IsEnabled="{Binding CurrentEnable}" Opacity="{Binding CurrentOpacity}" Background="White">
@@ -358,7 +358,7 @@
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Viewbox Margin="6">
-                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">实验电压</TextBlock>
+                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="1">
                             <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>

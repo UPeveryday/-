@@ -8,7 +8,7 @@ using PortableEquipment.ViewModels;
 
 namespace PortableEquipment
 {
-    public class Bootstrapper : Bootstrapper<LoginViewModel> 
+    public class Bootstrapper : Bootstrapper<MainViewModel> 
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {

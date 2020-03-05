@@ -65,7 +65,7 @@ namespace PortableEquipment.ViewModels
             Age = message;
         }
 
-        public string Age { get; set; }
+        public string Age { get; set; } = "手动调压";
 
     }
 }

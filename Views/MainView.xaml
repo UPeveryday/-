@@ -70,7 +70,7 @@
             <Grid Grid.Column="1">
                 <Viewbox>
                     <TextBlock Foreground="LightGray"  HorizontalAlignment="Center"  VerticalAlignment="Center">
-                    —PORTABLE LOCAL DISCHARGE INDUCTION VOLTAGE WITHSTAND TEST DEVICE FOR FIELD TRANSFORMER—
+                    —PORTABLE PARTIAL DISCHARGE ANALYZER FOR FIELD TRANSFORMER—
                     </TextBlock>
                 </Viewbox>
             </Grid>
@@ -288,7 +288,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3</TextBlock>
+                <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3号</TextBlock>
             </Viewbox>
             <!--<TextBlock  Grid.Row="1" Grid.Column="2"  Margin="8"  HorizontalAlignment="Left"  VerticalAlignment="Center">
                     <Hyperlink Hyperlink.NavigateUri="http://www.sceec.com">

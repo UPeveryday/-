@@ -446,7 +446,7 @@
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Viewbox  Margin="9">
-                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">实验电压</TextBlock>
+                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电压</TextBlock>
                             </Viewbox> 
                             <Viewbox  Grid.Column="1" Margin="5">
                                 <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}">22.0kV</TextBlock>
@@ -458,7 +458,7 @@
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Viewbox  Margin="9">
-                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">实验电流</TextBlock>
+                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电流</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1" Margin="5">
                                 <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}">22.0A</TextBlock>
@@ -493,7 +493,7 @@
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Viewbox Margin="5">
-                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">实验电压</TextBlock>
+                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电压</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1"  Margin="2">
                                 <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}">22.0kV</TextBlock>
