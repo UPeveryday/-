@@ -19,6 +19,7 @@ namespace PortableEquipment.StyletIocModules
             //Bind<IWriteFile>().ToFactory(container => new WriteDataToFile());
             //Bind<IWriteFile>().ToInstance(new WriteDataToFile());//绑定新实例到容器
             Bind<IWriteFile>().To<WriteDataToFile>();//.DisposeWithContainer(false);//单个注入,不释放
+            Bind<ILogger>().To<LoggerRunning>();//.DisposeWithContainer(false);//单个注入,不释放
             Bind<Servers.IEntityServer>().To<Servers.EntityModelServer>();//.DisposeWithContainer(false);//单个注入,不释放
             // Bind<Servers.IEntityServer>().To<Servers.EntityModelServer>() ;//单个注入
             // Bind<IWriteFile>().To<WriteDataToFile>(); ;//单个注入

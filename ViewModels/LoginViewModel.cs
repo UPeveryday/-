@@ -48,7 +48,6 @@ namespace PortableEquipment.ViewModels
             //  _login.ToArray()[0].Login();
             //var text = _writeFile.ReadFile(@"C:\Users\My\Desktop\1.txt");
           //  var text = new Servers.test().read();
-
             var un = _jsEntities.entitiesmodel.usertables.Where(p => p.username == LoginName).ToList();
             if (un.Count >= 1)
             {

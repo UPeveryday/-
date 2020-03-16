@@ -7,23 +7,14 @@
              xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance local1:TimeViewModel}"
-             d:DesignHeight="400" d:DesignWidth="400" Background="Aquamarine"
+             d:DesignHeight="400" d:DesignWidth="400" Background="AliceBlue"
              >
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="3" Grid.Column="2">
-            <TextBlock Text="{Binding Hour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-            <TextBlock  Text="{Binding Mins,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-            <TextBlock  Text="{Binding Seconed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+    
+        <StackPanel>
+            <TextBlock  Text="{Binding Hour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
+            <TextBlock  Text="{Binding Mins,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
+            <TextBlock  Text="{Binding Seconed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

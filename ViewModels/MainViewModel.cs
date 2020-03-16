@@ -1,4 +1,5 @@
 ﻿using Stylet;
+using Stylet.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace PortableEquipment.ViewModels
         private TransformerViewModel _TransformerViewModel;
         private VoltageTestViewModel _VoltageTestViewModel;
         private WithstandVoltageViewModel _WithstandVoltageViewModel;
+        private StyletLogger.ILogger _logger;
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
-            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator)
+            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator,StyletLogger.ILogger logger)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
@@ -35,6 +37,9 @@ namespace PortableEquipment.ViewModels
             _TransformerViewModel = transformerViewModel;
             _VoltageTestViewModel = voltageTestViewModel;
             _WithstandVoltageViewModel = withstandVoltageViewModel;
+            _logger = logger;
+           
+
         }
         public string FName { get; set; } = "ly";
 
@@ -50,6 +55,9 @@ namespace PortableEquipment.ViewModels
                 return !string.IsNullOrWhiteSpace(FName);
             }
         }
+
+
+        public void writerlogger() => _logger.Writer("hello");
 
         public void ShowMessage() => _windowManger.ShowMessageBox(FName);
         public void ShowDataMannege() => _windowManger.ShowDialog(_ChildDialog);

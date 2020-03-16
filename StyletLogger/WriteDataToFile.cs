@@ -150,7 +150,6 @@ namespace PortableEquipment.StyletLogger
         {
             if (File.Exists(path))
             {
-
                 return System.IO.File.ReadAllText(path);
             }
             else

@@ -154,7 +154,9 @@
     <Compile Include="Servers\LoginSingalRespontitory.cs" />
     <Compile Include="Servers\test.cs" />
     <Compile Include="StyletIocModules\LoginModules.cs" />
+    <Compile Include="StyletLogger\ILogger.cs" />
     <Compile Include="StyletLogger\IWriteFile.cs" />
+    <Compile Include="StyletLogger\LoggerRunning.cs" />
     <Compile Include="StyletLogger\MyLogger.cs" />
     <Compile Include="StyletLogger\WriteDataToFile.cs" />
     <Compile Include="ViewModels\DataManagementViewModel.cs" />
