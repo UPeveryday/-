@@ -36,6 +36,9 @@
             <RowDefinition Height="0.5*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        
+        
+        
         <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -296,5 +299,8 @@
                     </Hyperlink>
             </TextBlock>-->
         </Grid>
+
+        <local:TimeView Grid.RowSpan="3"></local:TimeView>
+
     </Grid>
 </Window>

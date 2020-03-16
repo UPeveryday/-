@@ -1,0 +1,29 @@
+﻿<Window x:Class="PortableEquipment.Views.TimeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PortableEquipment.Views"
+             xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance local1:TimeViewModel}"
+             d:DesignHeight="400" d:DesignWidth="400" Background="Aquamarine"
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="3" Grid.Column="2">
+            <TextBlock Text="{Binding Hour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            <TextBlock  Text="{Binding Mins,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            <TextBlock  Text="{Binding Seconed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
