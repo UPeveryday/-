@@ -6,8 +6,10 @@ using StyletIoC;
 
 namespace PortableEquipment.Pages
 {
-    public class ShellViewModel : Conductor<Screen>.Collection.AllActive, IHandle<string>
+    public class ShellViewModel : Conductor<Screen>, IHandle<string>
     {
+        [Inject]
+        public IEventAggregator _eventAggregator;
         [Inject]
         public IContainer _container;
         [Inject]
@@ -19,29 +21,39 @@ namespace PortableEquipment.Pages
         public BookViewModel bookvs2;
         protected override void OnViewLoaded()
         {
-            homeViewModel = _container.Get<HomeViewModel>();
-            homeViewModel1 = _container.Get<HomeViewModel>();
-            bookvs = _container.Get<BookViewModel>();
+            //homeViewModel = _container.Get<HomeViewModel>();
+            //homeViewModel1 = _container.Get<HomeViewModel>();
+            //bookvs = _container.Get<BookViewModel>();
             bookvs2 = _container.Get<BookViewModel>();
-            homeViewModel1.DisplayName = "Home1";
-            bookvs2.DisplayName = "Book1";
-            ActivateItem(homeViewModel);
-            ActivateItem(bookvs);
-            ActivateItem(homeViewModel1);
+            //homeViewModel1.DisplayName = "Home1";
+            //bookvs2.DisplayName = "Book1";
+            //ActivateItem(homeViewModel);
+            //ActivateItem(bookvs);
+            //ActivateItem(homeViewModel1);
             ActivateItem(bookvs2);
-           
-            
+
             //DeactivateItem(homeViewModel);
             //var bookvs = _container.Get<BookViewModel>();
             //ActivateItem(bookvs);
         }
+
+        public void changeitem()
+        {
+            ActiveItem = homeViewModel1;
+        }
         protected override void OnInitialActivate()
         {
+            base.OnInitialActivate();
+            _eventAggregator.Subscribe(this);
         }
 
         public void Handle(string message)
         {
             homeViewModel.title = message;
+            if(message=="ChangeItem")
+            {
+                ActiveItem = homeViewModel;
+            }
         }
     }
 }

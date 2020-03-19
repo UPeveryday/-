@@ -1,5 +1,6 @@
 ﻿using Stylet;
 using Stylet.Logging;
+using StyletIoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace PortableEquipment.ViewModels
         private VoltageTestViewModel _VoltageTestViewModel;
         private WithstandVoltageViewModel _WithstandVoltageViewModel;
         private StyletLogger.ILogger _logger;
+
+        [Inject]
+        public Servers.CommunicationProtocol.ICommunicationProtocol _CommunicationProtocol;
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
@@ -67,6 +71,8 @@ namespace PortableEquipment.ViewModels
         public void ShowTransformer() => _windowManger.ShowDialog(_TransformerViewModel);
         public void ShowVoltageTest() => _windowManger.ShowDialog(_VoltageTestViewModel);
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
+
+        public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
 
         public void Handle(string message)
         {

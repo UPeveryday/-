@@ -9,10 +9,11 @@
         xmlns:s="https://github.com/canton7/Stylet"
         d:DataContext="{d:DesignInstance local:ShellViewModel}" 
         Title="简易图书管理系统" Background="Turquoise">
-    <!--<ItemsControl  Style="{StaticResource StyletConductorItemsControl}"  >
-    </ItemsControl>-->
-
-    <Grid >
+    <TabControl    Style="{StaticResource StyletConductorItemsControl}">
+    </TabControl>
+    <!--<ContentControl s:View.Model="{Binding ActiveItem}"> </ContentControl>-->
+    
+    <!--<Grid >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -40,5 +41,5 @@
             <ContentControl s:View.Model="{Binding Items[3]}">
             </ContentControl>
         </StackPanel>
-    </Grid>
+    </Grid>-->
 </Window>

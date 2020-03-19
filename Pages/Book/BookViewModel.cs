@@ -8,7 +8,7 @@ using StyletIoC;
 
 namespace PortableEquipment.Pages.Book
 {
-    public class BookViewModel:Screen,IHandle<string>
+    public class BookViewModel : Screen, IHandle<string>
     {
         [Inject]
         public IEventAggregator _eventAggregator;
@@ -16,17 +16,22 @@ namespace PortableEquipment.Pages.Book
         {
             DisplayName = "Book";
         }
-
+        protected override void OnInitialActivate()
+        {
+            base.OnInitialActivate();
+            _eventAggregator.Subscribe(this);
+        }
         public string text { get; set; } = "My text";
         public void Stop()
         {
             Pisher();
         }
-        public void Pisher() => _eventAggregator.Publish("hello my name ");
+
+        public void Pisher() => _eventAggregator.Publish("ChangeItem");
 
         public void Handle(string message)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
     }
 }

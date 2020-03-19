@@ -9,6 +9,7 @@ namespace PortableEquipment.StyletLogger
     public interface ILogger
     {
         void Writer(string conternt);
+        void Writer(byte[] conternt);
 
     }
 }

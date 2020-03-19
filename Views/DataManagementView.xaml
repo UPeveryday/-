@@ -19,7 +19,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid >
@@ -31,29 +31,27 @@
             <Grid Grid.Row="1" Background="White" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.1*"></ColumnDefinition>
-                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="2.2*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Viewbox Grid.Column="1" Margin="0,2">
-                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压试验装置</TextBlock>
-                </Viewbox>
+                <TextBlock  Grid.Column="1" FontSize="18" HorizontalAlignment="Left" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >便携式现场变压器局放感应耐压试验装置</TextBlock>
                 <Grid Grid.Column="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" Margin="8,4" ToolTip="设置">
-                        <Grid.Background >
-                            <ImageBrush  ImageSource="/PortableEquipment;component/Resources/set.png"></ImageBrush>
-                        </Grid.Background>
-                    </Grid>
-                    <Grid Grid.Column="1" Margin="8,4" ToolTip="退出" MouseDown="Grid_MouseDown">
-                        <Grid.Background >
-                            <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
-                        </Grid.Background>
-                    </Grid>
+                    <DockPanel HorizontalAlignment="Right" >
+                        <Grid Grid.Column="0" Height="30" Width="30" ToolTip="设置">
+                            <Grid.Background >
+                                <ImageBrush  ImageSource="/PortableEquipment;component/Resources/set.png"></ImageBrush>
+                            </Grid.Background>
+                        </Grid>
+                        <TextBlock Width="10"></TextBlock>
+                        <Grid Grid.Column="1"  Height="30" Width="30" ToolTip="退出" MouseDown="Grid_MouseDown">
+                            <Grid.Background >
+                                <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
+                            </Grid.Background>
+                        </Grid>
+                        <TextBlock Width="10"></TextBlock>
+                    </DockPanel>
                 </Grid>
             </Grid>
         </Grid>
