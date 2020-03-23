@@ -59,10 +59,6 @@ namespace PortableEquipment.ViewModels
                 return !string.IsNullOrWhiteSpace(FName);
             }
         }
-
-
-        public void writerlogger() => _logger.Writer("hello");
-
         public void ShowMessage() => _windowManger.ShowMessageBox(FName);
         public void ShowDataMannege() => _windowManger.ShowDialog(_ChildDialog);
         public void ShowManuallySet() => _windowManger.ShowDialog(_ManuallySetParametersViewModel);

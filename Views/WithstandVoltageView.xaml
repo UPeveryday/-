@@ -11,7 +11,7 @@
         
         mc:Ignorable="d"
          d:DataContext="{d:DesignInstance local1:WithstandVoltageViewModel}"
-        Title="WithstandVoltage" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
+        Title="WithstandVoltage" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None" >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -60,7 +60,7 @@
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="350"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0">
@@ -115,8 +115,8 @@
                         <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验编号</TextBlock>
                     </Viewbox>
                 </Grid>
-                <Grid Grid.Row="0" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"   VerticalAlignment="Stretch" TextAlignment="Center"  ></TextBox>
+                <Grid Grid.Row="0" Grid.Column="1"><!--{Binding ElementName=TestPra,Path=TestId,UpdateSourceTrigger=PropertyChanged}-->
+                    <TextBox Margin="20,8" BorderThickness="0" Text="{Binding TestId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center"  ></TextBox>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -129,7 +129,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
 
                 <Grid Grid.Row="2" Grid.Column="0">
@@ -143,7 +143,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding RatedCapacity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="3" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -156,7 +156,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="3" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding WindingGroup,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -169,7 +169,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -182,7 +182,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"   Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="6" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -195,7 +195,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="6" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding TestLocation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="7" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -208,7 +208,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="7" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding Tester,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1">
@@ -234,7 +234,7 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="试验时间" Width="2*"></DataGridTextColumn>
                             <DataGridTextColumn Header="试验电压" Width="2*"></DataGridTextColumn>
-                        </DataGrid.Columns> 
+                        </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -259,7 +259,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Frequency,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -272,7 +272,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Volate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -285,7 +285,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Current,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                 </Grid>
             </Grid>

@@ -21,15 +21,15 @@ namespace PortableEquipment.Pages
         public BookViewModel bookvs2;
         protected override void OnViewLoaded()
         {
-            //homeViewModel = _container.Get<HomeViewModel>();
-            //homeViewModel1 = _container.Get<HomeViewModel>();
-            //bookvs = _container.Get<BookViewModel>();
+            homeViewModel = _container.Get<HomeViewModel>();
+            homeViewModel1 = _container.Get<HomeViewModel>();
+            bookvs = _container.Get<BookViewModel>();
             bookvs2 = _container.Get<BookViewModel>();
-            //homeViewModel1.DisplayName = "Home1";
-            //bookvs2.DisplayName = "Book1";
-            //ActivateItem(homeViewModel);
-            //ActivateItem(bookvs);
-            //ActivateItem(homeViewModel1);
+            homeViewModel1.DisplayName = "Home1";
+            bookvs2.DisplayName = "Book1";
+            ActivateItem(homeViewModel);
+            ActivateItem(bookvs);
+            ActivateItem(homeViewModel1);
             ActivateItem(bookvs2);
 
             //DeactivateItem(homeViewModel);

@@ -36,14 +36,13 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return new StataTwo { stata = Methonstata.False };
         }
-
         public StataThree ReadStataThree()
         {
-            var lc = new StackTrace(new System.Diagnostics.StackFrame(true)).GetFrame(0);
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[53];
             try
             {
-               Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
+                Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
                 if (rec[0] == 0xda && rec[1] == 0xda)
                     return _parsingdata.ParsingThree(rec);
                 else
@@ -54,10 +53,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
             return new StataThree { };
-        }
-
-        public void SetUpCurrent()
-        {
         }
     }
 }

@@ -116,7 +116,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="1" Name="cc" Grid.Column="1">
-                        <TextBox Margin="20,5" Padding="0,5,0,0" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}"  VerticalAlignment="Stretch" TextAlignment="Center"></TextBox>
+                        <TextBox Margin="20,5" Padding="0,5,0,0" BorderThickness="0" Text="{Binding TestId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}"  VerticalAlignment="Stretch" TextAlignment="Center"></TextBox>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -129,7 +129,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding TestLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
 
                     <Grid Grid.Row="5" Grid.Column="0">
@@ -143,7 +143,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="5" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0" Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0" Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -156,7 +156,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="7" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="9" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -169,7 +169,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="9" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0" Text="{Binding TestLocation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                     <Grid Grid.Row="11" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -182,7 +182,7 @@
                         </Viewbox>
                     </Grid>
                     <Grid Grid.Row="11" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                        <TextBox Margin="20,5" BorderThickness="0" Text="{Binding Tester,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="1">
@@ -205,10 +205,10 @@
                         <RowDefinition  Height="1.5*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Viewbox  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
-                        <CheckBox IsChecked="{Binding KeepVolateCheck}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
+                        <CheckBox IsChecked="{Binding KeepVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
                         </CheckBox>
-                    </Viewbox>
-                    <Grid Grid.Row="2" Opacity="{Binding KeepVoltageOpacity}" IsEnabled="{Binding KeepVolateEnable}"  Background="White">
+                    </Viewbox> <!--Opacity="{Binding KeepVoltageOpacity}"-->
+                    <Grid Grid.Row="2"  IsEnabled="{Binding KeepVolateEnable}" Opacity="{Binding KeepVoltageOpacity}" Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -227,7 +227,7 @@
                             <RowDefinition Height="0.2*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="1" Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1" Text="{Binding OutgoingTestVoltage,Mode=TwoWay}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -240,13 +240,13 @@
                             </Viewbox>
                         </Grid>
                         <Viewbox Grid.Row="1" Grid.Column="3" Margin="7,2">
-                            <RadioButton GroupName="Same" Content="低压耐压检测"></RadioButton>
+                            <RadioButton GroupName="Same" IsChecked="{Binding LowOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Content="低压耐压检测"></RadioButton>
                         </Viewbox>
                         <Viewbox Grid.Row="1" Grid.Column="2"  Margin="7,2">
-                            <RadioButton GroupName="Same"  Content="高压耐压检测"></RadioButton>
+                            <RadioButton GroupName="Same"  IsChecked="{Binding HighOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Content="高压耐压检测"></RadioButton>
                         </Viewbox>
                         <Grid Grid.Row="3" Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -259,7 +259,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="3">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding HighOverVolate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -272,7 +272,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"   Text="{Binding TestFre,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -285,7 +285,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="3">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding TestTime,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -298,7 +298,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding VariableThan,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -311,7 +311,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="3">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding Promotion,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -325,7 +325,7 @@
                         </Grid>
                     </Grid>
                     <Viewbox Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
-                        <CheckBox IsChecked="{Binding LiciCheck}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
+                        <CheckBox IsChecked="{Binding LiciCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
                     </Viewbox>
                     <Grid Grid.Row="6" Background="White" IsEnabled="{Binding LiciEnable}" Opacity="{Binding LiciOpacity}">
                         <Grid.ColumnDefinitions>
@@ -338,17 +338,17 @@
                             <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                            <TextBox Margin="5,0" Text="{Binding LcTestVolate,Mode=TwoWay}" BorderThickness="1" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                         <Viewbox Margin="6" Grid.Column="2">
                             <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="3">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding LcOverCurrent,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                     </Grid>
                     <Viewbox Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0">
-                        <CheckBox  IsChecked="{Binding CurrentCheck}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
+                        <CheckBox  IsChecked="{Binding CurrentCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
                     </Viewbox>
                     <Grid Grid.Row="10" IsEnabled="{Binding CurrentEnable}" Opacity="{Binding CurrentOpacity}" Background="White">
                         <Grid.ColumnDefinitions>
@@ -361,13 +361,13 @@
                             <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="1">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding KzTestVolate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                         <Viewbox Margin="6" Grid.Column="2">
                             <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         </Viewbox>
                         <Grid Grid.Column="3">
-                            <TextBox Margin="5,0" BorderThickness="1"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                            <TextBox Margin="5,0" BorderThickness="1"   Text="{Binding KzOverCurrent,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -42,10 +42,10 @@ namespace PortableEquipment.StyletLogger
         {
             string flag = string.Empty;
             if (SendOrRec)
-                flag = "发送数据  ：";
+                flag = "发送数据  ：" + conternt.Length + "字节";
             else
-                flag = "接受数据  ：";
-            string data = flag + string.Join(" ", conternt);
+                flag = "接受数据  ：" + conternt.Length + "字节";
+            string data = flag + string.Join("-", conternt);
             string filename = System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Logger\\" + System.DateTime.Now.ToString("yyyy-MM-dd");
             if (File.Exists(filename))
                 new WriteDataToFile().WriteFile(filename, DateTime.Now.ToString() + ":" + data + "\n");

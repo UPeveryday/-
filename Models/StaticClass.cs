@@ -16,7 +16,7 @@ namespace PortableEquipment.Models
         public static bool Checkdata(byte[] data)
         {
             byte sum = 0;
-            for (int i = 0; i < data.Length - 2; i++)
+            for (int i = 0; i < data.Length - 1; i++)
             {
                 sum += data[i];
             }

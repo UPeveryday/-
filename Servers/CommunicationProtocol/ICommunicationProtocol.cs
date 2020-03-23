@@ -10,8 +10,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
     {
         StataTwo ReadStataTwo();
         StataThree ReadStataThree();
-        void SetUpCurrent();
-
     }
 
     public struct StataTwo
