@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace PortableEquipment
 {
-    public class Convert : IValueConverter
+    public class Convertsigal: IValueConverter
     {
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

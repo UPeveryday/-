@@ -8,14 +8,17 @@
         xmlns:s="https://github.com/canton7/Stylet"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment.Models"
+        xmlns:cvt="clr-namespace:PortableEquipment.Converts"              
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ManuallySetParametersViewModel}"
         Title="ManuallySetParametersView" Height="500" Width="400" UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
+            <cvt:CheckConverter x:Key="CheckConverter"></cvt:CheckConverter>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -74,17 +77,17 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Viewbox  Grid.Row="1" Grid.Column="0">
-                <RadioButton Click="High_click" HorizontalAlignment="Center" IsChecked="True" GroupName="1"  VerticalAlignment="Center">高压模式</RadioButton>
+                <RadioButton Click="High_click" HorizontalAlignment="Center"  IsChecked="{Binding VolateKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=1}"  GroupName="1"  VerticalAlignment="Center">高压模式</RadioButton>
             </Viewbox>
             <Viewbox  Grid.Row="1" Grid.Column="1">
-                <RadioButton Click="RadioButton_Click" HorizontalAlignment="Center" GroupName="1"  VerticalAlignment="Center">低压模式</RadioButton>
+                <RadioButton Click="RadioButton_Click" IsChecked="{Binding VolateKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=2}" HorizontalAlignment="Center" GroupName="1"  VerticalAlignment="Center">低压模式</RadioButton>
             </Viewbox>
 
             <Viewbox  Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
-                <RadioButton  HorizontalAlignment="Center" GroupName="2"  IsChecked="True" VerticalAlignment="Center">大电流模式：0—250V   40A</RadioButton>
+                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=1}" VerticalAlignment="Center">大电流模式：0—250V   40A</RadioButton>
             </Viewbox>
             <Viewbox  Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">
-                <RadioButton  HorizontalAlignment="Center" GroupName="2"  VerticalAlignment="Center">小电流模式：0—500V   20A</RadioButton>
+                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=2}" VerticalAlignment="Center">小电流模式：0—500V   20A</RadioButton>
             </Viewbox>
             <Grid Grid.Row="3" Grid.Column="0">
                 <Grid.ColumnDefinitions>
@@ -94,7 +97,7 @@
                 <Viewbox Grid.Row="1" Margin="10,5">
                     <TextBlock  Style="{StaticResource TextBlockPriview}" >过压值</TextBlock>
                 </Viewbox>
-                <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" TextAlignment="Right" Margin="4" BorderThickness="0" Background="White"></TextBox>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OverVolate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" Margin="4" BorderThickness="0" Background="White"></TextBox>
             </Grid>
             <Grid Grid.Row="3" Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -104,7 +107,7 @@
                 <Viewbox Grid.Row="1" Margin="10,5">
                     <TextBlock  Style="{StaticResource TextBlockPriview}" >过流值</TextBlock>
                 </Viewbox>
-                <TextBox Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right" Grid.Column="1" Margin="4" BorderThickness="0" Background="White"></TextBox>
+                <TextBox Grid.Row="1" VerticalAlignment="Center" Text="{Binding OverCurrent,Mode=TwoWay}"   TextAlignment="Right" Grid.Column="1" Margin="4" BorderThickness="0" Background="White"></TextBox>
             </Grid>
             <Grid Grid.Row="5" Name="BB" Opacity="0.3" IsEnabled="False" Grid.Column="0">
                 <Grid.ColumnDefinitions>
@@ -114,7 +117,7 @@
                 <Viewbox Grid.Row="1" Margin="10,5">
                     <TextBlock  Style="{StaticResource TextBlockPriview}" >变比值</TextBlock>
                 </Viewbox>
-                <TextBox Grid.Row="1" Margin="4" Grid.Column="1"  VerticalAlignment="Center" TextAlignment="Right" BorderThickness="0" Background="White"></TextBox>
+                <TextBox Grid.Row="1" Margin="4" Grid.Column="1"  Text="{Binding VariableThan,Mode=TwoWay}"   VerticalAlignment="Center" TextAlignment="Right" BorderThickness="0" Background="White"></TextBox>
             </Grid>
             <Grid Grid.Row="5" Name="RS" Opacity="0.3" IsEnabled="False"  Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -124,7 +127,7 @@
                 <Viewbox Grid.Row="1" Margin="5,5">
                     <TextBlock  Style="{StaticResource TextBlockPriview}" >荣升系数</TextBlock>
                 </Viewbox>
-                <TextBox Grid.Row="1" Margin="4" Grid.Column="1" VerticalAlignment="Center" TextAlignment="Right"  BorderThickness="0" Background="White"></TextBox>
+                <TextBox Grid.Row="1" Margin="4" Grid.Column="1"  Text="{Binding Promotion,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right"  BorderThickness="0" Background="White"></TextBox>
             </Grid>
 
             <Button Grid.Row="11"  Click="Button_Click" Margin="20,3" Style="{StaticResource MainClose1}">

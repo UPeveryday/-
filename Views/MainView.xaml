@@ -156,7 +156,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1"><!--ShowManuallySet-->
-                    <Button    Height="60" Width="60" Click="{s:Action Sendcomman}" ToolTip="进入手动调压" Style="{StaticResource CircleButton}" >
+                    <Button    Height="60" Width="60" Click="{s:Action ShowManuallySet}" ToolTip="进入手动调压" Style="{StaticResource CircleButton}" >
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#fa931a" Offset="0"/>

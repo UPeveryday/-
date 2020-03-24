@@ -12,6 +12,7 @@ namespace PortableEquipment.ViewModels
     public partial class TransformerViewModel : Screen, IHandle<Translator>
     {
         public Translator TestPra { get; set; }
+        int i = 0;
         public void Handle(Translator message)
         {
             TestPra = message;

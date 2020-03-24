@@ -137,6 +137,7 @@
     <Compile Include="Comport\Comport.cs" />
     <Compile Include="Comport\ISerialCommunication.cs" />
     <Compile Include="Convert.cs" />
+    <Compile Include="Converts\CheckConverter.cs" />
     <Compile Include="Models\Convert.cs" />
     <Compile Include="Models\NumberValidationRule.cs" />
     <Compile Include="Models\Publisher.cs" />

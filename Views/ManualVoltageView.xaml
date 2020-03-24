@@ -9,7 +9,7 @@
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ManualVoltageViewModel}"
-        Title="ManualVoltageView" Height="1080" Width="1920" WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
+        Title="ManualVoltageView" Height="500" Width="800"  WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="FontAwesome">

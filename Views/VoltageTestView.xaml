@@ -13,7 +13,7 @@
         Title="VoltageTestView" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
-            <model:Convert x:Key="cvt"></model:Convert>
+            <model:Convertsigal x:Key="cvt"></model:Convertsigal>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
