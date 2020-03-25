@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
 {
-    public class MainViewModel : Screen,IHandle<string>
+    public class MainViewModel : Screen, IHandle<string>,IHandle<Stata>
     {
         private IEventAggregator _eventAggregator;
         private IWindowManager _windowManger;
@@ -22,13 +22,15 @@ namespace PortableEquipment.ViewModels
         private VoltageTestViewModel _VoltageTestViewModel;
         private WithstandVoltageViewModel _WithstandVoltageViewModel;
         private StyletLogger.ILogger _logger;
+        private TimeViewModel _timeViewModel;
 
         [Inject]
         public Servers.CommunicationProtocol.ICommunicationProtocol _CommunicationProtocol;
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
-            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator,StyletLogger.ILogger logger)
+            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator, StyletLogger.ILogger logger
+            , TimeViewModel timeViewModel)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
@@ -42,7 +44,7 @@ namespace PortableEquipment.ViewModels
             _VoltageTestViewModel = voltageTestViewModel;
             _WithstandVoltageViewModel = withstandVoltageViewModel;
             _logger = logger;
-           
+            _timeViewModel = timeViewModel;
 
         }
         public string FName { get; set; } = "ly";
@@ -69,10 +71,30 @@ namespace PortableEquipment.ViewModels
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
 
         public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
+        public void showdata()
+        {
+            _eventAggregator.Publish(new HideMessage
+            {
+                Cancertext = "取消",
+                CancerVisibility = System.Windows.Visibility.Visible,
+                ConfireVisibility = System.Windows.Visibility.Visible,
+                HeaderText = "警告",
+                Messages = "无法开始试验"
+            });
+            _windowManger.ShowDialog(_timeViewModel);
+        }
 
         public void Handle(string message)
         {
             Age = message;
+        }
+
+        public void Handle(Stata message)
+        {
+            if(message==Stata.Redo)
+            {
+
+            }
         }
 
         public string Age { get; set; } = "手动调压";

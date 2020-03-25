@@ -21,12 +21,65 @@ namespace PortableEquipment.ViewModels
         public void Handle(MutualTranslator message)
         {
             _mutualTranslator = message;
+            LcGetTestVolateRange(_mutualTranslator.ExcitationCharacteristicR);
+            GetBasePra(message);
         }
     }
     public partial class VoltageTestViewModel
     {
-        #region Bindings
+        #region Commands
+        /// <summary>
+        /// datagrid
+        /// </summary>
+        /// <param name="ec"></param>
+        private void LcGetTestVolateRange(ExcitationCharacteristic ec)
+        {
+            LcDatagrid.Clear();
+            for (int i = 0; i < ec.VolateRange.Length; i++)
+            {
+                LcDatagrid.Add(new LcdatagridColletion { TestNum = i + 1, TestVoltage = (ec.TestVolate * ec.VolateRange[i] / 100), TestCurrent = ec.OverCurrent });
+            }
+        }
 
+        private void GetBasePra(MutualTranslator mutualTranslator)
+        {
+            TestId = mutualTranslator.TestId;
+            TestLevel = mutualTranslator.TestLevel;
+            Humidity = mutualTranslator.Humidity;
+            Temperature = mutualTranslator.Temperature;
+
+            KzTestVolate = mutualTranslator.NoLoadCurrentR.TestVolate;
+            KzOverCurrent = mutualTranslator.NoLoadCurrentR.OverCurrent;
+
+            KeepTestVoltage = mutualTranslator.InducedOvervoltageR.TestVoltage;
+            KeepTestFre = mutualTranslator.InducedOvervoltageR.TestFre;
+            KeepTestTime = mutualTranslator.InducedOvervoltageR.TestTime;
+        }
         #endregion
+    }
+    public partial class VoltageTestViewModel
+    {
+        #region Bindings
+        public BindableCollection<LcdatagridColletion> LcDatagrid { get; set; } = new BindableCollection<LcdatagridColletion>();
+
+        public string TestId { get; set; } 
+        public string TestLevel { get; set; }
+        public string Humidity { get; set; }
+        public string Temperature { get; set; }
+
+        public double KzTestVolate { get; set; }
+        public double KzOverCurrent { get; set; }
+
+
+        public double KeepTestVoltage { get; set; }
+        public double KeepTestFre { get; set; }
+        public double KeepTestTime { get; set; }
+        #endregion
+    }
+    public class LcdatagridColletion
+    {
+        public int TestNum { get; set; }
+        public double TestVoltage { get; set; }
+        public double TestCurrent { get; set; }
     }
 }

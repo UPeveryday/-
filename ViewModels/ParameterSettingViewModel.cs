@@ -93,10 +93,18 @@ namespace PortableEquipment.ViewModels
             {
                 List<double> tpd = new List<double>();
                 tpd.AddRange(pdata);
-                tpd.Add(Conetnt);
-                double[] ret = tpd.ToArray();
-                Array.Sort(ret);
-                GetDefaultGroupdata(ret);
+                if (tpd.Any(p => p == Conetnt))
+                {
+                    _logger.Writer("已经存在此电压点");
+                }
+                else
+                {
+                    tpd.Add(Conetnt);
+                    double[] ret = tpd.ToArray();
+                    Array.Sort(ret);
+                    GetDefaultGroupdata(ret);
+                }
+
             }
         }
         public void Deletedata()

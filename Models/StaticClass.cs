@@ -22,5 +22,7 @@ namespace PortableEquipment.Models
             }
             return sum == data[data.Length - 1];
         }
+
+
     }
 }

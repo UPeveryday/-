@@ -372,7 +372,7 @@
                                         <materialDesign:ColorZone Background="#2070EA" Mode="PrimaryMid"  Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
                                             <TextBlock  Margin="4">励磁特性电压等级</TextBlock>
                                         </materialDesign:ColorZone>
-                                        <Button   Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"  
+                                        <Button  Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"  
                               Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Bottom"
                               HorizontalAlignment="Right" Grid.Row="0"  Margin="0 0 28 -20">
                                             <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
@@ -398,15 +398,11 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Viewbox Margin="6">
-                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
-                        </Viewbox>
+                            <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding KzTestVolate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
-                        <Viewbox Margin="6" Grid.Column="2">
-                            <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
-                        </Viewbox>
+                            <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         <Grid Grid.Column="3">
                             <TextBox Margin="5,0" BorderThickness="1"   Text="{Binding KzOverCurrent,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>

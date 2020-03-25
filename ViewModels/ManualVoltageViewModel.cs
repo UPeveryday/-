@@ -19,7 +19,7 @@ namespace PortableEquipment.ViewModels
         }
         public void Handle(TestByHand message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
      
     }
