@@ -1,17 +1,6 @@
-﻿using System;
+﻿using PortableEquipment.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PortableEquipment.Views
 {
@@ -23,6 +12,17 @@ namespace PortableEquipment.Views
         public TimeView()
         {
             InitializeComponent();
+        }
+        List<string> VolataGroup = new List<string>();
+        private void Sample1_DialogHost_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter)
+            {
+                //VolataGroup.Add(FruitTextBox.Text);
+                //FruitListBox.ItemsSource = VolataGroup;
+                (this.DataContext as TimeViewModel).VolataGroup.Add((this.DataContext as TimeViewModel).Conetnt);
+            }
+
         }
     }
 }

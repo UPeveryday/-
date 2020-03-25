@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Stylet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace PortableEquipment.TestParameters
     public struct Translator
     {
         public string TestId;
-        public string RatedVoltage;
+        public double RatedVoltage;
         public string RatedCapacity;
         public string WindingGroup;
         public string Temperature;
@@ -22,6 +23,7 @@ namespace PortableEquipment.TestParameters
         public double Frequency;
         public double Volate;
         public double Current;
+        public BindableCollection<ViewModels.TransformerDataStep> DatagridData;
     }
     /// <summary>
     /// 互感器实验
@@ -87,6 +89,7 @@ namespace PortableEquipment.TestParameters
         public bool Enable;
         public double TestVolate;
         public double OverCurrent;
+        public double[] VolateRange;
     }
     /// <summary>
     /// 空载电流

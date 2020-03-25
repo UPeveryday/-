@@ -387,6 +387,9 @@
     <Content Include="font_1537638_p3q93e2wf2\iconfont.css" />
     <Content Include="font_1537638_p3q93e2wf2\iconfont.js" />
     <Content Include="font_1537638_p3q93e2wf2\iconfont.svg" />
+    <Resource Include="Resources\del.ico" />
+    <Resource Include="Resources\del.png" />
+    <Resource Include="Resources\便携式变压器试验.png" />
     <Resource Include="Hv9003.ico" />
     <Resource Include="Resources\Hv9003.ico" />
     <Resource Include="Resources\10.png" />

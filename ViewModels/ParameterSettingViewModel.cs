@@ -15,17 +15,20 @@ namespace PortableEquipment.ViewModels
         private IWindowManager _windowManger;
         private VoltageTestViewModel _VoltageTestViewModel;
         public IEventAggregator _eventAggregator;
+        [Inject]
+        public StyletLogger.ILogger _logger;
+        [Inject]
+        public Servers.Xmldata.IXmlconfig _xmlconfig;
         public ParameterSettingViewModel(IWindowManager windowManager, VoltageTestViewModel voltageTestViewModel, IEventAggregator eventAggregator)
         {
             _windowManger = windowManager;
             _VoltageTestViewModel = voltageTestViewModel;
             _eventAggregator = eventAggregator;
-            //_eventAggregator.Subscribe(this);
+            //_eventAggregator.Subscribe(this);s
         }
         public void ShowVoltageTestViewModel()
         {
-            StartTest()
-;            _windowManger.ShowDialog(_VoltageTestViewModel);
+            StartTest(); _windowManger.ShowDialog(_VoltageTestViewModel);
         }
         #endregion
         #region 页面使能
@@ -57,7 +60,7 @@ namespace PortableEquipment.ViewModels
             set { }
         } //感应耐压参数使能
         public bool LiciCheck { get; set; } = false;
-        public double LiciOpacity { get; set; } = 0.5;
+        public double LiciOpacity { get; set; } = 1;
 
         public bool CurrentEnable
         {
@@ -80,6 +83,27 @@ namespace PortableEquipment.ViewModels
     public partial class ParameterSettingViewModel
     {
         #region command
+        /// <summary>
+        /// 添加单独的测试等级 35%
+        /// </summary>
+        public void Dialogstata()
+        {
+            double[] pdata = GetBackGroupdata();
+            if (pdata != null)
+            {
+                List<double> tpd = new List<double>();
+                tpd.AddRange(pdata);
+                tpd.Add(Conetnt);
+                double[] ret = tpd.ToArray();
+                Array.Sort(ret);
+                GetDefaultGroupdata(ret);
+            }
+        }
+        public void Deletedata()
+        {
+            if (VolataGroup.Count > 0)
+                VolataGroup.Remove(Selectdata);
+        }
         private MutualTranslator getMutualTranslator()
         {
             return new MutualTranslator
@@ -106,7 +130,10 @@ namespace PortableEquipment.ViewModels
                 {
                     Enable = LiciCheck,
                     TestVolate = LcTestVolate,
-                    OverCurrent = LcOverCurrent
+                    OverCurrent = LcOverCurrent,
+                    VolateRange = GetBackGroupdata()
+
+
                 },
                 NoLoadCurrentR = new NoLoadCurrent
                 {
@@ -122,7 +149,78 @@ namespace PortableEquipment.ViewModels
         }
 
         private void StartTest() => _eventAggregator.Publish(getMutualTranslator());
+        /// <summary>
+        /// 需要的百分比点
+        /// </summary>
+        /// <param name="pdatas"></param>
+        private void GetDefaultGroupdata(double[] pdatas)
+        {
+            VolataGroup.Clear();
+            for (int i = 0; i < pdatas.Length; i++)
+            {
+                VolataGroup.Add((i + 1) + "、" + GetSingalVolateGroup(pdatas[i]));
+            }
 
+
+        }
+        /// <summary>
+        /// 反向获取List中测量等级
+        /// </summary>
+        /// <returns></returns>
+        private double[] GetBackGroupdata()
+        {
+            try
+            {
+                if (VolataGroup != null)
+                {
+                    List<double> pencentdata = new List<double>();
+                    foreach (var item in VolataGroup)
+                    {
+                        pencentdata.Add(Convert.ToDouble(item.Split('、')[1].Split('%')[0].Replace("\t电压点在", "")));
+                    }
+                    double[] ret = pencentdata.ToArray();
+                    Array.Sort(ret);
+                    return ret;
+                }
+            }
+            catch
+            {
+                _logger.Writer("解析GetBackGroupdata失败");
+            }
+            return null;
+
+
+        }
+        private string GetSingalVolateGroup(double Percent)
+        {
+            return "\t电压点在" + Percent + "% 处 :" + (int)_lctestvolate * Percent / 100 + "V";
+        }
+        /// <summary>
+        /// 解析配置文件的电塔等级
+        /// </summary>
+        /// <returns></returns>
+        private double[] GetXmlVoltageRange()
+        {
+            List<double> retlist = new List<double>();
+            var c = _xmlconfig.GetAddNodeValue("VolatageRange");
+            var ret = c.Split(',');
+            try
+            {
+                foreach (var item in ret)
+                {
+                    retlist.Add(Convert.ToDouble(item));
+                }
+                double[] data = retlist.ToArray();
+                Array.Sort(data);
+                return data;
+            }
+            catch
+            {
+                _logger.Writer("解析配置文件 VolatageRange 错误，请检查配置文件");
+            }
+            return null;
+
+        }
         #endregion
     }
     public partial class ParameterSettingViewModel
@@ -155,11 +253,50 @@ namespace PortableEquipment.ViewModels
         public double TestTime { get; set; }
         public double VariableThan { get; set; }//变比
         public double Promotion { get; set; }//荣升系数
+
+        public System.Windows.Visibility OverVolateVisibility { get; set; } = System.Windows.Visibility.Visible;
         #endregion
 
         #region 励磁tex
-        public double LcTestVolate { get; set; }
+
+        private double _lctestvolate;
+        public double LcTestVolate
+        {
+            get { return _lctestvolate; }
+            set
+            {
+                _lctestvolate = value;
+                if (GetXmlVoltageRange() != null)
+                    GetDefaultGroupdata(GetXmlVoltageRange());
+            }
+        }
+
         public double LcOverCurrent { get; set; }
+
+        public System.Windows.Visibility VolataGroups { get; set; } = System.Windows.Visibility.Collapsed;
+
+        public BindableCollection<string> VolataGroup { get; set; } = new BindableCollection<string>();
+        private bool _volateRange;
+        public bool VolateRange
+        {
+            get { return _volateRange; }
+            set
+            {
+                _volateRange = value;
+                if (_volateRange)
+                {
+                    VolataGroups = System.Windows.Visibility.Visible;
+                    OverVolateVisibility = System.Windows.Visibility.Collapsed;
+                }
+                else
+                {
+                    VolataGroups = System.Windows.Visibility.Collapsed;
+                    OverVolateVisibility = System.Windows.Visibility.Visible;
+                }
+            }
+        }
+        public double Conetnt { get; set; }
+        public string Selectdata { get; set; }
         #endregion
 
         #region 空载

@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+                      xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:TransformerViewModel}"
         Title="TransformerView" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
@@ -44,7 +45,7 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1" Background="#2070ea"  ToolTip="保存结果" Margin="5,3" Style="{StaticResource ButtonF}">保存结果</Button>
-                    <Button Grid.Column="2"  Background="#df0404" Margin="5,3" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">测量中断</Button>
+                    <Button Grid.Column="2"  Background="#df0404" Margin="5,3" Click="{s:Action AddDatagrid}" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">测量中断</Button>
                 </Grid>
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
@@ -358,25 +359,26 @@
             </Grid>
 
             <Grid Grid.Column="1" Margin="0,5">
-                <DataGrid>
+                <DataGrid Margin="5,0" AlternationCount="2" GridLinesVisibility="All"  CanUserAddRows="False" BorderBrush="#00a3ff"  AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding DatagridTestData,UpdateSourceTrigger=PropertyChanged}">
+                   <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="#E8ECEF" />
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#FFF2F2F2" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Width="1*">
-                            <DataGridTextColumn.Header>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition></RowDefinition>
-                                        <RowDefinition Height="2*"></RowDefinition>
-                                        <RowDefinition></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <TextBox Grid.Row="1" Background="Transparent" BorderThickness="0" TextAlignment="Center" Foreground="White" Margin="5" Text="步骤"></TextBox>
-                                </Grid>
-                            </DataGridTextColumn.Header>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Header="电压(kV)" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Header="测量时间(min)" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Header="U" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Header="V" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Header="W" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="步骤"  Width="0.6*"></DataGridTextColumn>
+                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Binding="{Binding TestVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="电压(kV)" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding TestTime,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="测量时间(min)" Width="1.3*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding UVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="U" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding VVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="V" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W" Width="1*"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

@@ -5,16 +5,56 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PortableEquipment.Views"
              xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
-             mc:Ignorable="d" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance local1:TimeViewModel}"
              d:DesignHeight="400" d:DesignWidth="400" Background="AliceBlue"
              >
     <Grid>
-    
-        <StackPanel>
-            <TextBlock  Text="{Binding Hour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
-            <TextBlock  Text="{Binding Mins,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
-            <TextBlock  Text="{Binding Seconed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="55"></TextBlock>
-        </StackPanel>
+        <materialDesign:DialogHost DialogClosing="Sample1_DialogHost_OnDialogClosing" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16">
+                    <TextBlock>添加新等级</TextBlock>
+                    <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" Text="{Binding Conetnt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="FruitTextBox" />
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                        <Button  Style="{StaticResource MaterialDesignFlatButton}"  IsDefault="True"  Margin="0 8 8 0"  Command="materialDesign:DialogHost.CloseDialogCommand">
+                            <Button.CommandParameter >
+                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                    True
+                                </system:Boolean>
+                            </Button.CommandParameter>
+                            确定
+                        </Button>
+                        <Button   Style="{StaticResource MaterialDesignFlatButton}"   IsCancel="True"   Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                            <Button.CommandParameter>
+                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                    False
+                                </system:Boolean>
+                            </Button.CommandParameter>
+                            取消
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+            <Border  BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" MinWidth="256" MinHeight="256" ClipToBounds="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition   Height="*" />
+                        <RowDefinition  Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="FruitListBox" ItemsSource="{Binding VolataGroup,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                      
+                    </ListBox>
+                    <materialDesign:ColorZone Mode="PrimaryMid"   Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
+                        <TextBlock  Margin="8">励磁特性电压等级</TextBlock>
+                    </materialDesign:ColorZone>
+                    <Button   Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"  
+                              Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Bottom"
+                              HorizontalAlignment="Right" Grid.Row="0"  Margin="0 0 28 -20">
+                        <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+                    </Button>
+                </Grid>
+            </Border>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>

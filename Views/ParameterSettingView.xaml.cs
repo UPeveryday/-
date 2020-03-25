@@ -49,5 +49,10 @@ namespace PortableEquipment.Views
                WindowState.Normal : WindowState.Maximized;
             }
         }
+
+        private void Sample1_DialogHost_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+
+        }
     }
 }
