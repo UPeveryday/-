@@ -24,5 +24,10 @@ namespace PortableEquipment.Pages
         {
             InitializeComponent();
         }
+
+        private void Sample1_DialogHost_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+
+        }
     }
 }

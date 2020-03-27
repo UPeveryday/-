@@ -5,6 +5,41 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="jsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MutualTranslator">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TestId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="Humidity" Type="float" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="TestLocation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tester" Type="nvarchar" MaxLength="50" />
+          <Property Name="Parameters" Type="text" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="TestKind" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Transformer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TestId" Type="nvarchar" MaxLength="50" />
+          <Property Name="RatedVoltage" Type="float" />
+          <Property Name="RatedCapacity" Type="nvarchar" MaxLength="50" />
+          <Property Name="WindingGroup" Type="nvarchar" MaxLength="50" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Humidity" Type="float" />
+          <Property Name="TestLocation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tester" Type="nvarchar" MaxLength="50" />
+          <Property Name="Frequency" Type="float" />
+          <Property Name="Volate" Type="float" />
+          <Property Name="currentnum" Type="float" />
+          <Property Name="DatagridData" Type="text" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="TestKind" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="usertable">
           <Key>
             <PropertyRef Name="id" />
@@ -18,6 +53,8 @@
           <Property Name="other" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityContainer Name="jsModelStoreContainer">
+          <EntitySet Name="MutualTranslator" EntityType="Self.MutualTranslator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transformer" EntityType="Self.Transformer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usertable" EntityType="Self.usertable" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -38,7 +75,44 @@
         </EntityType>
         <EntityContainer Name="jsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="usertables" EntityType="Self.usertable" />
+          <EntitySet Name="Transformers" EntityType="jsModel.Transformer" />
+          <EntitySet Name="MutualTranslators" EntityType="jsModel.MutualTranslator" />
         </EntityContainer>
+        <EntityType Name="Transformer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TestId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RatedVoltage" Type="Double" />
+          <Property Name="RatedCapacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WindingGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Humidity" Type="Double" />
+          <Property Name="TestLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tester" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Frequency" Type="Double" />
+          <Property Name="Volate" Type="Double" />
+          <Property Name="currentnum" Type="Double" />
+          <Property Name="DatagridData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="TestKind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MutualTranslator">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TestId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Humidity" Type="Double" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="TestLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tester" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Parameters" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="TestKind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -55,6 +129,43 @@
                 <ScalarProperty Name="phonenum" ColumnName="phonenum" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="other" ColumnName="other" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transformers">
+            <EntityTypeMapping TypeName="jsModel.Transformer">
+              <MappingFragment StoreEntitySet="Transformer">
+                <ScalarProperty Name="TestKind" ColumnName="TestKind" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="DatagridData" ColumnName="DatagridData" />
+                <ScalarProperty Name="currentnum" ColumnName="currentnum" />
+                <ScalarProperty Name="Volate" ColumnName="Volate" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="Tester" ColumnName="Tester" />
+                <ScalarProperty Name="TestLocation" ColumnName="TestLocation" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="WindingGroup" ColumnName="WindingGroup" />
+                <ScalarProperty Name="RatedCapacity" ColumnName="RatedCapacity" />
+                <ScalarProperty Name="RatedVoltage" ColumnName="RatedVoltage" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MutualTranslators">
+            <EntityTypeMapping TypeName="jsModel.MutualTranslator">
+              <MappingFragment StoreEntitySet="MutualTranslator">
+                <ScalarProperty Name="TestKind" ColumnName="TestKind" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Parameters" ColumnName="Parameters" />
+                <ScalarProperty Name="Tester" ColumnName="Tester" />
+                <ScalarProperty Name="TestLocation" ColumnName="TestLocation" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="TestLevel" ColumnName="TestLevel" />
+                <ScalarProperty Name="TestId" ColumnName="TestId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -16,14 +16,15 @@ namespace PortableEquipment.TestParameters
         public double RatedVoltage;
         public string RatedCapacity;
         public string WindingGroup;
-        public string Temperature;
-        public string Humidity;
+        public double Temperature;
+        public double Humidity;
         public string TestLocation;
         public string Tester;
         public double Frequency;
         public double Volate;
         public double Current;
         public BindableCollection<ViewModels.TransformerDataStep> DatagridData;
+        public DateTime DateTime;
     }
     /// <summary>
     /// 互感器实验
@@ -32,13 +33,14 @@ namespace PortableEquipment.TestParameters
     {
         public string TestId;
         public string TestLevel;
-        public string Humidity;
-        public string Temperature;
+        public double Humidity;
+        public double Temperature;
         public string TestLocation;
         public string Tester;
         public InducedOvervoltage InducedOvervoltageR;
         public ExcitationCharacteristic ExcitationCharacteristicR;
         public NoLoadCurrent NoLoadCurrentR;
+        public DateTime DateTime;
     }
     /// <summary>
     /// 手动调压
@@ -51,6 +53,8 @@ namespace PortableEquipment.TestParameters
         public double OverCurrent;
         public double VariableThan;//变比
         public double Promotion;//荣升系数
+        public DateTime DateTime;
+
     }
 
     public enum VolateKind

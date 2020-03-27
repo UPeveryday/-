@@ -3,6 +3,7 @@ using Stylet.Logging;
 using StyletIoC;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
 {
-    public class MainViewModel : Screen, IHandle<string>,IHandle<Stata>
+    public class MainViewModel : Screen, IHandle<string>, IHandle<Stata>
     {
         private IEventAggregator _eventAggregator;
         private IWindowManager _windowManger;
@@ -26,6 +27,8 @@ namespace PortableEquipment.ViewModels
 
         [Inject]
         public Servers.CommunicationProtocol.ICommunicationProtocol _CommunicationProtocol;
+
+
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
@@ -45,7 +48,6 @@ namespace PortableEquipment.ViewModels
             _WithstandVoltageViewModel = withstandVoltageViewModel;
             _logger = logger;
             _timeViewModel = timeViewModel;
-
         }
         public string FName { get; set; } = "ly";
 
@@ -91,7 +93,7 @@ namespace PortableEquipment.ViewModels
 
         public void Handle(Stata message)
         {
-            if(message==Stata.Redo)
+            if (message == Stata.Redo)
             {
 
             }

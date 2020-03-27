@@ -26,7 +26,8 @@ namespace PortableEquipment.StyletIocModules
             Bind<Servers.CommunicationProtocol.ICommunicationProtocol>().To<Servers.CommunicationProtocol.CommunicationProtocol>();
             Bind<Servers.CommunicationProtocol.IParsingdata>().To<Servers.CommunicationProtocol.Parsingdata>();
             Bind<Servers.Xmldata.IXmlconfig>().To<Servers.Xmldata.Xmlconfig>();
-           // Bind<Comport.ISerialCommunication>().To<Comport.Serial>();
+            Bind<Servers.Json.IJsondeel>().To<Servers.Json.JsondeelServers>();
+            // Bind<Comport.ISerialCommunication>().To<Comport.Serial>();
         }
     }
 }

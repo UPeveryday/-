@@ -19,6 +19,10 @@ namespace PortableEquipment.ViewModels
         public StyletLogger.ILogger _logger;
         [Inject]
         public Servers.Xmldata.IXmlconfig _xmlconfig;
+        [Inject]
+        public Servers.Json.IJsondeel _jsondeel;
+        [Inject]
+        public Servers.IEntityServer entityServer;
         public ParameterSettingViewModel(IWindowManager windowManager, VoltageTestViewModel voltageTestViewModel, IEventAggregator eventAggregator)
         {
             _windowManger = windowManager;
@@ -26,9 +30,11 @@ namespace PortableEquipment.ViewModels
             _eventAggregator = eventAggregator;
             //_eventAggregator.Subscribe(this);s
         }
-        public void ShowVoltageTestViewModel()
+        public async void ShowVoltageTestViewModel()
         {
-            StartTest(); _windowManger.ShowDialog(_VoltageTestViewModel);
+            await Task.Run(SaveMutualTranslatorTransformerDataBase);
+            StartTest();
+            _windowManger.ShowDialog(_VoltageTestViewModel);
         }
         #endregion
         #region 页面使能
@@ -118,10 +124,11 @@ namespace PortableEquipment.ViewModels
             {
                 TestId = TestId == null ? "--未指定--" : TestId,
                 TestLevel = TestLevel == null ? "--未指定--" : TestLevel,
-                Humidity = Humidity == null ? "--未指定--" : Humidity,
-                Temperature = Temperature == null ? "--未指定--" : Temperature,
+                Humidity = Humidity,
+                Temperature = Temperature,
                 TestLocation = TestLocation == null ? "--未指定--" : TestLocation,
                 Tester = Tester == null ? "--未指定--" : Tester,
+                DateTime = DateTime.Now,
                 InducedOvervoltageR = new InducedOvervoltage
                 {
                     Enable = KeepVolateCheck,
@@ -229,6 +236,33 @@ namespace PortableEquipment.ViewModels
             return null;
 
         }
+
+        public void SaveMutualTranslatorTransformerDataBase()
+        {
+            try
+            {
+                var testmessage = getMutualTranslator();
+                Model.MutualTranslator trs = new Model.MutualTranslator
+                {
+                    TestLevel = testmessage.TestLevel,
+                    TestId = testmessage.TestId,
+                    Humidity = testmessage.Humidity,
+                    Temperature = testmessage.Temperature,
+                    TestLocation = testmessage.TestLocation,
+                    Tester = testmessage.Tester,
+                    TestKind = "互感器试验",
+                    DateTime= testmessage.DateTime,
+                    Parameters = _jsondeel.GetJsonByclass(testmessage)
+                };
+                entityServer.EfModel.MutualTranslators.Add(trs);
+                entityServer.EfModel.SaveChanges();
+            }
+            catch
+            {
+                _logger.Writer("ParameterSettingViewModel,保存任务单EF错误");
+            }
+        }
+
         #endregion
     }
     public partial class ParameterSettingViewModel
@@ -236,8 +270,8 @@ namespace PortableEquipment.ViewModels
         #region 基本信息
         public string TestId { get; set; }
         public string TestLevel { get; set; }
-        public string Humidity { get; set; }
-        public string Temperature { get; set; }
+        public double Humidity { get; set; }
+        public double Temperature { get; set; }
         public string TestLocation { get; set; }
         public string Tester { get; set; }
         #endregion
@@ -266,7 +300,9 @@ namespace PortableEquipment.ViewModels
         #endregion
 
         #region 励磁tex
-
+        /// <summary>
+        /// 获取电压等级并设定
+        /// </summary>
         private double _lctestvolate;
         public double LcTestVolate
         {

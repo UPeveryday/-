@@ -46,9 +46,9 @@ namespace PortableEquipment.ViewModels
         public string TestId { get; set; }
         public double RatedVoltage { get; set; }
         public string WindingGroup { get; set; }
-        public string Temperature { get; set; }
+        public double Temperature { get; set; }
         public string RatedCapacity { get; set; }
-        public string Humidity { get; set; }
+        public double Humidity { get; set; }
         public BindableCollection<TransformerDataStep> DatagridData;
         public BindableCollection<TransformerTestData> DatagridTestData { get; set; } = new BindableCollection<TransformerTestData>();
     }

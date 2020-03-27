@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Height="450" Width="800"
         xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance local:ShellViewModel}" 
         Title="简易图书管理系统" Background="Turquoise">
     <!--<TabControl    Style="{StaticResource StyletConductorItemsControl}">
     </TabControl>-->
-    <ContentControl s:View.Model="{Binding ActiveItem}"> </ContentControl>
+    <!--<ContentControl s:View.Model="{Binding ActiveItem}"> </ContentControl>-->
     
     <!--<Grid >
         <Grid.RowDefinitions>
@@ -42,4 +43,51 @@
             </ContentControl>
         </StackPanel>
     </Grid>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <materialDesign:DialogHost  IsOpen="{Binding OpenOrclose}">
+            <materialDesign:DialogHost.DialogContent >
+                <Grid  Height="250" Width="400">
+                        <Border Margin="3" Background="#FFFFFF" CornerRadius="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="55"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="55"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock HorizontalAlignment="Left" Margin="20 0 0 0" FontSize="25" FontWeight="Black" VerticalAlignment="Center">警告</TextBlock>
+                            <TextBlock Grid.Row="1" Text="{Binding Messages}" Margin="20 0 0 0" FontSize="18"  Foreground="#666666" >警告警告警告警告警告警告</TextBlock>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button  Background="#FEC503" 
+                                         Foreground="White" Style="{StaticResource MaterialDesignRaisedLightButton}" Height="35" Width="100"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="5" ToolTip="确定且关闭">
+                                    <TextBlock Text="确定" />
+                                </Button>
+                                <Button  Background="#666666"
+                                         Foreground="White"  Grid.Column="1" Style="{StaticResource MaterialDesignRaisedLightButton}"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Height="35" Width="100" HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center" materialDesign:ButtonAssist.CornerRadius="5" ToolTip="取消且关闭">
+                                    <TextBlock Text="取消" />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+            <Button  Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"  
+                              Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Bottom"
+                              HorizontalAlignment="Right" Grid.Row="0"  Margin="10">
+                <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+            </Button>
+        </materialDesign:DialogHost>
+        <Button Grid.Row="1" Command="{s:Action Click}"></Button>
+
+    </Grid>
+
 </Window>

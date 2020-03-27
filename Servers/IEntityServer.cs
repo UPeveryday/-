@@ -10,5 +10,6 @@ namespace PortableEquipment.Servers
     public interface IEntityServer
     {
         jsEntities entitiesmodel { get; set; }
+        jsEntities EfModel { get; set; }
     }
 }

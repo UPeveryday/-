@@ -26,5 +26,7 @@ namespace Model
         }
     
         public virtual DbSet<usertable> usertables { get; set; }
+        public virtual DbSet<Transformer> Transformers { get; set; }
+        public virtual DbSet<MutualTranslator> MutualTranslators { get; set; }
     }
 }

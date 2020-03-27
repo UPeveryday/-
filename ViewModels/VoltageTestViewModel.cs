@@ -37,7 +37,7 @@ namespace PortableEquipment.ViewModels
             LcDatagrid.Clear();
             for (int i = 0; i < ec.VolateRange.Length; i++)
             {
-                LcDatagrid.Add(new LcdatagridColletion { TestNum = i + 1, TestVoltage = (ec.TestVolate * ec.VolateRange[i] / 100), TestCurrent = ec.OverCurrent });
+                LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestVoltage = (ec.TestVolate * ec.VolateRange[i] / 100).ToString(), TestCurrent = ec.OverCurrent.ToString() });
             }
         }
 
@@ -64,8 +64,8 @@ namespace PortableEquipment.ViewModels
 
         public string TestId { get; set; } 
         public string TestLevel { get; set; }
-        public string Humidity { get; set; }
-        public string Temperature { get; set; }
+        public double Humidity { get; set; }
+        public double Temperature { get; set; }
 
         public double KzTestVolate { get; set; }
         public double KzOverCurrent { get; set; }
@@ -78,8 +78,8 @@ namespace PortableEquipment.ViewModels
     }
     public class LcdatagridColletion
     {
-        public int TestNum { get; set; }
-        public double TestVoltage { get; set; }
-        public double TestCurrent { get; set; }
+        public string TestNum { get; set; }
+        public string TestVoltage { get; set; }
+        public string TestCurrent { get; set; }
     }
 }
