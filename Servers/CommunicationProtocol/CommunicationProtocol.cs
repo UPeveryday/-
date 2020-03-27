@@ -54,5 +54,74 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return new StataThree { };
         }
+        /// <summary>
+        /// 设置参数
+        /// </summary>
+        /// <param name="testKind">选择实验类型</param>
+        /// <param name="ClickNum">按键次数</param>
+        /// <returns></returns>
+        public bool SetTestPra(TestKind testKind, byte ClickNum)
+        {
+            try
+            {
+                var rec = new byte[2];
+                byte TestKindByte = 0x00;
+                byte Mark = 0x00;
+                if (testKind == TestKind.ControlsVolateUP)
+                {
+                    TestKindByte = 0x01;
+                    Mark = 0x01;
+                }
+                if (testKind == TestKind.ControlsVolateDown)
+                {
+                    TestKindByte = 0x01;
+                    Mark = 0x02;
+                }
+                if (testKind == TestKind.ControlsFreUp)
+                {
+                    TestKindByte = 0x02;
+                    Mark = 0x01;
+                }
+                if (testKind == TestKind.ControlsFreDown)
+                {
+                    TestKindByte = 0x02;
+                    Mark = 0x02;
+                }
+                if (testKind == TestKind.Setting)
+                {
+                    TestKindByte = 0x03;
+                    Mark = 0x05;
+                }
+                if (testKind == TestKind.Start)
+                {
+                    TestKindByte = 0x04;
+                    Mark = 0x06;
+                }
+                if (testKind == TestKind.Stop)
+                {
+                    TestKindByte = 0x05;
+                    Mark = 0x07;
+                }
+                byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
+                Comport.Serial.serialport.SendCommand(sendc, ref rec, 1000);
+                return rec == new byte[2] { 0xAA, Mark };
+            }
+            catch 
+            {
+                _logger.Writer("Class: CommunicationProtocol.SetTestPra出错");
+                return false;
+            }
+
+        }
+    }
+    public enum TestKind
+    {
+        ControlsVolateUP = 0,
+        ControlsVolateDown = 1,
+        ControlsFreUp = 2,
+        ControlsFreDown = 3,
+        Setting = 4,
+        Start = 5,
+        Stop = 6
     }
 }

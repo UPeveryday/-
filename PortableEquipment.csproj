@@ -154,6 +154,8 @@
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Home\HomeViewModel.cs" />
+    <Compile Include="Servers\CHangeVolate\ISetVolate.cs" />
+    <Compile Include="Servers\CHangeVolate\SetVolate.cs" />
     <Compile Include="Servers\CommunicationProtocol\CommunicationProtocol.cs" />
     <Compile Include="Servers\CommunicationProtocol\ICommunicationProtocol.cs" />
     <Compile Include="Servers\CommunicationProtocol\IParsingdata.cs" />

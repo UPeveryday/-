@@ -146,6 +146,8 @@ namespace PortableEquipment.ViewModels
         #region
         public BindableCollection<TestDataKind> TestMessage { get; set; }
         public BindableCollection<LcdatagridColletion> LcDatagrid { get; set; } = new BindableCollection<LcdatagridColletion>();
+        public BindableCollection<TransformerTestData> DatagridTestData { get; set; } = new BindableCollection<TransformerTestData>();
+        public System.Windows.Visibility TransformerVisibility { get; set; } = System.Windows.Visibility.Hidden;
         private TestDataKind testDataKind;
         public TestDataKind Selectdata
         {
@@ -160,6 +162,7 @@ namespace PortableEquipment.ViewModels
                 {
                     if (Selectdata != null && Selectdata.TestKind == "互感器试验")
                     {
+                        TransformerVisibility= System.Windows.Visibility.Hidden;
                         var c = _entityServer.EfModel.MutualTranslators.Where(p => p.id == Selectdata.DataBaseId);//查找Id对应任务单
                         var mc = _jsondeel.GetClassFromStr<MutualTranslator>(c.ToArray()[0].Parameters);//序列化回类
                         KzVolate = mc.NoLoadCurrentR.TestVolate + " V";
@@ -171,6 +174,7 @@ namespace PortableEquipment.ViewModels
                     }
                     if (Selectdata != null && Selectdata.TestKind == "配电变压器试验")
                     {
+                        TransformerVisibility = System.Windows.Visibility.Visible;
                         var c = _entityServer.EfModel.Transformers.Where(p => p.id == Selectdata.DataBaseId);//查找Id对应任务单
                         var mc = _jsondeel.GetClassFromStr<BindableCollection<TransformerDataStep>>(c.ToArray()[0].DatagridData);//序列化回类
                         GetUpVolate(mc);
