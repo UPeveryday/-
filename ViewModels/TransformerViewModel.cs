@@ -30,7 +30,7 @@ namespace PortableEquipment.ViewModels
         public IEventAggregator _eventAggregator;
         public TransformerViewModel(IEventAggregator eventAggregator)
         {
-            _eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator; 
             _eventAggregator.Subscribe(this, "Translator");
         }
         /// <summary>
