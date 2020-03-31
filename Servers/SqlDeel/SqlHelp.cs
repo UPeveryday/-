@@ -48,5 +48,34 @@ namespace PortableEquipment.Servers.SqlDeel
             }
             return false;
         }
+
+
+        public bool SaveMutualTranslatorTransformerDataBase(MutualTranslator testmessage)
+        {
+            try
+            {
+                Model.MutualTranslator trs = new Model.MutualTranslator
+                {
+                    TestLevel = testmessage.TestLevel,
+                    TestId = testmessage.TestId,
+                    Humidity = testmessage.Humidity,
+                    Temperature = testmessage.Temperature,
+                    TestLocation = testmessage.TestLocation,
+                    Tester = testmessage.Tester,
+                    TestKind = "互感器试验",
+                    DateTime = testmessage.DateTime,
+                    Parameters = _jsondeel.GetJsonByclass(testmessage)
+                };
+                entityServer.EfModel.MutualTranslators.Add(trs);
+                entityServer.EfModel.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                _logger.Writer("ParameterSettingViewModel,保存任务单EF错误");
+            }
+            return false;
+        }
+
     }
 }

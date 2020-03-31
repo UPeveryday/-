@@ -45,15 +45,5 @@ namespace PortableEquipment
             Stylet.Logging.LogManager.LoggerFactory = name => new StyletLogger.MyLogger();
             Stylet.Logging.LogManager.Enabled = true;
         }
-        public static T GetObj<T>(T model)
-        {
-            T result = default(T);
-            if (model is T)
-            {
-                result = (T)(object)model; //或 (T)((object)model);
-            }
-            return result;
-        }
-
     }
 }

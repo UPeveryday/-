@@ -10,7 +10,7 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:TransformerViewModel}"
-        Title="TransformerView" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
+        Title="TransformerView" Height="800" Width="1280"  UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,7 +22,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
@@ -39,7 +39,7 @@
                         <DockPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button  VerticalAlignment="Bottom" Visibility="{Binding CancerVisibility}" Click="{s:Action Canclick}" Height="30" Width="70" HorizontalAlignment="Left" Margin="0 3 20 3" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">取消</Button>
                             <Button  VerticalAlignment="Center" Height="30" Width="70"  Click="{s:Action Okclick}" HorizontalAlignment="Right" Margin="20 3 0 3" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">确定</Button>
-                        </DockPanel> 
+                        </DockPanel>
                     </Grid>
                 </materialDesign:DialogHost.DialogContent>
             </materialDesign:DialogHost>
@@ -66,13 +66,24 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition ></ColumnDefinition>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
 
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1" Background="#2070ea"  ToolTip="保存结果" Click="{s:Action SaveManagMent}" Margin="5,3"  Style="{StaticResource ButtonF}">保存结果</Button>
-                    <Button Grid.Column="2"  Background="#df0404" Margin="5,3" Click="{s:Action CancelTest}" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">测量中断</Button>
-                    <Button Grid.Column="3"  Background="Green" Margin="5,3" Click="{s:Action StartAuto}" ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
-                    <TextBlock Grid.Column="4" Foreground="{Binding statacolor,UpdateSourceTrigger=PropertyChanged}" FontSize="25"  Text="&#xe71c;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" ></TextBlock>
+
+                    <Button Grid.Column="1" FontSize="20" Height="40" Width="160"  Background="#2070ea"  ToolTip="保存结果" Click="{s:Action SaveManagMent}" Margin="5,0"  Style="{StaticResource ButtonF}">保存结果</Button>
+                    <Button Grid.Column="2" Name="DanegerButton"  Click="{s:Action CancelTest}"  FontSize="20"   Height="40" Width="160" Background="#df0404" Margin="5,0"  ToolTip="立即中断测量" Style="{StaticResource ButtonF}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="5*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" HorizontalAlignment="Left" Stretch="Uniform" Source="/PortableEquipment;component/Resources/危险.png" ></Image>
+                            <TextBlock Grid.Column="1" Foreground="Transparent">中断</TextBlock>
+                            <TextBlock Grid.Column="2" FontSize="18" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">立即中断</TextBlock>
+                        </Grid>
+                    </Button>
+                    <Button Grid.Column="3"  FontSize="20"  Height="40" Width="160"  Background="Green" Margin="5,0" Click="{s:Action StartAuto}" ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
+                    <TextBlock Grid.Column="0" ToolTip="试验状态" Foreground="{Binding statacolor,UpdateSourceTrigger=PropertyChanged}" FontSize="28"  Text="&#xe71c;" Margin="10 0" HorizontalAlignment="Right"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" ></TextBlock>
 
                 </Grid>
                 <Grid Grid.Column="3">
@@ -80,7 +91,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" Margin="8,4" ToolTip="退出"  MouseDown="Grid_MouseDown">
+                    <Grid Grid.Column="1" Height="40" Width="48" ToolTip="退出"  MouseDown="Grid_MouseDown">
                         <Grid.Background >
                             <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                         </Grid.Background>
@@ -90,7 +101,7 @@
         </Grid>
         <Grid Grid.Row="1" Background="#f4f4f4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"></ColumnDefinition>
+                <ColumnDefinition Width="500"></ColumnDefinition>
                 <ColumnDefinition Width="1.4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
@@ -286,7 +297,7 @@
                         <RowDefinition Height="3*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1">
-                        <TextBlock HorizontalAlignment="Left" FontWeight="Bold" VerticalAlignment="Center" Foreground="#545f79">试品信息</TextBlock>
+                        <TextBlock HorizontalAlignment="Left" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="#545f79">试品信息</TextBlock>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
@@ -311,7 +322,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="0" Grid.Column="1">
-                            <TextBox Margin="5,5" BorderThickness="0"  Text="{Binding TestId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Grid.Row="0" Grid.Column="1" FontSize="18" Margin="5,5" BorderThickness="0"  Text="{Binding TestId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="0" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -324,7 +335,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="0" Grid.Column="3">
-                            <TextBox Margin="5,5" BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,5" FontSize="18"  BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="0">
@@ -338,7 +349,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="1">
-                            <TextBox Margin="5,5" BorderThickness="0"  Text="{Binding RatedCapacity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right"></TextBox>
+                            <TextBox Margin="5,5" FontSize="18"  BorderThickness="0"  Text="{Binding RatedCapacity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right"></TextBox>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -351,7 +362,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="3">
-                            <TextBox Margin="5,5" BorderThickness="0"  Text="{Binding WindingGroup,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,5" FontSize="18"  BorderThickness="0"  Text="{Binding WindingGroup,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="2" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -368,7 +379,7 @@
                                 <ColumnDefinition Width="21*"/>
                                 <ColumnDefinition Width="29*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Margin="5,4" BorderThickness="0" Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" Grid.ColumnSpan="2" ></TextBox>
+                            <TextBox Margin="5,4" FontSize="18"  BorderThickness="0" Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" Grid.ColumnSpan="2" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="2" Grid.Column="2">
                             <Grid.RowDefinitions>
@@ -381,7 +392,7 @@
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="2" Grid.Column="3">
-                            <TextBox Margin="5,5" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="5,5" FontSize="18"  BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -414,8 +425,8 @@
             </Grid>
         </Grid>
 
-        
-        
+
+
 
 
     </Grid>

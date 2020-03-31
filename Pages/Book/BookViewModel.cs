@@ -18,8 +18,8 @@ namespace PortableEquipment.Pages.Book
         }
         protected override void OnInitialActivate()
         {
-            base.OnInitialActivate();
-            _eventAggregator.Subscribe(this);
+            //base.OnInitialActivate();
+            //_eventAggregator.Subscribe(this);
         }
         public string text { get; set; } = "My text";
         public void Stop()

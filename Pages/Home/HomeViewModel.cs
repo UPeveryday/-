@@ -21,8 +21,8 @@ namespace PortableEquipment.Pages.Home
 
         protected override void OnInitialActivate()
         {
-            base.OnInitialActivate();
-            _eventAggregator.Subscribe(this);
+            //base.OnInitialActivate();
+            //_eventAggregator.Subscribe(this);
         }
 
         public string title { get; set; } = "图书管理系统  Hello World";

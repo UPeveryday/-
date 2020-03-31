@@ -44,8 +44,8 @@ namespace PortableEquipment.Pages
         }
         protected override void OnInitialActivate()
         {
-            base.OnInitialActivate();
-            _eventAggregator.Subscribe(this);
+            //base.OnInitialActivate();
+            //_eventAggregator.Subscribe(this);
         }
 
         public void Handle(string message)

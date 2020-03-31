@@ -10,5 +10,6 @@ namespace PortableEquipment.Servers.SqlDeel
     public interface ISqlHelp
     {
         bool SaveTransformerDataBase(Translator testmessage);
+        bool SaveMutualTranslatorTransformerDataBase(MutualTranslator testmessage);
     }
 }

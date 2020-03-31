@@ -87,8 +87,8 @@
                     <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器试验</TextBlock>
                 </Viewbox>
                 <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="1">
-                    <Button Background="#2070ea" Click="{s:Action ShowVoltageTestViewModel}" Style="{StaticResource ButtonF}">
-                        <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">开始试验</TextBlock>
+                    <Button Background="#2070ea" Command="{s:Action ShowVoltageTestViewModels}" Style="{StaticResource ButtonF}">
+                        <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">进入试验模块</TextBlock>
                     </Button>
                 </Viewbox>
             </Grid>

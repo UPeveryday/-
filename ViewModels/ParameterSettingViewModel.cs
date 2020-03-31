@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class ParameterSettingViewModel : Screen, IHandle<MutualTranslator>
+    public partial class ParameterSettingViewModel : Screen
     {
         #region 打开子窗体,提供方法
         private IWindowManager _windowManger;
@@ -28,61 +28,8 @@ namespace PortableEquipment.ViewModels
             _windowManger = windowManager;
             _VoltageTestViewModel = voltageTestViewModel;
             _eventAggregator = eventAggregator;
-            //_eventAggregator.Subscribe(this);s
         }
-        public async void ShowVoltageTestViewModel()
-        {
-            await Task.Run(SaveMutualTranslatorTransformerDataBase);
-            StartTest();
-            _windowManger.ShowDialog(_VoltageTestViewModel);
-        }
-        #endregion
-        #region 页面使能
-        public bool KeepVolateEnable
-        {
-            get
-            {
-                if (KeepVolateCheck)
-                    KeepVoltageOpacity = 1;
-                else
-                    KeepVoltageOpacity = 0.5;
-                return KeepVolateCheck;
-            }
-            set { }
-        } //感应耐压参数使能
-        public bool KeepVolateCheck { get; set; } = false;
-        public double KeepVoltageOpacity { get; set; } = 0.5;
-
-        public bool LiciEnable
-        {
-            get
-            {
-                if (LiciCheck)
-                    LiciOpacity = 1;
-                else
-                    LiciOpacity = 0.5;
-                return LiciCheck;
-            }
-            set { }
-        } //感应耐压参数使能
-        public bool LiciCheck { get; set; } = false;
-        public double LiciOpacity { get; set; } = 1;
-
-        public bool CurrentEnable
-        {
-            get
-            {
-                if (CurrentCheck)
-                    CurrentOpacity = 1;
-                else
-                    CurrentOpacity = 0.5;
-                return CurrentCheck;
-            }
-            set { }
-        } //感应耐压参数使能
-        public bool CurrentCheck { get; set; } = false;
-        public double CurrentOpacity { get; set; } = 0.5;
-
+      
         #endregion
     }
 
@@ -158,12 +105,13 @@ namespace PortableEquipment.ViewModels
                 }
             };
         }
-
-        public void Handle(MutualTranslator message)
+        private void SendPra() => _eventAggregator.Publish(getMutualTranslator());
+        public void ShowVoltageTestViewModels()
         {
+            SendPra();
+            _windowManger.ShowDialog(_VoltageTestViewModel);
         }
 
-        private void StartTest() => _eventAggregator.Publish(getMutualTranslator());
         /// <summary>
         /// 需要的百分比点
         /// </summary>
@@ -236,34 +184,56 @@ namespace PortableEquipment.ViewModels
             return null;
 
         }
+        #endregion
 
-        public void SaveMutualTranslatorTransformerDataBase()
+        #region 页面使能
+        public bool KeepVolateEnable
         {
-            try
+            get
             {
-                var testmessage = getMutualTranslator();
-                Model.MutualTranslator trs = new Model.MutualTranslator
-                {
-                    TestLevel = testmessage.TestLevel,
-                    TestId = testmessage.TestId,
-                    Humidity = testmessage.Humidity,
-                    Temperature = testmessage.Temperature,
-                    TestLocation = testmessage.TestLocation,
-                    Tester = testmessage.Tester,
-                    TestKind = "互感器试验",
-                    DateTime= testmessage.DateTime,
-                    Parameters = _jsondeel.GetJsonByclass(testmessage)
-                };
-                entityServer.EfModel.MutualTranslators.Add(trs);
-                entityServer.EfModel.SaveChanges();
+                if (KeepVolateCheck)
+                    KeepVoltageOpacity = 1;
+                else
+                    KeepVoltageOpacity = 0.5;
+                return KeepVolateCheck;
             }
-            catch
+            set { }
+        } //感应耐压参数使能
+        public bool KeepVolateCheck { get; set; } = false;
+        public double KeepVoltageOpacity { get; set; } = 0.5;
+
+        public bool LiciEnable
+        {
+            get
             {
-                _logger.Writer("ParameterSettingViewModel,保存任务单EF错误");
+                if (LiciCheck)
+                    LiciOpacity = 1;
+                else
+                    LiciOpacity = 0.5;
+                return LiciCheck;
             }
-        }
+            set { }
+        } //感应耐压参数使能
+        public bool LiciCheck { get; set; } = false;
+        public double LiciOpacity { get; set; } = 1;
+
+        public bool CurrentEnable
+        {
+            get
+            {
+                if (CurrentCheck)
+                    CurrentOpacity = 1;
+                else
+                    CurrentOpacity = 0.5;
+                return CurrentCheck;
+            }
+            set { }
+        } //感应耐压参数使能
+        public bool CurrentCheck { get; set; } = false;
+        public double CurrentOpacity { get; set; } = 0.5;
 
         #endregion
+
     }
     public partial class ParameterSettingViewModel
     {

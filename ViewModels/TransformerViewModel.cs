@@ -15,6 +15,7 @@ namespace PortableEquipment.ViewModels
 {
     public partial class TransformerViewModel : Screen, IHandle<Translator>
     {
+        #region 依赖注入
         [Inject]
         public ICommunicationProtocol _communicationProtocol;
         [Inject]
@@ -32,8 +33,10 @@ namespace PortableEquipment.ViewModels
         public TransformerViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this, "Translator");
+            _eventAggregator.Subscribe(this);
         }
+
+        #endregion
     }
 
     public partial class TransformerViewModel
@@ -179,7 +182,7 @@ namespace PortableEquipment.ViewModels
             {
                 _isrunning = value;
                 if (_isrunning)
-                    statacolor = Brushes.Blue;
+                    statacolor = Brushes.LightGreen;
                 else
                     statacolor = Brushes.Red;
             }
@@ -228,6 +231,7 @@ namespace PortableEquipment.ViewModels
                 tokenSource.Cancel();
                 await Task.Delay(100);
                 await Task.Run(() => { task.Wait(); });
+                IsRunning = false;
             }
             await Task.Delay(1000);
             tokenSource = new CancellationTokenSource();
@@ -246,7 +250,7 @@ namespace PortableEquipment.ViewModels
                 for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                 {
                     IsClicked = false;
-                    await SetDiaSata(true, "是否开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                    await SetDiaSata(true, "开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
                         System.Windows.Visibility.Visible, alarmText: "测量提示");
                     if (IsokOrCan)
                     {

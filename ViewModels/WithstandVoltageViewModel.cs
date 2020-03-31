@@ -14,12 +14,12 @@ namespace PortableEquipment.ViewModels
 {
     public partial class WithstandVoltageViewModel : Screen
     {
-        private IWindowManager _windowManger;
-        private TransformerViewModel _TransformerViewModel;
-        private IEventAggregator _eventAggregator;
+        public IWindowManager _windowManger;
+        public TransformerViewModel _TransformerViewModel;
+        public IEventAggregator _eventAggregator;
         [Inject]
         public Servers.IEntityServer entityServer;
-        private Model.jsEntities _jsEntities;
+        public Model.jsEntities _jsEntities;
         [Inject]//特性注入
         public Servers.Json.IJsondeel _jsondeel;
         [Inject]//特性注入
@@ -59,12 +59,7 @@ namespace PortableEquipment.ViewModels
                 DateTime = DateTime.Now
             };
         }
-
-        public void WindowLoad()
-        {
-
-        }
-        public void StartTest() => _eventAggregator.Publish(GetTranslatorTest(), "Translator");
+        public void StartTest() => _eventAggregator.Publish(GetTranslatorTest());
         #endregion
     }
     public partial class WithstandVoltageViewModel

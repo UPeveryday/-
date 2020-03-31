@@ -8,9 +8,10 @@
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+                      xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:VoltageTestViewModel}"
-        Title="VoltageTestView" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
+        Title="VoltageTestView" Height="800" Width="1280" UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
             <model:Convertsigal x:Key="cvt"></model:Convertsigal>
@@ -21,7 +22,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="9.2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid >
@@ -45,9 +46,11 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                  
-                    <Button Grid.Column="1" Background="#2070ea"  ToolTip="保存结果" Margin="5,3" Style="{StaticResource ButtonF}">
+                    <Button Grid.Column="3"  FontSize="20"   Margin="5,3"  Background="Green"  ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
+
+                    <Button Grid.Column="1" Background="#2070ea"  Click="{s:Action SaveTestResult}" ToolTip="保存结果" Margin="5,3" Style="{StaticResource ButtonF}">
                         <Viewbox>
                             <TextBlock Margin="5,3" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">结果保存</TextBlock>
                         </Viewbox>
@@ -61,7 +64,7 @@
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" HorizontalAlignment="Left" Stretch="Uniform" Source="/PortableEquipment;component/Resources/危险.png" ></Image>
                             <TextBlock Grid.Column="1" Foreground="Transparent">中断</TextBlock>
-                            <TextBlock Grid.Column="2" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">立即中断</TextBlock>
+                            <TextBlock Grid.Column="2" FontSize="18" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">立即中断</TextBlock>
                         </Grid>    
                     </Button>
                 </Grid>
@@ -286,13 +289,13 @@
                             <RowDefinition Height="2*"></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Viewbox Margin="5,2" Grid.Row="1" Grid.Column="0">
+                        <Viewbox Margin="5" Grid.Row="1" Grid.Column="0">
                             <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#545f79" Content="感应耐压" GroupName="One" Grid.Column="0"></RadioButton>
                         </Viewbox>
-                        <Viewbox Margin="5,2"  Grid.Row="1" Grid.Column="1">
+                        <Viewbox Margin="5"  Grid.Row="1" Grid.Column="1">
                             <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#545f79"  Content="励磁特性" GroupName="One"  Grid.Column="1"></RadioButton>
                         </Viewbox>
-                        <Viewbox Margin="5,2"  Grid.Row="1" Grid.Column="2">
+                        <Viewbox Margin="5"  Grid.Row="1" Grid.Column="2">
                             <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#545f79"  Content="空载电流" GroupName="One"  Grid.Column="2"></RadioButton>
 
                         </Viewbox>
@@ -328,10 +331,10 @@
                         <Viewbox Grid.Row="3" Margin="4" Grid.Column="2">
                             <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">环境湿度</TextBlock>
                         </Viewbox>
-                        <TextBox Grid.Row="1"  Text="{Binding TestId}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="5,1"></TextBox>
-                        <TextBox Grid.Row="1"  Text="{Binding TestLevel}" VerticalAlignment="Center" TextAlignment="Right"   Grid.Column="3" Margin="5,1"></TextBox>
-                        <TextBox Grid.Row="3"   Text="{Binding Humidity}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="5,1"></TextBox>
-                        <TextBox Grid.Row="3"   Text="{Binding Temperature}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="3" Margin="5,1"></TextBox>
+                        <TextBox Grid.Row="1" FontSize="18" Text="{Binding TestId}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="5,1"></TextBox>
+                        <TextBox Grid.Row="1"  FontSize="18"  Text="{Binding TestLevel}" VerticalAlignment="Center" TextAlignment="Right"   Grid.Column="3" Margin="5,1"></TextBox>
+                        <TextBox Grid.Row="3"  FontSize="18"   Text="{Binding Humidity}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="5,1"></TextBox>
+                        <TextBox Grid.Row="3"  FontSize="18"   Text="{Binding Temperature}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="3" Margin="5,1"></TextBox>
                     </Grid>
                 </Grid>
             </Grid>

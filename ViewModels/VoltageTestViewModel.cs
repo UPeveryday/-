@@ -1,5 +1,6 @@
 ﻿using PortableEquipment.TestParameters;
 using Stylet;
+using StyletIoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace PortableEquipment.ViewModels
 {
     public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>
     {
+        #region 
         public IEventAggregator _eventAggregator;
         private MutualTranslator _mutualTranslator;
+        [Inject]
+        Servers.SqlDeel.ISqlHelp _sqlHelp;
 
         public VoltageTestViewModel(IEventAggregator eventAggregator)
         {
@@ -24,6 +28,9 @@ namespace PortableEquipment.ViewModels
             LcGetTestVolateRange(_mutualTranslator.ExcitationCharacteristicR);
             GetBasePra(message);
         }
+        #endregion
+
+
     }
     public partial class VoltageTestViewModel
     {
@@ -37,7 +44,8 @@ namespace PortableEquipment.ViewModels
             LcDatagrid.Clear();
             for (int i = 0; i < ec.VolateRange.Length; i++)
             {
-                LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestVoltage = (ec.TestVolate * ec.VolateRange[i] / 100).ToString(), TestCurrent = ec.OverCurrent.ToString() });
+                LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(),
+                    TestVoltage = (ec.TestVolate * ec.VolateRange[i] / 100).ToString(), TestCurrent = ec.OverCurrent.ToString() });
             }
         }
 
@@ -54,6 +62,11 @@ namespace PortableEquipment.ViewModels
             KeepTestVoltage = mutualTranslator.InducedOvervoltageR.TestVoltage;
             KeepTestFre = mutualTranslator.InducedOvervoltageR.TestFre;
             KeepTestTime = mutualTranslator.InducedOvervoltageR.TestTime;
+        }
+
+        public void SaveTestResult()
+        {
+            _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
         }
         #endregion
     }
