@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Job.cs">
+      <DependentUpon>ModelProject.tt</DependentUpon>
+    </Compile>
     <Compile Include="ModelProject.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

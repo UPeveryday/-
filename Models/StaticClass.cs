@@ -23,6 +23,17 @@ namespace PortableEquipment.Models
             return sum == data[data.Length - 1];
         }
 
+        public static string GetPhame(int num)
+        {
+            if (num == 1)
+                return "U端";
+            if (num == 2)
+                return "V端";
+            if (num == 3)
+                return "W端";
+            return string.Empty;
+        }
+
 
     }
 }

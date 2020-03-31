@@ -121,12 +121,12 @@ namespace PortableEquipment.ViewModels
             }
         }
 
-        private void GetUpVolate(BindableCollection<ViewModels.TransformerDataStep> ec)
+        private void GetUpVolate(BindableCollection<ViewModels.TransformerDataStep> ec, BindableCollection<TransformerTestData> ret = null)
         {
             LcDatagrid.Clear();
             FirstName = "步骤";
             SecondName = "试验电压(V)";
-            ThirdName = "试验时间(Min)"; 
+            ThirdName = "试验时间(Min)";
             foreach (var item in ec)
             {
                 LcDatagrid.Add(new LcdatagridColletion
@@ -134,8 +134,15 @@ namespace PortableEquipment.ViewModels
                     TestNum = item.Stepname,
                     TestVoltage = item.TestVolate.ToString(),
                     TestCurrent = item.TestTime.ToString(),
-                    
+
                 });
+            }
+
+            if (ret != null)
+                DatagridTestData = ret;
+            else
+            {
+                DatagridTestData = null;
             }
         }
         #endregion
@@ -162,7 +169,7 @@ namespace PortableEquipment.ViewModels
                 {
                     if (Selectdata != null && Selectdata.TestKind == "互感器试验")
                     {
-                        TransformerVisibility= System.Windows.Visibility.Hidden;
+                        TransformerVisibility = System.Windows.Visibility.Hidden;
                         var c = _entityServer.EfModel.MutualTranslators.Where(p => p.id == Selectdata.DataBaseId);//查找Id对应任务单
                         var mc = _jsondeel.GetClassFromStr<MutualTranslator>(c.ToArray()[0].Parameters);//序列化回类
                         KzVolate = mc.NoLoadCurrentR.TestVolate + " V";
@@ -177,7 +184,13 @@ namespace PortableEquipment.ViewModels
                         TransformerVisibility = System.Windows.Visibility.Visible;
                         var c = _entityServer.EfModel.Transformers.Where(p => p.id == Selectdata.DataBaseId);//查找Id对应任务单
                         var mc = _jsondeel.GetClassFromStr<BindableCollection<TransformerDataStep>>(c.ToArray()[0].DatagridData);//序列化回类
-                        GetUpVolate(mc);
+                        var ret = _jsondeel.GetClassFromStr<BindableCollection<TransformerTestData>>(c.ToArray()[0].TestResult);//序列化回类
+                        TrsCaptance = c.ToArray()[0].RatedCapacity;
+                        TrsFre = (double)c.ToArray()[0].Frequency;
+                        TrsOverCurrent = (double)c.ToArray()[0].currentnum;
+                        TrsOverVolata = (double)c.ToArray()[0].Volate;
+                        TrsWindGroup = c.ToArray()[0].WindingGroup;
+                        GetUpVolate(mc, ret);
                     }
                 }
                 catch
@@ -190,13 +203,18 @@ namespace PortableEquipment.ViewModels
         public string FirstName { get; set; } = "序号";
         public string SecondName { get; set; } = "电压(V)";
         public string ThirdName { get; set; } = "电流(A)";
-
-
         public string KzVolate { get; set; }
         public string KzCurrent { get; set; }
         public string KeepVolate { get; set; }
         public string KeepFre { get; set; }
         public string KeepTime { get; set; }
+
+        public string TrsCaptance { get; set; }
+        public double TrsFre { get; set; }
+        public double TrsOverCurrent { get; set; }
+        public double TrsOverVolata { get; set; }
+        public string TrsWindGroup { get; set; }
+
 
         #endregion
 
@@ -206,7 +224,6 @@ namespace PortableEquipment.ViewModels
     {
         public bool IsCkecked { get; set; }
         public string Id { get; set; }
-
         public int DataBaseId { get; set; }
         public string TestKind { get; set; }
         public string VolateRange { get; set; }

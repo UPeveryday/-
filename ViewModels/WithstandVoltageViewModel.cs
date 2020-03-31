@@ -30,10 +30,9 @@ namespace PortableEquipment.ViewModels
             _TransformerViewModel = transformerViewModel;
             _eventAggregator = eventAggregator;
         }
-        public async void ShowtransformerViewModel()
+        public void ShowtransformerViewModel()
         {
             StartTest();
-            await Task.Run(SaveTransformerDataBase);
             _windowManger.ShowDialog(_TransformerViewModel);
         }
 
@@ -56,7 +55,7 @@ namespace PortableEquipment.ViewModels
                 Frequency = Frequency,
                 Volate = Volate,
                 Current = Current,
-                DatagridData = DatagridData,
+                DatagridData = DatagridData == null ? new BindableCollection<TransformerDataStep>() : DatagridData,
                 DateTime = DateTime.Now
             };
         }
@@ -65,41 +64,6 @@ namespace PortableEquipment.ViewModels
         {
 
         }
-        public void SaveTransformerDataBase()
-        {
-            try
-            {
-                var testmessage = GetTranslatorTest();
-                Model.Transformer trs = new Model.Transformer
-                {
-                    TestId = testmessage.TestId,
-                    RatedVoltage = testmessage.RatedVoltage,
-                    RatedCapacity = testmessage.RatedCapacity,
-                    WindingGroup = testmessage.WindingGroup,
-                    Temperature = testmessage.Temperature,
-                    Humidity = testmessage.Humidity,
-                    TestLocation = testmessage.TestLocation,
-                    Tester = testmessage.Tester,
-                    Frequency = testmessage.Frequency,
-                    Volate = testmessage.Volate,
-                    currentnum = testmessage.Current,
-                    DateTime = testmessage.DateTime,
-                    TestKind="配电变压器试验",
-                    DatagridData = _jsondeel.GetJsonByclass(testmessage.DatagridData)
-                };
-                entityServer.EfModel.Transformers.Add(trs);
-                entityServer.EfModel.SaveChanges();
-            }
-            catch
-            {
-                _logger.Writer("WithstandVoltageViewModel,保存任务单EF错误");
-            }
-        }
-
-        //var p = _jsondeel.GetJsonByclass(DatagridData);//获取str
-        //var q = _jsondeel.GetClassFromStr<BindableCollection<TransformerDataStep>>(p);//返回类型
-
-
         public void StartTest() => _eventAggregator.Publish(GetTranslatorTest(), "Translator");
         #endregion
     }

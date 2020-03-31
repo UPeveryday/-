@@ -1,4 +1,5 @@
-﻿using Stylet;
+﻿using PortableEquipment.ViewModels;
+using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace PortableEquipment.TestParameters
         public double Current;
         public BindableCollection<ViewModels.TransformerDataStep> DatagridData;
         public DateTime DateTime;
+        public BindableCollection<TransformerTestData> TestResultData;
     }
     /// <summary>
     /// 互感器实验

@@ -167,6 +167,8 @@
     <Compile Include="Servers\Json\JsondeelServers.cs" />
     <Compile Include="Servers\LoginRespontory.cs" />
     <Compile Include="Servers\LoginSingalRespontitory.cs" />
+    <Compile Include="Servers\SqlDeel\ISqlHelp.cs" />
+    <Compile Include="Servers\SqlDeel\SqlHelp.cs" />
     <Compile Include="Servers\test.cs" />
     <Compile Include="Servers\Xmldata\IXmlconfig.cs" />
     <Compile Include="Servers\Xmldata\Xmlconfig.cs" />

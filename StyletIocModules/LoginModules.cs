@@ -28,6 +28,7 @@ namespace PortableEquipment.StyletIocModules
             Bind<Servers.Xmldata.IXmlconfig>().To<Servers.Xmldata.Xmlconfig>();
             Bind<Servers.Json.IJsondeel>().To<Servers.Json.JsondeelServers>(); 
             Bind<Servers.CHangeVolate.ISetVolate>().To<Servers.CHangeVolate.SetVolate>(); 
+            Bind<Servers.SqlDeel.ISqlHelp>().To<Servers.SqlDeel.SqlHelp>();
             // Bind<Comport.ISerialCommunication>().To<Comport.Serial>();
         }
     }

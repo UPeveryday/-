@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
                       xmlns:s="https://github.com/canton7/Stylet"
-        mc:Ignorable="d"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                      mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:TransformerViewModel}"
         Title="TransformerView" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
@@ -17,11 +18,32 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <materialDesign:DialogHost   IsOpen="{Binding OpenOrclose}">
+                <materialDesign:DialogHost.DialogContent>
+                    <Grid  Height="200" Width="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition ></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Margin="10 10" Text="{Binding AlarmText}" ></TextBlock>
+                        <TextBlock Grid.Row="1" Foreground="Red" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="{Binding HideMessage}"></TextBlock>
+                        <DockPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button  VerticalAlignment="Bottom" Visibility="{Binding CancerVisibility}" Click="{s:Action Canclick}" Height="30" Width="70" HorizontalAlignment="Left" Margin="0 3 20 3" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">取消</Button>
+                            <Button  VerticalAlignment="Center" Height="30" Width="70"  Click="{s:Action Okclick}" HorizontalAlignment="Right" Margin="20 3 0 3" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">确定</Button>
+                        </DockPanel> 
+                    </Grid>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+        </Grid>
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition ></RowDefinition>
@@ -43,9 +65,15 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1" Background="#2070ea"  ToolTip="保存结果" Margin="5,3" Style="{StaticResource ButtonF}">保存结果</Button>
-                    <Button Grid.Column="2"  Background="#df0404" Margin="5,3" Click="{s:Action AddDatagrid}" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">测量中断</Button>
+                    <Button Grid.Column="1" Background="#2070ea"  ToolTip="保存结果" Click="{s:Action SaveManagMent}" Margin="5,3"  Style="{StaticResource ButtonF}">保存结果</Button>
+                    <Button Grid.Column="2"  Background="#df0404" Margin="5,3" Click="{s:Action CancelTest}" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">测量中断</Button>
+                    <Button Grid.Column="3"  Background="Green" Margin="5,3" Click="{s:Action StartAuto}" ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
+                    <TextBlock Grid.Column="4" Foreground="{Binding statacolor,UpdateSourceTrigger=PropertyChanged}" FontSize="25"  Text="&#xe71c;" HorizontalAlignment="Center"  VerticalAlignment="Center" FontFamily="/PortableEquipment;component/Resources/#iconfont" ></TextBlock>
+
                 </Grid>
                 <Grid Grid.Column="3">
                     <Grid.ColumnDefinitions>
@@ -65,6 +93,7 @@
                 <ColumnDefinition Width="350"></ColumnDefinition>
                 <ColumnDefinition Width="1.4*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+
             <Grid Grid.Column="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -361,17 +390,17 @@
             <Grid Grid.Column="1" Margin="0,5">
                 <DataGrid Margin="5,0" AlternationCount="2" GridLinesVisibility="All"  CanUserAddRows="False" BorderBrush="#00a3ff"  AutoGenerateColumns="False" IsReadOnly="True"
                           ItemsSource="{Binding DatagridTestData,UpdateSourceTrigger=PropertyChanged}">
-                   <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Style.Triggers>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="#E8ECEF" />
-                            </Trigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="#FFF2F2F2" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Style.Triggers>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                    <Setter Property="Background" Value="#E8ECEF" />
+                                </Trigger>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="#FFF2F2F2" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="步骤"  Width="0.6*"></DataGridTextColumn>
@@ -384,6 +413,10 @@
                 </DataGrid>
             </Grid>
         </Grid>
+
+        
+        
+
 
     </Grid>
 </Controls:MetroWindow>

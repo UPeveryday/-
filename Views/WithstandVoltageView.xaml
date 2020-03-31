@@ -41,8 +41,6 @@
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -110,7 +108,7 @@
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,10,0,0" >
                     <Button Foreground="White" Click="{s:Action ShowtransformerViewModel}" Style="{StaticResource OrdenaryButton}" BorderThickness="0" Background="#2070ea">
-                        <TextBlock Margin="5,3" Style="{StaticResource TextBlockPriview}" >开始试验</TextBlock>
+                        <TextBlock Margin="5,3" Style="{StaticResource TextBlockPriview}" >进入试验模块</TextBlock>
                     </Button>
                 </Viewbox>
             </Grid>

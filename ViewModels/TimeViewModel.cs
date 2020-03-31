@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace PortableEquipment.ViewModels
@@ -22,7 +23,7 @@ namespace PortableEquipment.ViewModels
         }
         public void ConfireClick()
         {
-
+            
             this.RequestClose();
         }
         public void CancerClick()
@@ -32,6 +33,7 @@ namespace PortableEquipment.ViewModels
             this.RequestClose();
         }
 
+        
         public void Handle(HideMessage message)
         {
             HeaderText = message.HeaderText;
@@ -41,12 +43,24 @@ namespace PortableEquipment.ViewModels
             Cancertext = message.Cancertext;
         }
 
+        public void Setup(string messageBoxText, string caption = null,
+            MessageBoxButton buttons = MessageBoxButton.OK, 
+            MessageBoxImage icon = MessageBoxImage.None, 
+            MessageBoxResult defaultResult = MessageBoxResult.None, 
+            MessageBoxResult cancelResult = MessageBoxResult.None, 
+            IDictionary<MessageBoxResult, string> buttonLabels = null,
+            FlowDirection? flowDirection = null, 
+            TextAlignment? textAlignment = null)
+        {
+
+        }
+        public MessageBoxResult ClickedButton => throw new NotImplementedException();
+
         public string HeaderText { get; set; } = "警告";
         public string Cancertext { get; set; } = "取消";
         public string Messages { get; set; }
         public System.Windows.Visibility ConfireVisibility { get; set; }
         public System.Windows.Visibility CancerVisibility { get; set; }
-
 
     }
 

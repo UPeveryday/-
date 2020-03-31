@@ -29,5 +29,6 @@ namespace Model
         public string DatagridData { get; set; }
         public Nullable<System.DateTime> DateTime { get; set; }
         public string TestKind { get; set; }
+        public string TestResult { get; set; }
     }
 }

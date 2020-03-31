@@ -11,6 +11,8 @@ namespace PortableEquipment.Servers.Json
     {
         public string GetJsonByclass<T>(T t)
         {
+            if (t == null)
+                return string.Empty;
             JsonSerializerSettings jsetting = new JsonSerializerSettings()
             {
                 NullValueHandling = NullValueHandling.Include,
