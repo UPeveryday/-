@@ -91,7 +91,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" Height="40" Width="48" ToolTip="退出"  MouseDown="Grid_MouseDown">
+                    <Grid Grid.Column="1" Height="40" Width="48" ToolTip="退出"   MouseDown="Grid_MouseDown">
                         <Grid.Background >
                             <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                         </Grid.Background>

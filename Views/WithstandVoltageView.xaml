@@ -6,14 +6,15 @@
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
-                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:s="https://github.com/canton7/Stylet"
-        
-        mc:Ignorable="d"
+        xmlns:model="clr-namespace:PortableEquipment.Converts"
+                      mc:Ignorable="d"
          d:DataContext="{d:DesignInstance local1:WithstandVoltageViewModel}"
         Title="WithstandVoltage" Height="500" Width="800"  UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
+            <model:DoubleConvert x:Key="cvt"></model:DoubleConvert>
             <Style x:Key="dataGridHeaderStyle" TargetType="DataGridColumnHeader">
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -153,7 +154,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
 
                 <Grid Grid.Row="2" Grid.Column="0">
@@ -193,7 +194,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -206,7 +207,7 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0"   Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox Margin="20,8" BorderThickness="0"   Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="6" Grid.Column="0">
                     <Grid.RowDefinitions>

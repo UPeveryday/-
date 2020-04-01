@@ -5,16 +5,16 @@ using PortableEquipment.Pages;
 using System.Collections.Generic;
 using Model;
 using PortableEquipment.ViewModels;
+using PortableEquipment.StyletLogger;
 
 namespace PortableEquipment
 {
-    public class Bootstrapper : Bootstrapper<MainViewModel> 
+    public class Bootstrapper : Bootstrapper<MainViewModel>
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
             builder.AddModule(new StyletIocModules.LoginModules());//Login modules
             #region IOC Test
-
             //builder.Bind(typeof(Servers.ILogin<>)).ToAllImplementations();//注入此接口所有的服务
             //builder.Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginRespontory<>)).WithKey("Lr");
             //builder.Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginSingalRespontitory<>)).WithKey("Lrs");

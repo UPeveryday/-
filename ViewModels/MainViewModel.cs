@@ -31,8 +31,8 @@ namespace PortableEquipment.ViewModels
 
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
-            ParameterSettingViewModel parameterSettingViewModel, TransformerViewModel transformerViewModel,
-            VoltageTestViewModel voltageTestViewModel, WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator, StyletLogger.ILogger logger
+            ParameterSettingViewModel parameterSettingViewModel,
+           WithstandVoltageViewModel withstandVoltageViewModel, IEventAggregator eventAggregator, StyletLogger.ILogger logger
             , TimeViewModel timeViewModel)
         {
             _eventAggregator = eventAggregator;
@@ -43,8 +43,6 @@ namespace PortableEquipment.ViewModels
             _ManuallySetParametersViewModel = manuallySetParametersViewModel;
             _ManualVoltageViewModel = manualVoltageViewModel;
             _ParameterSettingViewModel = parameterSettingViewModel;
-            _TransformerViewModel = transformerViewModel;
-            _VoltageTestViewModel = voltageTestViewModel;
             _WithstandVoltageViewModel = withstandVoltageViewModel;
             _logger = logger;
             _timeViewModel = timeViewModel;

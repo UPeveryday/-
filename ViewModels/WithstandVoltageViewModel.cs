@@ -109,9 +109,9 @@ namespace PortableEquipment.ViewModels
         public double Humidity { get; set; }
         public string TestLocation { get; set; }
         public string Tester { get; set; }
-        public double Frequency { get; set; }
-        public double Volate { get; set; }
-        public double Current { get; set; }
+        public double Frequency { get; set; } = 50.0;
+        public double Volate { get; set; } = 10000;
+        public double Current { get; set; } = 5.0;
         #endregion
         #region Data
         public BindableCollection<TransformerDataStep> DatagridData { get; set; }

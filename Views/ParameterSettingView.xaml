@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:s="https://github.com/canton7/Stylet"
-                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment.Models"
-                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                      mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ParameterSettingViewModel}"
         Title="ParameterSettingView" Height="500" Width="800" UseNoneWindowStyle="True"
               Name="Mywindow"        WindowStyle="None" MouseDown="MetroWindow_MouseDown">
@@ -86,7 +86,7 @@
                 <Viewbox  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" >
                     <TextBlock HorizontalAlignment="Left"  FontWeight="SemiBold" Foreground="#2070ea" VerticalAlignment="Center"   >▌互感器试验</TextBlock>
                 </Viewbox>
-                <Viewbox Grid.Row="1" Grid.Column="2" Grid.RowSpan="1">
+                <Viewbox Grid.Row="0" Grid.Column="2" Margin="5" Grid.RowSpan="3">
                     <Button Background="#2070ea" Command="{s:Action ShowVoltageTestViewModels}" Style="{StaticResource ButtonF}">
                         <TextBlock Margin="3,2" Style="{StaticResource TextBlockPriview}">进入试验模块</TextBlock>
                     </Button>
@@ -217,8 +217,8 @@
                         <RowDefinition  Height="0.6*"></RowDefinition>
                         <RowDefinition  Height="1.5*"></RowDefinition>
                     </Grid.RowDefinitions>
-                        <CheckBox  Margin="2" Height="18"  HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding KeepVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
-                        </CheckBox>
+                    <CheckBox  Margin="2" Height="18"  HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding KeepVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="感应耐压" Foreground="#545f79">
+                    </CheckBox>
                     <!--Opacity="{Binding KeepVoltageOpacity}"-->
                     <Grid Grid.Row="2"  Visibility="{Binding OverVolateVisibility,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding KeepVolateEnable}" Opacity="{Binding KeepVoltageOpacity}" Background="White">
                         <Grid.ColumnDefinitions>
@@ -247,10 +247,10 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">出厂试验电压</TextBlock>
+                            <TextBlock Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">出厂试验电压</TextBlock>
                         </Grid>
-                            <RadioButton  Grid.Row="1" Grid.Column="3" Margin="7,2" GroupName="Same" IsChecked="{Binding LowOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Content="低压耐压检测"></RadioButton>
-                            <RadioButton  Grid.Row="1" Grid.Column="2"  Margin="7,2" GroupName="Same"  IsChecked="{Binding HighOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Content="高压耐压检测"></RadioButton>
+                        <RadioButton  Grid.Row="1" Grid.Column="3" Margin="7,2" GroupName="Same" IsChecked="{Binding LowOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Content="低压耐压检测"></RadioButton>
+                        <RadioButton  Grid.Row="1" Grid.Column="2"  Margin="7,2" GroupName="Same"  IsChecked="{Binding HighOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Content="高压耐压检测"></RadioButton>
                         <Grid Grid.Row="3" Grid.Column="1" >
                             <TextBox Margin="3"  BorderThickness="1"  Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
@@ -271,7 +271,7 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">高压过压值</TextBlock>
+                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">高压过压值</TextBlock>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="1">
                             <TextBox Margin="3" BorderThickness="1"   Text="{Binding TestFre,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
@@ -282,7 +282,7 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock   Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验频率</TextBlock>
+                            <TextBlock   Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验频率</TextBlock>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="3">
                             <TextBox Margin="3" BorderThickness="1"  Text="{Binding TestTime,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
@@ -293,7 +293,7 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验时间</TextBlock>
+                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">试验时间</TextBlock>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="1">
                             <TextBox Margin="3" BorderThickness="1"  Text="{Binding VariableThan,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
@@ -304,7 +304,7 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">变比设置</TextBlock>
+                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">变比设置</TextBlock>
                         </Grid>
                         <Grid Grid.Row="7" Grid.Column="3">
                             <TextBox Margin="3" BorderThickness="1"  Text="{Binding Promotion,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
@@ -315,14 +315,14 @@
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                                <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">荣升系数</TextBlock>
+                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">荣升系数</TextBlock>
                         </Grid>
                     </Grid>
                     <DockPanel  Grid.Row="4"  HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <CheckBox  Height="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" IsChecked="{Binding LiciCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
-                            <TextBlock>  &#160;&#160; </TextBlock>
-                            <CheckBox  Height="18"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"  IsChecked="{Binding VolateRange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="显示电压等级设置" Foreground="#545f79"></CheckBox>
-                        </DockPanel>
+                        <CheckBox  Height="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" IsChecked="{Binding LiciCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="励磁特性" Foreground="#545f79"></CheckBox>
+                        <TextBlock>  &#160;&#160;</TextBlock>
+                        <CheckBox  Height="18"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"  IsChecked="{Binding VolateRange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="显示电压等级设置" Foreground="#545f79"></CheckBox>
+                    </DockPanel>
                     <!--{Binding LiciOpacity}-->
                     <Grid Grid.Row="6" Background="White" IsEnabled="{Binding LiciEnable}" Opacity="{Binding LiciOpacity}">
                         <Grid.RowDefinitions>
@@ -381,16 +381,16 @@
                                 </Border>
                             </materialDesign:DialogHost>
                         </Grid>
-                            <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
+                        <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <TextBox Margin="5,0" Text="{Binding LcTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" BorderThickness="1" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
-                            <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
+                        <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         <Grid Grid.Column="3">
                             <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding LcOverCurrent,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
                     </Grid>
-                        <CheckBox Height="18" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsChecked="{Binding CurrentCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
+                    <CheckBox Height="18" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsChecked="{Binding CurrentCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
                     <Grid Grid.Row="10" IsEnabled="{Binding CurrentEnable}" Opacity="{Binding CurrentOpacity}" Background="White">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -398,11 +398,11 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                            <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
+                        <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <TextBox Margin="5,0" BorderThickness="1"  Text="{Binding KzTestVolate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>
-                            <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
+                        <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         <Grid Grid.Column="3">
                             <TextBox Margin="5,0" BorderThickness="1"   Text="{Binding KzOverCurrent,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
                         </Grid>

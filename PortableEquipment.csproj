@@ -141,6 +141,7 @@
     <Compile Include="Comport\ISerialCommunication.cs" />
     <Compile Include="Convert.cs" />
     <Compile Include="Converts\CheckConverter.cs" />
+    <Compile Include="Converts\DoubleConvert.cs" />
     <Compile Include="Models\Convert.cs" />
     <Compile Include="Models\NumberValidationRule.cs" />
     <Compile Include="Models\Publisher.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="ViewModels\ManualVoltageViewModel.cs" />
     <Compile Include="ViewModels\ParameterSettingViewModel.cs" />
     <Compile Include="ViewModels\SignupViewModel.cs" />
+    <Compile Include="ViewModels\TestWindowViewModel.cs" />
     <Compile Include="ViewModels\TimeViewModel.cs" />
     <Compile Include="ViewModels\TransformerViewModel.cs" />
     <Compile Include="ViewModels\VoltageTestViewModel.cs" />
@@ -210,6 +212,9 @@
     </Compile>
     <Compile Include="Views\SignupView.xaml.cs">
       <DependentUpon>SignupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TestWindowView.xaml.cs">
+      <DependentUpon>TestWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TimeView.xaml.cs">
       <DependentUpon>TimeView.xaml</DependentUpon>
@@ -306,6 +311,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SignupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

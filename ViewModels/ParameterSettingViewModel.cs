@@ -13,7 +13,8 @@ namespace PortableEquipment.ViewModels
     {
         #region 打开子窗体,提供方法
         private IWindowManager _windowManger;
-        private VoltageTestViewModel _VoltageTestViewModel;
+        [Inject]
+        public VoltageTestViewModel _VoltageTestViewModel;
         public IEventAggregator _eventAggregator;
         [Inject]
         public StyletLogger.ILogger _logger;
@@ -23,13 +24,12 @@ namespace PortableEquipment.ViewModels
         public Servers.Json.IJsondeel _jsondeel;
         [Inject]
         public Servers.IEntityServer entityServer;
-        public ParameterSettingViewModel(IWindowManager windowManager, VoltageTestViewModel voltageTestViewModel, IEventAggregator eventAggregator)
+        public ParameterSettingViewModel(IWindowManager windowManager, IEventAggregator eventAggregator)
         {
             _windowManger = windowManager;
-            _VoltageTestViewModel = voltageTestViewModel;
             _eventAggregator = eventAggregator;
         }
-      
+
         #endregion
     }
 
