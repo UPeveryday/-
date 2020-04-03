@@ -52,11 +52,9 @@ namespace PortableEquipment.ViewModels
             Humidity = message.Humidity;
             DatagridData = message.DatagridData;
             InitDataGrid(message.DatagridData.ToArray());
-            //  ShowDataUi();
+            ShowDataUi();
             // StartTest();
         }
-
-
         public void SaveManagMent()
         {
             if (DatagridTestData != null)
@@ -160,7 +158,6 @@ namespace PortableEquipment.ViewModels
                 TestVoltage = testvolate
             });
         }
-
 
     }
     public partial class TransformerViewModel

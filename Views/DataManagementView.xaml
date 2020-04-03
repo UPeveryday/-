@@ -47,6 +47,10 @@
                         </Grid>
                         <TextBlock Width="10"></TextBlock>
                         <Grid Grid.Column="1"  Height="30" Width="30" ToolTip="退出" MouseDown="Grid_MouseDown">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="7*"/>
+                                <RowDefinition Height="8*"/>
+                            </Grid.RowDefinitions>
                             <Grid.Background >
                                 <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                             </Grid.Background>

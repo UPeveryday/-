@@ -257,15 +257,15 @@ namespace PortableEquipment.Comport
 
                 //设置触发DataReceived事件的字节数为1
 
-                _serialPort.ReceivedBytesThreshold = 1;
+                //_serialPort.ReceivedBytesThreshold = 1;
 
-                //接收到一个字节时，也会触发DataReceived事件
+                ////接收到一个字节时，也会触发DataReceived事件
 
-                _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
+                //_serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
 
-                //接收数据出错,触发事件
+                ////接收数据出错,触发事件
 
-                _serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(_serialPort_ErrorReceived);
+                //_serialPort.ErrorReceived += new SerialErrorReceivedEventHandler(_serialPort_ErrorReceived);
 
                 //打开串口
 

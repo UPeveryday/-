@@ -24,7 +24,7 @@ namespace PortableEquipment.TestParameters
         public double Frequency;
         public double Volate;
         public double Current;
-        public BindableCollection<ViewModels.TransformerDataStep> DatagridData;
+        public BindableCollection<TransformerDataStep> DatagridData;
         public DateTime DateTime;
         public BindableCollection<TransformerTestData> TestResultData;
     }

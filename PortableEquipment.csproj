@@ -142,6 +142,7 @@
     <Compile Include="Convert.cs" />
     <Compile Include="Converts\CheckConverter.cs" />
     <Compile Include="Converts\DoubleConvert.cs" />
+    <Compile Include="Dll\CvtTestDriver.cs" />
     <Compile Include="Models\Convert.cs" />
     <Compile Include="Models\NumberValidationRule.cs" />
     <Compile Include="Models\Publisher.cs" />
@@ -336,7 +337,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dll\" />
     <Folder Include="StyletLogger\Logger\" />
   </ItemGroup>
   <ItemGroup>
