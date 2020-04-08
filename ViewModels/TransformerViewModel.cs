@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>,IHandle<StataThree>
     {
         #region 依赖注入
         [Inject]
@@ -36,6 +36,16 @@ namespace PortableEquipment.ViewModels
             _eventAggregator.Subscribe(this);
         }
 
+        //Ui更新
+        public void Handle(StataThree message)
+        {
+            if (message.Checked)
+            {
+                CurrentUi = message.ACurrent;
+                VolateUi = message.AVolate;
+                FreUi = message.Fre;
+            }
+        }
         #endregion
     }
 
@@ -52,8 +62,6 @@ namespace PortableEquipment.ViewModels
             Humidity = message.Humidity;
             DatagridData = message.DatagridData;
             InitDataGrid(message.DatagridData.ToArray());
-            ShowDataUi();
-            // StartTest();
         }
         public void SaveManagMent()
         {
@@ -127,24 +135,6 @@ namespace PortableEquipment.ViewModels
                 }
                 p++;
             }
-        }
-        //实时更新Ui
-        private void ShowDataUi()
-        {
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
-                    {
-                        StataThree testdata = _communicationProtocol.ReadStataThree();
-                        CurrentUi = testdata.ACurrent;
-                        VolateUi = testdata.AVolate;
-                        FreUi = testdata.Fre;
-                        Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
-                    }
-                }
-            });
         }
         /// <summary>
         /// 添加datagrid数据

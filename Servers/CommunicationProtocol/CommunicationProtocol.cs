@@ -42,7 +42,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             var rec = new byte[53];
             try
             {
-                Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
+                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
                 if (rec[0] == 0xda && rec[1] == 0xda)
                     return _parsingdata.ParsingThree(rec);
                 else
@@ -52,7 +52,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
-            return new StataThree { };
+            return new StataThree { Checked = false };
         }
         /// <summary>
         /// 设置参数
@@ -106,7 +106,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 Comport.Serial.serialport.SendCommand(sendc, ref rec, 1000);
                 return rec == new byte[2] { 0xAA, Mark };
             }
-            catch 
+            catch
             {
                 _logger.Writer("Class: CommunicationProtocol.SetTestPra出错");
                 return false;

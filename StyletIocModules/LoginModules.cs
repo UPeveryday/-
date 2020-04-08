@@ -31,10 +31,10 @@ namespace PortableEquipment.StyletIocModules
             Bind<Servers.SqlDeel.ISqlHelp>().To<Servers.SqlDeel.SqlHelp>().InSingletonScope();
             // Bind<Comport.ISerialCommunication>().To<Comport.Serial>();
 
-
             Bind<ViewModels.VoltageTestViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.TransformerViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.ManualVoltageViewModel>().ToSelf().InSingletonScope();
+            Bind<ViewModels.MainViewModel>().ToSelf().InSingletonScope();
         }
     }
 }

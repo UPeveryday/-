@@ -1,4 +1,5 @@
-﻿using Stylet;
+﻿using PortableEquipment.Servers.CommunicationProtocol;
+using Stylet;
 using Stylet.Logging;
 using StyletIoC;
 using System;
@@ -24,9 +25,14 @@ namespace PortableEquipment.ViewModels
         private WithstandVoltageViewModel _WithstandVoltageViewModel;
         private StyletLogger.ILogger _logger;
         private TimeViewModel _timeViewModel;
-
         [Inject]
-        public Servers.CommunicationProtocol.ICommunicationProtocol _CommunicationProtocol;
+        public ICommunicationProtocol _communicationProtocol;
+        [Inject]
+        public Servers.CHangeVolate.ISetVolate _setVolate;
+        [Inject]
+        public Servers.Xmldata.IXmlconfig _xmlconfig;
+        [Inject]
+        public ICommunicationProtocol _CommunicationProtocol;
 
 
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
@@ -83,6 +89,23 @@ namespace PortableEquipment.ViewModels
             });
             _windowManger.ShowDialog(_timeViewModel);
         }
+
+        public void CommitRecData()
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
+                    {
+                        // StataThree testdata = _communicationProtocol.ReadStataThree();
+                        _eventAggregator.Publish(_communicationProtocol.ReadStataThree()); ;
+                        Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                    }
+                }
+            });
+        }
+
 
         public void Handle(string message)
         {

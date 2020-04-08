@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:MainViewModel}"
         Title="MainView" Height="500" Width="800" WindowStyle="None" 
-            WindowState="Maximized" >
+            WindowState="Maximized" Loaded="{s:Action CommitRecData}" >
 
     <Window.Resources>
         <ResourceDictionary>
