@@ -12,6 +12,8 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         StataThree ReadStataThree();
 
         bool SetTestPra(TestKind testKind, byte ClickNum);
+
+        string GetCgfVolate();
     }
 
     public struct StataTwo

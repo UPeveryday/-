@@ -34,7 +34,6 @@ namespace PortableEquipment.ViewModels
         [Inject]
         public ICommunicationProtocol _CommunicationProtocol;
 
-
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
             ParameterSettingViewModel parameterSettingViewModel,
@@ -92,14 +91,15 @@ namespace PortableEquipment.ViewModels
 
         public void CommitRecData()
         {
+
             Task.Run(() =>
             {
                 while (true)
                 {
                     if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
                     {
-                        // StataThree testdata = _communicationProtocol.ReadStataThree();
-                        _eventAggregator.Publish(_communicationProtocol.ReadStataThree()); ;
+
+                        _eventAggregator.Publish(new OutTestResult { stataThree = _communicationProtocol.ReadStataThree(), CgfVolate = _communicationProtocol.GetCgfVolate() });
                         Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
                     }
                 }
@@ -122,5 +122,11 @@ namespace PortableEquipment.ViewModels
 
         public string Age { get; set; } = "手动调压";
 
+    }
+
+    public struct OutTestResult
+    {
+        public StataThree stataThree;
+        public string CgfVolate;
     }
 }

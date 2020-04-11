@@ -22,6 +22,8 @@ namespace PortableEquipment.Pages
         public BookViewModel bookvs2;
         protected override void OnViewLoaded()
         {
+
+            var c = _container.GetAll(typeof(HomeViewModel));
             //homeViewModel = _container.Get<HomeViewModel>();
             //homeViewModel1 = _container.Get<HomeViewModel>();
             //bookvs = _container.Get<BookViewModel>();

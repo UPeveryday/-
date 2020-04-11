@@ -115,21 +115,22 @@ namespace PortableEquipment.Comport
 
         {
 
-            _serialPort = new SerialPort(comPortName);
+            _serialPort = new SerialPort(comPortName)
+            {
+                BaudRate = 9600,
 
-            _serialPort.BaudRate = 9600;
+                Parity = Parity.Even,
 
-            _serialPort.Parity = Parity.Even;
+                DataBits = 8,
 
-            _serialPort.DataBits = 8;
+                StopBits = StopBits.One,
 
-            _serialPort.StopBits = StopBits.One;
+                Handshake = Handshake.None,
 
-            _serialPort.Handshake = Handshake.None;
+                RtsEnable = true,
 
-            _serialPort.RtsEnable = true;
-
-            _serialPort.ReadTimeout = 2000;
+                ReadTimeout = 2000
+            };
 
             setSerialPort();
 
@@ -670,7 +671,7 @@ namespace PortableEquipment.Comport
 
             {
 
-                StringOut = StringOut + String.Format("{0:X2} ", InByte);
+                StringOut = StringOut + string.Format("{0:X2} ", InByte);
 
             }
 
@@ -795,7 +796,8 @@ namespace PortableEquipment.Comport
     }
     public static class Serial
     {
-        public static SerialClass serialport = new SerialClass("Com23", 115200, Parity.None, 8, StopBits.One);
+        public static SerialClass serialport = new SerialClass(new Servers.Xmldata.Xmlconfig().GetAddNodeValue("PowerComport"), 115200, Parity.None, 8, StopBits.One);
+        public static SerialClass Cgfserialport = new SerialClass(new Servers.Xmldata.Xmlconfig().GetAddNodeValue("CgfComport"), 9600, Parity.Mark, 8, StopBits.One);
     }
 
 

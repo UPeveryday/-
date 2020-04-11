@@ -258,7 +258,7 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Background="#38514d" Margin="0,0,2,2">
-                            <Button  Style="{StaticResource JFButton}">
+                            <Button  Style="{StaticResource JFButton}" Command="{s:Action StartJf}">
                                 <Viewbox Margin="25">
                                     <StackPanel>
                                         <TextBlock FontWeight="Bold" Foreground="White" Style="{StaticResource TextBlockPriview}">局放</TextBlock>
@@ -284,7 +284,7 @@
                             </Grid>
                             <Grid Grid.Row="1" >
                                 <Viewbox >
-                                    <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f">100</TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding Jf,Mode=TwoWay}" Foreground="#00ff7f">100</TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>

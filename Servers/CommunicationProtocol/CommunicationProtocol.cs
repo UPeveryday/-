@@ -113,6 +113,25 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
 
         }
+
+        public string GetCgfVolate()
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[100];
+            try
+            {
+                int recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80,0x80 }, ref rec, 100);
+                if (recnum > 1)
+                    return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "");
+                else
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
+            }
+            return null;
+        }
     }
     public enum TestKind
     {

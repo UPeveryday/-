@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>,IHandle<StataThree>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>
     {
         #region 依赖注入
         [Inject]
@@ -25,8 +25,11 @@ namespace PortableEquipment.ViewModels
         [Inject]
         public Servers.SqlDeel.ISqlHelp _sqlHelp;
         [Inject]
+        public StyletLogger.ILogger _logger;
+        [Inject]
         public TimeViewModel _TimeViewModel;
-
+        [Inject]
+        public IContainer _container;
         [Inject]
         public IWindowManager _windowManager;
         public IEventAggregator _eventAggregator;
@@ -37,13 +40,24 @@ namespace PortableEquipment.ViewModels
         }
 
         //Ui更新
-        public void Handle(StataThree message)
+        public void Handle(OutTestResult message)
         {
-            if (message.Checked)
+            if (message.stataThree.Checked)
             {
-                CurrentUi = message.ACurrent;
-                VolateUi = message.AVolate;
-                FreUi = message.Fre;
+                CurrentUi = message.stataThree.ACurrent;
+                VolateUi = message.stataThree.AVolate;
+                FreUi = message.stataThree.Fre;
+            }
+            if (message.CgfVolate != null)
+            {
+                try
+                {
+                    UVolateUi = Convert.ToDouble(message.CgfVolate);
+                }
+                catch
+                {
+                    _logger.Writer("Cgf电压解析出错");
+                }
             }
         }
         #endregion
@@ -149,6 +163,20 @@ namespace PortableEquipment.ViewModels
             });
         }
 
+
+        public void StartJf()
+        {
+            try
+            {
+                var c = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
+                System.Diagnostics.Process.Start(c);
+            }
+            catch
+            {
+                _logger.Writer("文件被破坏，请检查");
+            }
+        }
+
     }
     public partial class TransformerViewModel
     {
@@ -191,6 +219,7 @@ namespace PortableEquipment.ViewModels
         public double FreUi { get; set; }
         public double CurrentUi { get; set; }
         public double TimeUi { get; set; }
+        public double Jf { get; set; } = 0.00;
         #endregion
         #region bindinds
         public Translator TestPra;
