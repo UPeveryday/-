@@ -74,7 +74,6 @@ namespace PortableEquipment.ViewModels
         public void ShowTransformer() => _windowManger.ShowDialog(_TransformerViewModel);
         public void ShowVoltageTest() => _windowManger.ShowDialog(_VoltageTestViewModel);
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
-
         public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
         public void showdata()
         {
@@ -88,25 +87,21 @@ namespace PortableEquipment.ViewModels
             });
             _windowManger.ShowDialog(_timeViewModel);
         }
-
         public void CommitRecData()
         {
-
             Task.Run(() =>
             {
                 while (true)
                 {
                     if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
                     {
-
+                       
                         _eventAggregator.Publish(new OutTestResult { stataThree = _communicationProtocol.ReadStataThree(), CgfVolate = _communicationProtocol.GetCgfVolate() });
                         Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
                     }
                 }
             });
         }
-
-
         public void Handle(string message)
         {
             Age = message;
@@ -121,7 +116,6 @@ namespace PortableEquipment.ViewModels
         }
 
         public string Age { get; set; } = "手动调压";
-
     }
 
     public struct OutTestResult

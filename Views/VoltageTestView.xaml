@@ -8,7 +8,8 @@
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-                      xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:VoltageTestViewModel}"
         Title="VoltageTestView" Height="800" Width="1280" UseNoneWindowStyle="True" WindowStyle="None">
@@ -25,6 +26,7 @@
             <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="9.2*"></RowDefinition>
         </Grid.RowDefinitions>
+
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition ></RowDefinition>
@@ -48,14 +50,14 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="3"  FontSize="20"   Margin="5,3"  Background="Green"  ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
+                    <Button Grid.Column="3"  FontSize="20" IsEnabled="{Binding StartTestVisibility}"  Margin="5,3"  Background="Green"  Click="{s:Action StartTest}" ToolTip="启动测量" Style="{StaticResource ButtonF}">启动测量</Button>
 
                     <Button Grid.Column="1" Background="#2070ea"  Click="{s:Action SaveTestResult}" ToolTip="保存结果" Margin="5,3" Style="{StaticResource ButtonF}">
                         <Viewbox>
                             <TextBlock Margin="5,3" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">结果保存</TextBlock>
                         </Viewbox>
-                        </Button>
-                    <Button Grid.Column="2" Name="DanegerButton" Background="#df0404" Margin="5,3" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">
+                    </Button>
+                    <Button Grid.Column="2" Click="{s:Action FinishTest}" Name="DanegerButton" Background="#df0404" Margin="5,3" ToolTip="立即中断测量" Style="{StaticResource ButtonF}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -65,7 +67,7 @@
                             <Image Grid.Column="0" HorizontalAlignment="Left" Stretch="Uniform" Source="/PortableEquipment;component/Resources/危险.png" ></Image>
                             <TextBlock Grid.Column="1" Foreground="Transparent">中断</TextBlock>
                             <TextBlock Grid.Column="2" FontSize="18" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">立即中断</TextBlock>
-                        </Grid>    
+                        </Grid>
                     </Button>
                 </Grid>
                 <Grid Grid.Column="3">
@@ -78,7 +80,7 @@
                             <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                         </Grid.Background>
                     </Grid>
-                   
+
                 </Grid>
             </Grid>
         </Grid>
@@ -433,7 +435,22 @@
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <lvc:CartesianChart></lvc:CartesianChart>
+                        <lvc:CartesianChart  Name="control5" Series="{Binding LcCurrentVolate}">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis  MinValue="0" Foreground="Black"   LabelFormatter="{Binding XFormatter}"   Title="&#x000A;电流">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="1" StrokeDashArray="1" Stroke="Green"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Foreground="Black"  LabelFormatter="{Binding YFormatter}"   Title="电压">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="1"  StrokeDashArray="1" Stroke="Green"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
                     </Grid>
 
                 </Grid>
@@ -472,7 +489,7 @@
                             </Grid.ColumnDefinitions>
                             <Viewbox  Margin="9">
                                 <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电压</TextBlock>
-                            </Viewbox> 
+                            </Viewbox>
                             <Viewbox  Grid.Column="1" Margin="5">
                                 <TextBlock Foreground="#189aff" Text="{Binding KzTestVolate}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
                             </Viewbox>

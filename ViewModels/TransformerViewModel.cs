@@ -162,8 +162,6 @@ namespace PortableEquipment.ViewModels
                 TestVoltage = testvolate
             });
         }
-
-
         public void StartJf()
         {
             try
@@ -176,7 +174,6 @@ namespace PortableEquipment.ViewModels
                 _logger.Writer("文件被破坏，请检查");
             }
         }
-
     }
     public partial class TransformerViewModel
     {
@@ -267,7 +264,7 @@ namespace PortableEquipment.ViewModels
                 {
                     IsClicked = false;
                     await SetDiaSata(true, "开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                        System.Windows.Visibility.Visible, alarmText: "测量提示");
+                        Visibility.Visible, alarmText: "测量提示");
                     if (IsokOrCan)
                     {
                         for (int i = 0; i < data.Length; i++)
@@ -308,6 +305,7 @@ namespace PortableEquipment.ViewModels
             }
             else
             {
+                IsRunning = false;
                 await SetDiaSata(true, "启动测量失败\t\n可能未结束测量\t\n请手动结束为结束的测量", System.Windows.Visibility.Hidden, alarmText: "警告");
             }
         }

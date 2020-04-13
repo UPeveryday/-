@@ -122,7 +122,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
                 int recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80,0x80 }, ref rec, 100);
                 if (recnum > 1)
-                    return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "");
+                    return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?","");
                 else
                     _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
             }

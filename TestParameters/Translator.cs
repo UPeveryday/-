@@ -43,6 +43,8 @@ namespace PortableEquipment.TestParameters
         public ExcitationCharacteristic ExcitationCharacteristicR;
         public NoLoadCurrent NoLoadCurrentR;
         public DateTime DateTime;
+
+
     }
     /// <summary>
     /// 手动调压
@@ -111,4 +113,8 @@ namespace PortableEquipment.TestParameters
         HighpressureResistanceTest = 0,
         LowessureResistanceTest = 1
     }
+
+   
+
+
 }
