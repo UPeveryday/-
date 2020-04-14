@@ -796,6 +796,7 @@ namespace PortableEquipment.Comport
     }
     public static class Serial
     {
+        public static SerialClass upserialport = new SerialClass(new Servers.Xmldata.Xmlconfig().GetAddNodeValue("upComport"), 115200, Parity.None, 8, StopBits.One);
         public static SerialClass serialport = new SerialClass(new Servers.Xmldata.Xmlconfig().GetAddNodeValue("PowerComport"), 115200, Parity.None, 8, StopBits.One);
         public static SerialClass Cgfserialport = new SerialClass(new Servers.Xmldata.Xmlconfig().GetAddNodeValue("CgfComport"), 9600, Parity.None, 8, StopBits.One);
     }

@@ -36,13 +36,13 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return new StataTwo { stata = Methonstata.False };
         }
-        public StataThree ReadStataThree()
+        public async Task<StataThree> ReadStataThree()
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[53];
             try
             {
-                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
+                await Task.Run(() => { int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100); });
                 if (rec[0] == 0xda && rec[1] == 0xda)
                     return _parsingdata.ParsingThree(rec);
                 else
@@ -60,10 +60,11 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         /// <param name="testKind">选择实验类型</param>
         /// <param name="ClickNum">按键次数</param>
         /// <returns></returns>
-        public bool SetTestPra(TestKind testKind, byte ClickNum)
+        public async Task<bool> SetTestPra(TestKind testKind, byte ClickNum)
         {
             try
             {
+                await Task.Delay(500);
                 var rec = new byte[2];
                 byte TestKindByte = 0x00;
                 byte Mark = 0x00;
@@ -103,8 +104,10 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                     Mark = 0x07;
                 }
                 byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
-                Comport.Serial.serialport.SendCommand(sendc, ref rec, 1000);
-                return rec == new byte[2] { 0xAA, Mark };
+                await Task.Run(() => { Comport.Serial.upserialport.SendCommand(sendc, ref rec, 1000); });
+                if (rec[0] == 0xaa && rec[1] == Mark)
+                    return true;
+                return false;
             }
             catch
             {
@@ -120,9 +123,9 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             var rec = new byte[100];
             try
             {
-                int recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80,0x80 }, ref rec, 100);
+                int recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 100);
                 if (recnum > 1)
-                    return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?","");
+                    return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?", "");
                 else
                     _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
             }
@@ -131,6 +134,34 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
             return null;
+        }
+
+        public async Task<bool> ThicknessAdjustable(bool Adjustt)
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[2];
+            byte[] comman = new byte[2];
+            if (Adjustt) comman = new byte[] { 0xA5, 0x08 };
+            else comman = new byte[] { 0xA5, 0x09 };
+            try
+            {
+                await Task.Run(() =>
+                {
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (rec[0] == 0xAA && rec[1] == 0x05)
+                    return true;
+                else if (rec[0] == 0xEE && rec[1] == 0x05)
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "粗细条失败");
+                else
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "接受粗细条数据失败");
+
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "粗细条异常");
+            }
+            return false;
         }
     }
     public enum TestKind

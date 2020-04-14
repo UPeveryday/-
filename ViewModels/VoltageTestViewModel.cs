@@ -133,7 +133,7 @@ namespace PortableEquipment.ViewModels
                 }
                 resetEvent.WaitOne();
                 await _setVolate.SettindVolate(volatelist[i], _communicationProtocol, _xmlconfig);
-                var p = _communicationProtocol.ReadStataThree();
+                var p = await _communicationProtocol.ReadStataThree();
                 Lcret.Add(p);
                 LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestCurrent = p.ACurrent.ToString(), TestVoltage = p.AVolate.ToString() });
                 AddNodePoint(p.ACurrent, p.AVolate);
@@ -250,7 +250,7 @@ namespace PortableEquipment.ViewModels
         public double KeepTestTime { get; set; }
 
         public bool IsTopDrawerOpen { get; set; } = false;
-        
+
         #endregion
     }
     public class LcdatagridColletion

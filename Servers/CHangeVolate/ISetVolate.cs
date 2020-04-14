@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PortableEquipment.Servers.CommunicationProtocol;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace PortableEquipment.Servers.CHangeVolate
 {
     public interface ISetVolate
     {
-        Task SettindVolate(double voltage, Servers.CommunicationProtocol.ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig);
+        Task<bool> SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5);
     }
 }

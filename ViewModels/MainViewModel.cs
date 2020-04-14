@@ -89,14 +89,13 @@ namespace PortableEquipment.ViewModels
         }
         public void CommitRecData()
         {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
                     if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
                     {
-                       
-                        _eventAggregator.Publish(new OutTestResult { stataThree = _communicationProtocol.ReadStataThree(), CgfVolate = _communicationProtocol.GetCgfVolate() });
+                        _eventAggregator.Publish(new OutTestResult { stataThree =await _communicationProtocol.ReadStataThree(), CgfVolate = _communicationProtocol.GetCgfVolate() });
                         Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
                     }
                 }
@@ -113,6 +112,14 @@ namespace PortableEquipment.ViewModels
             {
 
             }
+        }
+
+        public async void Upvolate()
+        {
+            await _communicationProtocol.SetTestPra(TestKind.Start, 2);
+            await Task.Delay(6500);
+            var p = await _setVolate.SettindVolate(Convert.ToDouble(_xmlconfig.GetAddNodeValue("needvolatetemp")), _communicationProtocol, _xmlconfig);
+             var c = p;
         }
 
         public string Age { get; set; } = "手动调压";

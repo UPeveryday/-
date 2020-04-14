@@ -9,42 +9,87 @@ namespace PortableEquipment.Servers.CHangeVolate
 {
     public class SetVolate : ISetVolate
     {
-        public async Task SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig)
+        private async Task<TestKind> GetUpOrdownAsync(double volate, ICommunicationProtocol _communicationProtocol)
         {
-            await Task.Delay(500);
-            var CurrentVolate = _communicationProtocol.ReadStataThree().AVolate;//当前电压
-            var ChnageRange = Math.Abs(voltage - CurrentVolate);//升降压值
-            var UpVolateSpeed = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpVolateSpeed"));//升降压速度
-            double tpd = ChnageRange / UpVolateSpeed;//升降压次数
-
-            if (CurrentVolate <= voltage)
+            if (volate - (await _communicationProtocol.ReadStataThree()).AVolate > 0)
+                return TestKind.ControlsVolateUP;
+            else
+                return TestKind.ControlsVolateDown;
+        }
+        private byte GetTpd(double tpd)
+        {
+            if (tpd >= 1 && tpd < 2)
             {
-                while ((int)tpd > 1)
-                {
-                    _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, (byte)(tpd * 0.2));
-                    tpd -= tpd * 0.2;
-                    await Task.Delay(500);
-                }
-                if (Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / voltage > 0.05)
-                {
-                   await SettindVolate(voltage, _communicationProtocol, _xmlconfig);
-                }
-
+                return 1;
             }
             else
-            {
-                while ((int)tpd > 1)
-                {
-                    _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, (byte)(tpd * 0.2));
-                    tpd -= tpd * 0.2;
-                    await Task.Delay(500);
-                }
-                if (Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / voltage > 0.01)
-                {
-                    await SettindVolate(voltage, _communicationProtocol, _xmlconfig);
-                }
-
-            }
+                return (byte)((int)(tpd * 0.5));
         }
+        public async Task<bool> SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
+        {
+            await Task.Delay(100); int i = 0;
+            double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
+        here: while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) >= 10)
+            {
+                double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 10;
+                //if (await _communicationProtocol.ThicknessAdjustable(true))
+                //{
+                while ((int)tpd >= 1)
+                {
+                    if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                    {
+                        tpd -= tpd * 0.5;
+                        await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                    }
+                }
+                //}
+            }
+
+            while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) < 10)
+            {
+                if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
+                {
+                    double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 1;
+                    //if (await _communicationProtocol.ThicknessAdjustable(false))
+                    //{
+                    while ((int)tpd >= 1)
+                    {
+                        if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                        {
+                            tpd -= tpd * 0.5;
+                            await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                        }
+                    }
+                    //}
+                }
+                else
+                    break;
+            }
+
+            if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
+            {
+                if (++i > TimeOver)
+                    return false;
+                goto here;
+            }
+            return true;
+        }
+
+
+        //public async Task<bool> SettindVolateConfire(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
+        //{
+        //    double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
+        //    while (Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / voltage > needdouble)
+        //    {
+        //        while ((voltage - _communicationProtocol.ReadStataThree().AVolate) > 10)
+        //        {
+        //            double tpd = Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / 10;
+        //            if (_communicationProtocol.ThicknessAdjustable(true))
+        //            {
+
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

@@ -9,11 +9,11 @@ namespace PortableEquipment.Servers.CommunicationProtocol
     public interface ICommunicationProtocol
     {
         StataTwo ReadStataTwo();
-        StataThree ReadStataThree();
+        Task<StataThree> ReadStataThree();
 
-        bool SetTestPra(TestKind testKind, byte ClickNum);
-
+        Task<bool> SetTestPra(TestKind testKind, byte ClickNum);
         string GetCgfVolate();
+        Task<bool> ThicknessAdjustable(bool Adjustt);
     }
 
     public struct StataTwo
@@ -43,10 +43,10 @@ namespace PortableEquipment.Servers.CommunicationProtocol
 
     public enum Methonstata
     {
-        Free=0,
-        AutoUpCurrent=1,
-        AutoDownCurrent=2,
-        LongTimeNoCurrent=3,
-        False=4
+        Free = 0,
+        AutoUpCurrent = 1,
+        AutoDownCurrent = 2,
+        LongTimeNoCurrent = 3,
+        False = 4
     }
 }
