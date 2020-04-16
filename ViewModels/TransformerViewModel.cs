@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>,IHandle<string>
     {
         #region 依赖注入
         [Inject]
@@ -48,11 +48,15 @@ namespace PortableEquipment.ViewModels
                 VolateUi = message.stataThree.AVolate;
                 FreUi = message.stataThree.Fre;
             }
-            if (message.CgfVolate != null)
+        }
+
+        public void Handle(string CGF)
+        {
+            if (CGF != null)
             {
                 try
                 {
-                    UVolateUi = Convert.ToDouble(message.CgfVolate);
+                    UVolateUi = Convert.ToDouble(CGF);
                 }
                 catch
                 {

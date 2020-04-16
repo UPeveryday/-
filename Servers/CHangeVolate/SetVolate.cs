@@ -32,17 +32,17 @@ namespace PortableEquipment.Servers.CHangeVolate
         here: while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) >= 10)
             {
                 double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 10;
-                //if (await _communicationProtocol.ThicknessAdjustable(true))
-                //{
-                while ((int)tpd >= 1)
+                if (await _communicationProtocol.ThicknessAdjustable(true))
                 {
-                    if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                    while ((int)tpd >= 1)
                     {
-                        tpd -= tpd * 0.5;
-                        await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                        if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                        {
+                            tpd -= tpd * 0.5;
+                            //await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                        }
                     }
                 }
-                //}
             }
 
             while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) < 10)
@@ -50,17 +50,17 @@ namespace PortableEquipment.Servers.CHangeVolate
                 if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
                 {
                     double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 1;
-                    //if (await _communicationProtocol.ThicknessAdjustable(false))
-                    //{
-                    while ((int)tpd >= 1)
+                    if (await _communicationProtocol.ThicknessAdjustable(false))
                     {
-                        if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                        while ((int)tpd >= 1)
                         {
-                            tpd -= tpd * 0.5;
-                            await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                            if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
+                            {
+                                tpd -= tpd * 0.5;
+                               // await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
+                            }
                         }
                     }
-                    //}
                 }
                 else
                     break;
@@ -75,21 +75,47 @@ namespace PortableEquipment.Servers.CHangeVolate
             return true;
         }
 
+        public async Task<bool> SettingFre(double Fre, ICommunicationProtocol _communicationProtocol, int TimeOver = 5)
+        {
+            await Task.Delay(100); int i = 0;
+        Here: while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) >= 1)
+            {
+                if (await _communicationProtocol.ThicknessAdjustable(true))
+                {
+                    var range = Fre - (await _communicationProtocol.ReadStataThree()).Fre;
+                    if (range > 0)
+                        await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, (byte)Math.Abs(range));
+                    else
+                        await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, (byte)Math.Abs(range));
+                }
+            }
+            while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) > 0.2)
+            {
+                if (await _communicationProtocol.ThicknessAdjustable(false))
+                {
+                    var range = Fre - (await _communicationProtocol.ReadStataThree()).Fre;
+                    if (range > 0.1)
+                        await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, (byte)(Math.Abs(range) * 10));
+                    else if (range < -0.1)
+                        await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, (byte)(Math.Abs(range) * 10));
+                    else
+                        return true;
 
-        //public async Task<bool> SettindVolateConfire(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
-        //{
-        //    double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
-        //    while (Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / voltage > needdouble)
-        //    {
-        //        while ((voltage - _communicationProtocol.ReadStataThree().AVolate) > 10)
-        //        {
-        //            double tpd = Math.Abs(voltage - _communicationProtocol.ReadStataThree().AVolate) / 10;
-        //            if (_communicationProtocol.ThicknessAdjustable(true))
-        //            {
+                }
+            }
+            if (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) < 0.2)
+            {
+                return true;
+            }
+            else
+            {
+                if (++i > TimeOver)
+                    return false;
+                goto Here;
+            }
+        }
 
-        //            }
-        //        }
-        //    }
-        //}
+
+
     }
 }

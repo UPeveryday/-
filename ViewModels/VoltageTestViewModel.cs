@@ -15,10 +15,10 @@ using System.Windows;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>
+    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>,IHandle<OutTestResult>,IHandle<string>
     {
         #region 
-        public IEventAggregator _eventAggregator;
+    public IEventAggregator _eventAggregator;
         private MutualTranslator _mutualTranslator;
         [Inject]
         Servers.SqlDeel.ISqlHelp _sqlHelp;
@@ -51,7 +51,30 @@ namespace PortableEquipment.ViewModels
         }
         #endregion
 
+        public void Handle(OutTestResult message)
+        {
+            if (message.stataThree.Checked)
+            {
+                VolateUi = message.stataThree.AVolate;
+                CurrentUi = message.stataThree.ACurrent;
+                FreUi = message.stataThree.Fre;
+            }
 
+        }
+        public void Handle(string CGF)
+        {
+            if (CGF != null)
+            {
+                try
+                {
+                    UVolateUi = Convert.ToDouble(CGF);
+                }
+                catch
+                {
+                    _logger.Writer("Cgf电压解析出错");
+                }
+            }
+        }
     }
     public partial class VoltageTestViewModel
     {
@@ -116,7 +139,7 @@ namespace PortableEquipment.ViewModels
                 PresurreTime = (int)mutualTranslator.InducedOvervoltageR.TestTime - i;
                 await Task.Delay(1000);
             }
-            var ret = _communicationProtocol.ReadStataThree();
+            var ret = await _communicationProtocol.ReadStataThree();
             Flag = Flag.FinishPressure;
         }
         public async Task TestLc(MutualTranslator mutualTranslator)
@@ -173,6 +196,13 @@ namespace PortableEquipment.ViewModels
     }
     public partial class VoltageTestViewModel
     {
+        #region 实时ui
+        public double UVolateUi { get; set; }
+        public double VolateUi { get; set; }
+        public double FreUi { get; set; }
+        public double CurrentUi { get; set; }
+        #endregion
+
         #region TestBinding
         private Flag _Flag;
         public Flag Flag

@@ -312,11 +312,11 @@ namespace PortableEquipment.Comport
 
             }
 
-            catch (Exception Ex)
+            catch 
 
             {
 
-                throw Ex;
+                LoggerRunning.WriterByStatic(_serialPort.PortName +"打开失败");
 
             }
 
@@ -582,12 +582,11 @@ namespace PortableEquipment.Comport
 
                 }
 
-                catch (Exception ex)
+                catch
                 {
 
                     ReceiveEventFlag = false;
                     LoggerRunning.WriterByStatic("SerialClass: " + new StackTrace(new StackFrame(true)).GetFrame(0).GetFileLineNumber().ToString() + " 行" + "。 sendcommand 出错");
-                    throw ex;
 
                 }
 

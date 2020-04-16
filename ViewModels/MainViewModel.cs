@@ -1,4 +1,5 @@
-﻿using PortableEquipment.Servers.CommunicationProtocol;
+﻿using PortableEquipment.Models;
+using PortableEquipment.Servers.CommunicationProtocol;
 using Stylet;
 using Stylet.Logging;
 using StyletIoC;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
 {
-    public class MainViewModel : Screen, IHandle<string>, IHandle<Stata>
+    public class MainViewModel : Screen, IHandle<Stata>
     {
         private IEventAggregator _eventAggregator;
         private IWindowManager _windowManger;
@@ -89,23 +90,34 @@ namespace PortableEquipment.ViewModels
         }
         public void CommitRecData()
         {
-            Task.Run(async () =>
+            Task powerdataupdata = new Task(async () =>
             {
                 while (true)
                 {
-                    if (_xmlconfig.GetAddNodeValue("UpdataTransFornerUi") != "False")
+                    if (StaticFlag.UI_FRESH)
                     {
-                        _eventAggregator.Publish(new OutTestResult { stataThree =await _communicationProtocol.ReadStataThree(), CgfVolate = _communicationProtocol.GetCgfVolate() });
-                        Thread.Sleep(Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                        _eventAggregator.Publish(new OutTestResult { stataThree = await _communicationProtocol.ReadStataThree(0) });
+                        Thread.Sleep(System.Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
                     }
                 }
-            });
-        }
-        public void Handle(string message)
-        {
-            Age = message;
-        }
+            }, TaskCreationOptions.LongRunning);
+            powerdataupdata.Start();
 
+            Task cgfdataupdata = new Task(async () =>
+            {
+                while (true)
+                {
+                    if (StaticFlag.UI_FRESH)
+                    {
+                        var cgddata = await _communicationProtocol.GetCgfVolate();
+                        if (cgddata != string.Empty)
+                            _eventAggregator.Publish(cgddata);
+                        Thread.Sleep(System.Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
+            cgfdataupdata.Start();
+        }
         public void Handle(Stata message)
         {
             if (message == Stata.Redo)
@@ -118,11 +130,16 @@ namespace PortableEquipment.ViewModels
         {
             await _communicationProtocol.SetTestPra(TestKind.Start, 2);
             await Task.Delay(6500);
-            var p = await _setVolate.SettindVolate(Convert.ToDouble(_xmlconfig.GetAddNodeValue("needvolatetemp")), _communicationProtocol, _xmlconfig);
-             var c = p;
+            var p = await _setVolate.SettindVolate(System.Convert.ToDouble(_xmlconfig.GetAddNodeValue("needvolatetemp")), _communicationProtocol, _xmlconfig);
+            var c = p;
         }
 
         public string Age { get; set; } = "手动调压";
+
+
+        static CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationToken token = tokenSource.Token;
+        ManualResetEvent resetEvent = new ManualResetEvent(true);
     }
 
     public struct OutTestResult

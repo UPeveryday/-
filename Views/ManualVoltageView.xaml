@@ -7,11 +7,13 @@
          xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+        xmlns:model="clr-namespace:PortableEquipment.Converts"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ManualVoltageViewModel}"
         Title="ManualVoltageView" Height="500" Width="800"  WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
     <Window.Resources>
         <ResourceDictionary>
+            <model:KeepTwoDouble x:Key="doublekeep"></model:KeepTwoDouble>
             <Style x:Key="FontAwesome">
                 <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/#FontAwesome" />
             </Style>
@@ -116,7 +118,7 @@
                                     </Grid>
                                 </Grid>
                                 <Viewbox Grid.Column="2" Grid.RowSpan="2">
-                                    <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding Voltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#df0404"></TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding UVolateUi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#df0404"></TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>
@@ -136,7 +138,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">频率(Hz)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" >50.0</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding FreUi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doublekeep}}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
 
@@ -163,7 +165,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电压(V)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" >220</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding VolateUi,Mode=TwoWay,Converter={StaticResource doublekeep}}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="1" Margin="2,0,0,2" Background="#242e3b">
@@ -182,7 +184,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电流(A)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" >5.0</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding CurrentUi,Mode=TwoWay,Converter={StaticResource doublekeep}}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="2" Margin="2,0,0,2" Background="#242e3b">
@@ -274,9 +276,9 @@
                             <Viewbox Grid.Row="5" Margin="5">
                                 <TextBlock Style="{StaticResource TextBlockPriview}" >目标频率</TextBlock>
                             </Viewbox>
-                            <TextBox Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="2,0"></TextBox>
+                            <TextBox Text="{Binding VolateNeed,Mode=TwoWay}" Grid.Row="1" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="2,0"></TextBox>
                             <TextBox Grid.Row="3"  VerticalAlignment="Center" TextAlignment="Right" Grid.Column="1" Margin="2,0"></TextBox>
-                            <TextBox Grid.Row="5" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="2,0"></TextBox>
+                            <TextBox Grid.Row="5" Text="{Binding Fre,Mode=TwoWay}" VerticalAlignment="Center" TextAlignment="Right"  Grid.Column="1" Margin="2,0"></TextBox>
                         </Grid>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -284,7 +286,7 @@
                                 <RowDefinition Height="3.5*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Button Grid.Row="1" Name="buttonauto" Style="{StaticResource Redbutton}" Width="{Binding ElementName=buttonauto, Path=ActualHeight }" >
+                            <Button Grid.Row="1" Name="buttonauto" Style="{StaticResource Redbutton}" Width="{Binding ElementName=buttonauto, Path=ActualHeight }"  Command="{s:Action ConfireOutVolate}">
                                 <Viewbox Margin="-10">
                                     <StackPanel>
                                         <TextBlock  Foreground="White" Style="{StaticResource TextBlockPriview}"></TextBlock>
@@ -315,12 +317,15 @@
                             <RowDefinition Height="5*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid Background="Azure">
-                            <Viewbox HorizontalAlignment="Left" >
-                                <TextBlock HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#2070ea" VerticalAlignment="Center"   >▌手动调压</TextBlock>
-                            </Viewbox>
+                            <DockPanel>
+                                <Viewbox HorizontalAlignment="Left" >
+                                    <TextBlock HorizontalAlignment="Left"  FontWeight="Bold" Foreground="#2070ea" VerticalAlignment="Center"   >▌手动调压</TextBlock>
+                                </Viewbox>
+                            </DockPanel>
+
                         </Grid>
                         <Grid Grid.Row="1" Background="White">
-                            <Grid Grid.Column="0">
+                            <Grid Grid.Column="0" IsEnabled="False">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -400,32 +405,32 @@
                                 <RowDefinition Height="2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Button Grid.Column="1" BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="1" BorderThickness="0" Margin="3" Grid.Row="1" Command="{s:Action AddFre}" CommandParameter="+10"  Style="{StaticResource CommanButton}">
                                 <Viewbox>
                                     <TextBlock Style="{StaticResource TextBlockPriview}">+10.0Hz</TextBlock>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Command="{s:Action AddFre}" CommandParameter="+1.0" Style="{StaticResource CommanButton}">
                                 <Viewbox>
                                     <TextBlock Style="{StaticResource TextBlockPriview}">+1.0Hz</TextBlock>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="5"  BorderThickness="0" Margin="3" Command="{s:Action AddFre}" CommandParameter="+0.1" Grid.Row="1" Style="{StaticResource CommanButton}">
                                 <Viewbox>
-                                    <TextBlock Style="{StaticResource TextBlockPriview}">+0.1Hz</TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}" >+0.1Hz</TextBlock>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="1"   BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="1"   BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddFre}" CommandParameter="-10"  Style="{StaticResource CommanButton}">
                                 <Viewbox>
                                     <TextBlock Style="{StaticResource TextBlockPriview}">-10.0Hz</TextBlock>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="3"   BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="3"   BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddFre}" CommandParameter="-1"  Style="{StaticResource CommanButton}">
                                 <Viewbox>
                                     <TextBlock Style="{StaticResource TextBlockPriview}">-1.0Hz</TextBlock>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="5" BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                            <Button Grid.Column="5" BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddFre}" CommandParameter="-0.1" Style="{StaticResource CommanButton}">
                                 <Viewbox>
                                     <TextBlock Style="{StaticResource TextBlockPriview}">-0.1Hz</TextBlock>
                                 </Viewbox>
@@ -458,14 +463,19 @@
                             <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox  Grid.Row="1" x:Name="vb" VerticalAlignment="Center"  Grid.Column="1" TextAlignment="Right"></TextBox>
-                        <Button Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                        <TextBox  Grid.Row="0" x:Name="vb" VerticalAlignment="Center"  Grid.Column="1" TextAlignment="Right"></TextBox>
+                        <Button Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="0" Style="{StaticResource CommanButton}">
                             <Viewbox>
                                 <TextBlock Margin="0,2" Style="{StaticResource TextBlockPriview}" >启动计时
-                                
+
                                 </TextBlock>
                             </Viewbox>
                         </Button>
+                        <ListBox Grid.Row="1" BorderThickness="1"  BorderBrush="Blue" Grid.RowSpan="2" ItemsSource="{Binding HideList,UpdateSourceTrigger=PropertyChanged}" Margin="5" Grid.ColumnSpan="4">
+
+                        </ListBox>
+
+
                     </Grid>
                 </Grid>
 

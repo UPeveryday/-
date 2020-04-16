@@ -10,9 +10,9 @@ namespace PortableEquipment.Servers.CommunicationProtocol
     {
         StataTwo ReadStataTwo();
         Task<StataThree> ReadStataThree();
-
+        Task<StataThree> ReadStataThree(int num);
         Task<bool> SetTestPra(TestKind testKind, byte ClickNum);
-        string GetCgfVolate();
+        Task<string> GetCgfVolate();
         Task<bool> ThicknessAdjustable(bool Adjustt);
     }
 

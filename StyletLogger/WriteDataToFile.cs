@@ -104,16 +104,24 @@ namespace PortableEquipment.StyletLogger
             //将待写的入数据从字符串转换为字节数组  
             Encoding encoder = Encoding.UTF8;
             byte[] bytes = encoder.GetBytes(Content);
+            try
+            {
+                // fs = File.Open(filePath, FileMode.Append, FileAccess.ReadWrite);
+                fs = File.OpenWrite(filePath);
+                //设定书写的開始位置为文件的末尾  
+                fs.Position = fs.Length;
+                //将待写入内容追加到文件末尾
+                fs.Write(bytes, 0, bytes.Length);
+                fs.Dispose();
+                //fs.Flush();
+                //fs.Close();
+            }
+            catch 
+            {
+                if (fs != null)
+                    fs.Dispose();
+            }
 
-            // fs = File.Open(filePath, FileMode.Append, FileAccess.ReadWrite);
-            fs = File.OpenWrite(filePath);
-            //设定书写的開始位置为文件的末尾  
-            fs.Position = fs.Length;
-            //将待写入内容追加到文件末尾
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Dispose();
-            //fs.Flush();
-            //fs.Close();
         }
         /// <summary>
         /// 指定位置插入

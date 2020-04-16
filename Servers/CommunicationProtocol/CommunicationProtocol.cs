@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PortableEquipment.Servers.CommunicationProtocol
 {
@@ -15,6 +16,8 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         public StyletLogger.ILogger _logger;
         [Inject]
         public IParsingdata _parsingdata;
+        [Inject]
+        public Xmldata.IXmlconfig _xmlconfig;
         public StataTwo ReadStataTwo()
         {
             var rec = new byte[34];
@@ -38,20 +41,37 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         }
         public async Task<StataThree> ReadStataThree()
         {
+            Models.StaticFlag.UI_FRESH = false;
+            await Task.Delay(10);
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
-            var rec = new byte[53];
+            var rec = new byte[53]; int i = 0;
             try
             {
-                await Task.Run(() => { int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100); });
+            p: await Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 1000);
+            });
                 if (rec[0] == 0xda && rec[1] == 0xda)
-                    return _parsingdata.ParsingThree(rec);
+                {
+                    var ret = _parsingdata.ParsingThree(rec);
+                    if (ret.Checked)
+                    {
+                        Models.StaticFlag.UI_FRESH = true;
+                        return ret;
+                    }
+                }
                 else
-                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析ReadStataThree数据头出错");
+                {
+                    if (++i < 50)
+                        goto p;
+                }
             }
             catch
             {
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
+            Models.StaticFlag.UI_FRESH = true;
             return new StataThree { Checked = false };
         }
         /// <summary>
@@ -81,12 +101,12 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 if (testKind == TestKind.ControlsFreUp)
                 {
                     TestKindByte = 0x02;
-                    Mark = 0x01;
+                    Mark = 0x03;
                 }
                 if (testKind == TestKind.ControlsFreDown)
                 {
                     TestKindByte = 0x02;
-                    Mark = 0x02;
+                    Mark = 0x04;
                 }
                 if (testKind == TestKind.Setting)
                 {
@@ -104,7 +124,11 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                     Mark = 0x07;
                 }
                 byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
-                await Task.Run(() => { Comport.Serial.upserialport.SendCommand(sendc, ref rec, 1000); });
+                await Task.Run(() =>
+                {
+                    Thread.Sleep(200);
+                    Comport.Serial.upserialport.SendCommand(sendc, ref rec, 10000);
+                });
                 if (rec[0] == 0xaa && rec[1] == Mark)
                     return true;
                 return false;
@@ -117,32 +141,40 @@ namespace PortableEquipment.Servers.CommunicationProtocol
 
         }
 
-        public string GetCgfVolate()
+        public async Task<string> GetCgfVolate()
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[100];
             try
             {
-                int recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 100);
+                int recnum = 0;
+            Start: await Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 1000);
+            });
                 if (recnum > 1)
                     return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?", "");
                 else
+                {
                     _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
+                    goto Start;
+                }
             }
             catch
             {
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
-            return null;
+            return string.Empty;
         }
 
         public async Task<bool> ThicknessAdjustable(bool Adjustt)
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[2];
-            byte[] comman = new byte[2];
-            if (Adjustt) comman = new byte[] { 0xA5, 0x08 };
-            else comman = new byte[] { 0xA5, 0x09 };
+            byte[] comman = new byte[3];
+            if (Adjustt) comman = new byte[] { 0xA5, 0x08, 0xAD };
+            else comman = new byte[] { 0xA5, 0x09, 0xAE };
             try
             {
                 await Task.Run(() =>
@@ -162,6 +194,36 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "粗细条异常");
             }
             return false;
+        }
+
+        public async Task<StataThree> ReadStataThree(int num)
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[53]; int i = 0;
+            try
+            {
+            p: await Task.Run(() =>
+            {
+                Thread.Sleep(200);
+                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 1000);
+            });
+                if (rec[0] == 0xda && rec[1] == 0xda)
+                {
+                    var ret = _parsingdata.ParsingThree(rec);
+                    if (ret.Checked)
+                        return ret;
+                }
+                else
+                {
+                    if (++i < 50)
+                        goto p;
+                }
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
+            }
+            return new StataThree { Checked = false };
         }
     }
     public enum TestKind
