@@ -47,7 +47,6 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("正在开始调压中...");
-                ConfirePowerStata();
                 if (await _setVolate.SettindVolate(volate, _communicationProtocol, _xmlconfig))
                 {
                     AddHideList("调压至 " + volate + "成功");
@@ -65,13 +64,36 @@ namespace PortableEquipment.ViewModels
             TestStata = false;
 
         }
+
+        public async Task ChnageHighVolate(double volate)
+        {
+            if (!TestStata)
+            {
+                TestStata = true;
+                AddHideList("正在开始调压中...");
+                if (await _setVolate.SettindHighVolate(volate, _communicationProtocol, _xmlconfig))
+                {
+                    AddHideList("调压至 " + volate + "kV成功");
+                }
+                else
+                {
+                    AddHideList("调压至 " + volate + "kV失败");
+                }
+            }
+            else
+            {
+                AddHideList("处于调压模式中，无法开始调压");
+            }
+            AddHideList("调压至 " + volate + "kV已结束");
+            TestStata = false;
+
+        }
         public async Task ChnageFre(double fre)
         {
             if (!TestStata)
             {
                 TestStata = true;
                 AddHideList("正在开始调频率中...");
-                await ConfirePowerStata();
                 if (await _setVolate.SettingFre(fre, _communicationProtocol))
                 {
                     AddHideList("调频率至 " + fre + "成功");
@@ -89,12 +111,9 @@ namespace PortableEquipment.ViewModels
         }
         public async void ConfireOutVolate()
         {
+            await ChnageHighVolate(VolateNeed);
             await ChnageVolate(VolateNeed);
-            await ChnageFre(Fre);
-
-            //var p =await _communicationProtocol.ThicknessAdjustable(true);
-            //int a = 0;
-
+            //await ChnageFre(Fre);
         }
         public void Handle(OutTestResult message)
         {
@@ -159,17 +178,6 @@ namespace PortableEquipment.ViewModels
             if (HideList == null)
                 HideList = new BindableCollection<string>();
             HideList.Insert(0, DateTime.Now.ToString() + " :" + content);
-        }
-        private async Task ConfirePowerStata()
-        {
-            AddHideList("正在确认电源状态...");
-            if (!PowerStata)
-            {
-                PowerStata = await _communicationProtocol.SetTestPra(TestKind.Start, 2);
-                await Task.Delay(6500);
-                PowerStata = true;
-            }
-            AddHideList("电源状态确认完成");
         }
         #endregion
     }

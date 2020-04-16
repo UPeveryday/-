@@ -9,5 +9,6 @@ namespace PortableEquipment.Models
     public static class StaticFlag
     {
         public static bool UI_FRESH = true;
+        public static bool CFG_FRESH = true;
     }
 }

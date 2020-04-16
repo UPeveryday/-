@@ -49,8 +49,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
             p: await Task.Run(() =>
             {
-                Thread.Sleep(200);
-                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 1000);
+                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 20);
             });
                 if (rec[0] == 0xda && rec[1] == 0xda)
                 {
@@ -126,7 +125,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
                 await Task.Run(() =>
                 {
-                    Thread.Sleep(200);
                     Comport.Serial.upserialport.SendCommand(sendc, ref rec, 10000);
                 });
                 if (rec[0] == 0xaa && rec[1] == Mark)
@@ -150,8 +148,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 int recnum = 0;
             Start: await Task.Run(() =>
             {
-                Thread.Sleep(200);
-                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 1000);
+                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 20);
             });
                 if (recnum > 1)
                     return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?", "");
@@ -168,6 +165,39 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             return string.Empty;
         }
 
+        public async Task<double> GetCgfVolateDouble()
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[100];
+            Models.StaticFlag.UI_FRESH = false;
+            try
+            {
+                int recnum = 0;
+            Start: await Task.Run(() =>
+            {
+                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 1);
+            });
+                if (recnum > 1)
+                {
+                    Models.StaticFlag.UI_FRESH = true;
+                    return System.Convert.ToDouble(Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?", ""));
+
+                }
+                else
+                {
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
+                    goto Start;
+                }
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
+            }
+            Models.StaticFlag.UI_FRESH = true;
+            return -1;
+        }
+
+
         public async Task<bool> ThicknessAdjustable(bool Adjustt)
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
@@ -179,7 +209,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
                 await Task.Run(() =>
                 {
-                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 1000);
                 });
                 if (rec[0] == 0xAA && rec[1] == 0x05)
                     return true;
@@ -204,8 +234,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
             p: await Task.Run(() =>
             {
-                Thread.Sleep(200);
-                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 1000);
+                int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
             });
                 if (rec[0] == 0xda && rec[1] == 0xda)
                 {
@@ -224,6 +253,33 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
             return new StataThree { Checked = false };
+        }
+
+        public async Task<bool> GetPowerStata()
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[1];
+            byte[] comman = new byte[3] { 0xa5, 0x0a, 0xaf };
+            try
+            {
+                await Task.Run(() =>
+                {
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (rec[0] == 0xAA)
+                    return true;
+                else if (rec[0] == 0xAB)
+                    return false;
+                else
+                {
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "获取电源状态指令异常");
+                }
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "获取电源状态异常");
+            }
+            return false;
         }
     }
     public enum TestKind

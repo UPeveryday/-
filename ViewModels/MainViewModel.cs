@@ -107,12 +107,12 @@ namespace PortableEquipment.ViewModels
             {
                 while (true)
                 {
-                    if (StaticFlag.UI_FRESH)
+                    if (StaticFlag.CFG_FRESH)
                     {
                         var cgddata = await _communicationProtocol.GetCgfVolate();
                         if (cgddata != string.Empty)
                             _eventAggregator.Publish(cgddata);
-                        Thread.Sleep(System.Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                        Thread.Sleep(100);
                     }
                 }
             }, TaskCreationOptions.LongRunning);

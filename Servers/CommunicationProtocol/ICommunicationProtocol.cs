@@ -14,6 +14,8 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         Task<bool> SetTestPra(TestKind testKind, byte ClickNum);
         Task<string> GetCgfVolate();
         Task<bool> ThicknessAdjustable(bool Adjustt);
+        Task<bool> GetPowerStata();
+        Task<double> GetCgfVolateDouble();
     }
 
     public struct StataTwo

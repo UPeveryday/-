@@ -118,7 +118,7 @@
                                     </Grid>
                                 </Grid>
                                 <Viewbox Grid.Column="2" Grid.RowSpan="2">
-                                    <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding UVolateUi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#df0404"></TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding UVolateUi,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doublekeep}}" Foreground="#df0404"></TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>

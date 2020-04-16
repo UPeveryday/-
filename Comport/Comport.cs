@@ -576,8 +576,8 @@ namespace PortableEquipment.Comport
 
                     }
                     ReceiveEventFlag = false;      //打开事件
-                    LoggerRunning.WriterByStatic(SendData, true);
-                    LoggerRunning.WriterByStatic(ReceiveData, false);
+                    //LoggerRunning.WriterByStatic(SendData, true);
+                    //LoggerRunning.WriterByStatic(ReceiveData, false);
                     return ret;
 
                 }

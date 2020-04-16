@@ -1,4 +1,5 @@
 ﻿using PortableEquipment.Servers.CommunicationProtocol;
+using StyletIoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,17 @@ namespace PortableEquipment.Servers.CHangeVolate
 {
     public class SetVolate : ISetVolate
     {
+
         private async Task<TestKind> GetUpOrdownAsync(double volate, ICommunicationProtocol _communicationProtocol)
         {
             if (volate - (await _communicationProtocol.ReadStataThree()).AVolate > 0)
+                return TestKind.ControlsVolateUP;
+            else
+                return TestKind.ControlsVolateDown;
+        }
+        private async Task<TestKind> GetUpOrdownHighAsync(double volate, ICommunicationProtocol _communicationProtocol)
+        {
+            if (volate - (await _communicationProtocol.GetCgfVolateDouble()) > 0)
                 return TestKind.ControlsVolateUP;
             else
                 return TestKind.ControlsVolateDown;
@@ -27,21 +36,14 @@ namespace PortableEquipment.Servers.CHangeVolate
         }
         public async Task<bool> SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
         {
+            await ControlsPowerStata(true, _communicationProtocol);
             await Task.Delay(100); int i = 0;
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
         here: while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) >= 10)
             {
-                double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 10;
                 if (await _communicationProtocol.ThicknessAdjustable(true))
                 {
-                    while ((int)tpd >= 1)
-                    {
-                        if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
-                        {
-                            tpd -= tpd * 0.5;
-                            //await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
-                        }
-                    }
+                    await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), 1);
                 }
             }
 
@@ -49,23 +51,14 @@ namespace PortableEquipment.Servers.CHangeVolate
             {
                 if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
                 {
-                    double tpd = Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / 1;
                     if (await _communicationProtocol.ThicknessAdjustable(false))
                     {
-                        while ((int)tpd >= 1)
-                        {
-                            if (await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), GetTpd(tpd)))
-                            {
-                                tpd -= tpd * 0.5;
-                               // await Task.Delay(Convert.ToInt32(_xmlconfig.GetAddNodeValue("SetPraJg")));
-                            }
-                        }
+                        await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), 1);
                     }
                 }
                 else
                     break;
             }
-
             if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
             {
                 if (++i > TimeOver)
@@ -75,8 +68,50 @@ namespace PortableEquipment.Servers.CHangeVolate
             return true;
         }
 
+
+        public async Task<bool> SettindHighVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
+        {
+            if (voltage == 0) voltage = 0.1;
+            await ControlsPowerStata(true, _communicationProtocol);
+            await Task.Delay(100); int i = 0;
+            double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeedHighdouble"));
+        here: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 0.5)
+            {
+                if (await _communicationProtocol.ThicknessAdjustable(true))
+                {
+                    var p = await GetUpOrdownHighAsync(voltage, _communicationProtocol);
+                    await _communicationProtocol.SetTestPra(p, 1);
+                }
+            }
+
+            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 0.5)
+            {
+                if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
+                {
+                    if (await _communicationProtocol.ThicknessAdjustable(false))
+                    {
+                        await _communicationProtocol.SetTestPra(await GetUpOrdownHighAsync(voltage, _communicationProtocol), 1);
+                    }
+                }
+                else
+                    break;
+            }
+            if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) > 0.1 || Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
+            {
+                if (++i > TimeOver)
+                    return false;
+                goto here;
+            }
+            else
+                return true;
+        }
+
+
+
+
         public async Task<bool> SettingFre(double Fre, ICommunicationProtocol _communicationProtocol, int TimeOver = 5)
         {
+            await ControlsPowerStata(true, _communicationProtocol);
             await Task.Delay(100); int i = 0;
         Here: while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) >= 1)
             {
@@ -115,7 +150,33 @@ namespace PortableEquipment.Servers.CHangeVolate
             }
         }
 
-
+        public async Task<bool> ControlsPowerStata(bool Open, ICommunicationProtocol _communicationProtocol)
+        {
+            if (Open)
+            {
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    return true;
+                }
+                else
+                {
+                    await _communicationProtocol.SetTestPra(TestKind.Start, 2);
+                    await Task.Delay(7000);
+                    return await _communicationProtocol.GetPowerStata();
+                }
+            }
+            else
+            {
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    return await _communicationProtocol.SetTestPra(TestKind.Stop, 2);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
 
     }
 }
