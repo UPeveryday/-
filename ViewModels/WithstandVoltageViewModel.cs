@@ -94,6 +94,8 @@ namespace PortableEquipment.ViewModels
             TransformerDataStep transformerData = new TransformerDataStep();
             transformerData.Stepname = name;
             transformerData.TestTime = time;
+            if (name == "C")
+                transformerData.TestTime =Math.Round( (120 * (50 / Frequency) / 60),2);
             transformerData.TestVolate = Math.Round(needs * Um / Math.Sqrt(3), 2);
             return transformerData;
         }
@@ -156,7 +158,7 @@ namespace PortableEquipment.ViewModels
     public class TransformerDataStep
     {
         public string Stepname { get; set; }
-        public int TestTime { get; set; }
+        public double TestTime { get; set; }
         public double TestVolate { get; set; }
     }
 

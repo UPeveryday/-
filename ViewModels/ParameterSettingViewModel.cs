@@ -267,26 +267,52 @@ namespace PortableEquipment.ViewModels
             set { _ratadvolateselectindex = value; }
         }
 
-        public bool HighOverVolateCheck { get; set; } = true;
-        public bool LowOverVolateCheck { get; set; } = false;
-
         private double _OutgoingTestVoltage;
-
         public double OutgoingTestVoltage
         {
             get { return _OutgoingTestVoltage; }
             set
             {
                 _OutgoingTestVoltage = value;
+                HighOverVolate = value;
                 if (VariableThan != 0)
-                    TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)), 2);
+                {
+                    if (HighOrLow == 0)
+                        TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)) * 0.8, 2);
+                    else
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8,2);
+                }
             }
         }
+        private int _highorlow = 0;
+        public int HighOrLow
+        {
+            get { return _highorlow; }
+            set
+            {
+                _highorlow = value;
+                if(_highorlow==0)
+                {
+                    if (VariableThan != 0)
+                    {
+                        TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)) * 0.8, 2);
+                    }
+                }
+                else
+                {
+                    if (VariableThan != 0)
+                    {
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8,2);
+                    }
+                }
+            }
+        }
+
         public DetectionType detectionType
         {
             get
             {
-                if (HighOverVolateCheck) return DetectionType.HighpressureResistanceTest;
+                if (HighOrLow == 1) return DetectionType.HighpressureResistanceTest;
                 else return DetectionType.LowessureResistanceTest;
             }
         }
@@ -303,7 +329,12 @@ namespace PortableEquipment.ViewModels
             {
                 _VariableThan = value;
                 if (_VariableThan != 0)
-                    TestVoltage = Math.Round(_OutgoingTestVoltage / (_VariableThan * (1 + Promotion)), 2);
+                {
+                    if (HighOrLow == 0)
+                        TestVoltage = Math.Round(_OutgoingTestVoltage / (_VariableThan * (1 + Promotion)) * 0.8, 2);
+                    else
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8);
+                }
             }
         }
 

@@ -483,12 +483,12 @@
         </Grid>
 
         <Grid Grid.RowSpan="2">
-            <materialDesign:DrawerHost  HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" BorderBrush="{DynamicResource MaterialDesignDivider}">
+            <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Bottom" BorderThickness="0"  IsBottomDrawerOpen="{Binding OpenOrclose}" >
                 <materialDesign:DrawerHost.BottomDrawerContent>
-                    <StackPanel Orientation="Horizontal">
-                        <ListBox  Width="400" BorderBrush="Blue" ItemsSource="{Binding HideList,UpdateSourceTrigger=PropertyChanged}" Margin="5">
+                    <StackPanel Orientation="Horizontal"  Background="#207099">
+                        <ListBox  Background="#207099"  Width="400"  BorderBrush="Blue" Foreground="White" ItemsSource="{Binding HideList,UpdateSourceTrigger=PropertyChanged}" Margin="5">
                         </ListBox>
-                        <Button HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"   CommandParameter="{x:Static Dock.Bottom}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
+                        <Button HorizontalAlignment="Right" Foreground="White" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"   CommandParameter="{x:Static Dock.Bottom}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
                             CLOSE THIS
                         </Button>
                     </StackPanel>

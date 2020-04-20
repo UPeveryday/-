@@ -120,10 +120,11 @@ namespace PortableEquipment.ViewModels
 
         public void SaveTestResult()
         {
-            _mutualTranslator.Chartvalues = TanEleVolatevalue; 
-            _mutualTranslator.LcDatagrid = LcDatagrid;
-            //处理其他结果
-            _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
+            OpenOrclose = true;
+            //_mutualTranslator.Chartvalues = TanEleVolatevalue; 
+            //_mutualTranslator.LcDatagrid = LcDatagrid;
+            ////处理其他结果
+            //_sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
         }
         #endregion
 
@@ -133,6 +134,9 @@ namespace PortableEquipment.ViewModels
         static CancellationTokenSource tokenSource = new CancellationTokenSource();
         CancellationToken token = tokenSource.Token;
         ManualResetEvent resetEvent = new ManualResetEvent(true);
+
+        public bool OpenOrclose { get;  set; }
+
         public async Task TestPressureVolate(MutualTranslator mutualTranslator)
         {
             Flag = Flag.RunningPressure;
@@ -289,6 +293,8 @@ namespace PortableEquipment.ViewModels
         public double KeepTestTime { get; set; }
 
         public bool IsTopDrawerOpen { get; set; } = false;
+
+        public string HideText { get; set; } = "保存成功";
 
         #endregion
     }

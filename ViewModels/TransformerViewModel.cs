@@ -103,7 +103,7 @@ namespace PortableEquipment.ViewModels
             DatagridTestData.Clear();
             for (int i = 0; i < data.Length; i++)
             {
-                for (int j = 0; j < data[i].TestTime / 5; j++)
+                for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
                 {
                     Addtestdata(data[i].Stepname, ((j + 1) * 5).ToString(), data[i].TestVolate.ToString());
                 }
@@ -116,7 +116,7 @@ namespace PortableEquipment.ViewModels
             int headnum = 0;
             for (int i = 0; i < currentvolateIndex; i++)
             {
-                for (int j = 0; j < transformerDataStep[i].TestTime / 5; j++)
+                for (int j = 0; j < (int)(transformerDataStep[i].TestTime / 5); j++)
                 {
                     headnum++;
                 }
@@ -279,10 +279,11 @@ namespace PortableEquipment.ViewModels
                     {
                         for (int i = 0; i < data.Length; i++)
                         {
-                             await _setVolate.SettindVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig);
-                            for (int j = 0; j < data[i].TestTime / 5; j++)
+                            // await _setVolate.SettindVolate(data[i].TestVolate * 1000 / 125, _communicationProtocol, _xmlconfig);
+
+                            for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
                             {
-                                for (int pi = 0; pi < 5; pi++)
+                                for (int pi = 0; pi < 5; pi++)//data[i].TestTime * 60
                                 {
                                     if (token.IsCancellationRequested)
                                     {
@@ -290,13 +291,13 @@ namespace PortableEquipment.ViewModels
                                         return;
                                     }
                                     resetEvent.WaitOne();
-                                    await Task.Delay(1000);
+                                    await Task.Delay(100);
                                 }
                                 AddTestData(TestPra, i, (j + 1) * 5, TestPosition);
                             }
                             if (data[i].TestTime % 5 != 0)
                             {
-                                for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
+                                for (int pi = 0; pi < 6; pi++)//(data[i].TestTime % 5) * 60
                                 {
                                     if (token.IsCancellationRequested)
                                     {
@@ -304,7 +305,7 @@ namespace PortableEquipment.ViewModels
                                         return;
                                     }
                                     resetEvent.WaitOne();
-                                    await Task.Delay(1000);
+                                    await Task.Delay(100);
                                 }
                                 AddTestData(TestPra, i, data[i].TestTime, TestPosition);
                             }
@@ -370,7 +371,10 @@ namespace PortableEquipment.ViewModels
         public string Stepname { get; set; }
         public string TestVoltage { get; set; }
         public string TestTime { get; set; }
+        //U局放
         public string UVoltage { get; set; }
+        //V局放
+
         public string VVoltage { get; set; }
         public string WVoltage { get; set; }
     }

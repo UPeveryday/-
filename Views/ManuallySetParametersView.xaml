@@ -84,10 +84,10 @@
             </Viewbox>
 
             <Viewbox  Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2">
-                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=1}" VerticalAlignment="Center">大电流模式：0—250V   40A</RadioButton>
+                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=1}" VerticalAlignment="Center">大电流模式：0—190V   30A</RadioButton>
             </Viewbox>
             <Viewbox  Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">
-                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=2}" VerticalAlignment="Center">小电流模式：0—500V   20A</RadioButton>
+                <RadioButton  HorizontalAlignment="Center" GroupName="2" IsChecked="{Binding CurrentKindNum,Mode=TwoWay,Converter={StaticResource CheckConverter},ConverterParameter=2}" VerticalAlignment="Center">小电流模式：0—380V   15A</RadioButton>
             </Viewbox>
             <Grid Grid.Row="3" Grid.Column="0">
                 <Grid.ColumnDefinitions>

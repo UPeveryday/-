@@ -87,7 +87,7 @@ namespace PortableEquipment.Servers.CHangeVolate
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeedHighdouble"));
             double Abs = Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs"));
             await _communicationProtocol.ThicknessAdjustable(true);
-        here: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 0.5)
+        here: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 2)
             {
                 var needchangecgf = voltage - await _communicationProtocol.GetCgfVolateDouble();
                 if (needchangecgf > 0)
@@ -102,7 +102,7 @@ namespace PortableEquipment.Servers.CHangeVolate
                 }
             }
             await _communicationProtocol.ThicknessAdjustable(false);
-            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 0.5)
+            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 2)
             {
                 if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
                 {

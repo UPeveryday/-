@@ -71,7 +71,7 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("正在开始调压中...");
-                if (await _setVolate.SettindHighVolateByLow(VolateNeed, _communicationProtocol, _xmlconfig))
+                if (await _setVolate.SettindHighVolate(VolateNeed, _communicationProtocol, _xmlconfig))
                 {
                     AddHideList("调压至 " + volate + "kV成功");
                 }
@@ -111,13 +111,16 @@ namespace PortableEquipment.ViewModels
         }
         public async void ConfireOutVolate()
         {
+            OpenOrclose = true;
+            AddHideList("开始试验...");
 
             //   await ChnageVolate(VolateNeed);
             //  await _setVolate.SetVolatedata(VolateNeed, _communicationProtocol, _xmlconfig);
             await ChnageHighVolate(VolateNeed);
-            AddHideList("success");
             //await ChnageVolate(VolateNeed);
             //await ChnageFre(Fre);ed
+            AddHideList("试验已结束...");
+            OpenOrclose = false;
         }
         public void Handle(OutTestResult message)
         {

@@ -254,8 +254,10 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">出厂试验电压</TextBlock>
                         </Grid>
-                        <RadioButton  Grid.Row="1" Grid.Column="3" Margin="7,2" GroupName="Same" IsChecked="{Binding LowOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Content="低压耐压检测"></RadioButton>
-                        <RadioButton  Grid.Row="1" Grid.Column="2"  Margin="7,2" GroupName="Same"  IsChecked="{Binding HighOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Content="高压耐压检测"></RadioButton>
+                        <ComboBox HorizontalContentAlignment="Center" BorderThickness="0" Margin="10,0,3,1" Grid.Row="1" SelectedIndex="{Binding HighOrLow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" FontFamily="14" Grid.ColumnSpan="2">
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontFamily="14">低压耐压检测</ComboBoxItem>
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontFamily="14">高压耐压检测</ComboBoxItem>
+                        </ComboBox>
                         <Grid Grid.Row="3" Grid.Column="1" >
                             <TextBox Margin="3"  BorderThickness="1"  Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
