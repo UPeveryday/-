@@ -64,7 +64,7 @@ namespace PortableEquipment.Servers.SqlDeel
                     Tester = testmessage.Tester,
                     TestKind = "互感器试验",
                     DateTime = testmessage.DateTime,
-                    Parameters = _jsondeel.GetJsonByclass(testmessage)
+                    Parameters = _jsondeel.GetJsonByclass(testmessage),
                 };
                 entityServer.EfModel.MutualTranslators.Add(trs);
                 entityServer.EfModel.SaveChanges();

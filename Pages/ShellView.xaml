@@ -13,7 +13,7 @@
     <!--<TabControl    Style="{StaticResource StyletConductorItemsControl}">
     </TabControl>-->
     <!--<ContentControl s:View.Model="{Binding ActiveItem}"> </ContentControl>-->
-    
+
     <!--<Grid >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -45,55 +45,35 @@
     </Grid>-->
     <Grid>
 
-        <Button Height="40" Width="120" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
+        <!--<Button Height="40" Width="120" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
             <Button.CommandParameter>
-                <!-- the simplest view model of all, a DateTime. the view can be found in the resources of MainWindow.xaml  -->
+                -->
+        <!-- the simplest view model of all, a DateTime. the view can be found in the resources of MainWindow.xaml  -->
+        <!--
                 <system:DateTime xmlns:system="clr-namespace:System;assembly=mscorlib">
                     1966-JUL-30
                 </system:DateTime>
             </Button.CommandParameter>
             PASS MODEL
         </Button>
-        <Button  Height="40" Width="120"  HorizontalAlignment="Left"></Button>
+        <Button  Height="40" Width="120"  HorizontalAlignment="Left"></Button>-->
 
-        <!--<materialDesign:DrawerHost
-  Margin="64"
-  HorizontalAlignment="Center"
-  VerticalAlignment="Center"
-  BorderThickness="0"
-            IsTopDrawerOpen="{Binding OpenOrclose}"
-  BorderBrush="{DynamicResource MaterialDesignDivider}">
+        <materialDesign:DrawerHost Margin="64" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" BorderBrush="{DynamicResource MaterialDesignDivider}">
             <materialDesign:DrawerHost.TopDrawerContent>
-                <StackPanel
-      Margin="16"
-      HorizontalAlignment="Center"
-      Orientation="Horizontal">
-                    <TextBlock
-        Margin="4"
-        VerticalAlignment="Center">
-      TOP BANANA
-                    </TextBlock>
-                    <Button
-        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-        Style="{DynamicResource MaterialDesignFlatButton}"
-        Margin="4"
-        VerticalAlignment="Center">
+                <StackPanel  Margin="16" HorizontalAlignment="Center"  Orientation="Horizontal">
+                    <TextBlock  Margin="4" VerticalAlignment="Center"> TOP BANANA</TextBlock>
+                    <Button  Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" Style="{DynamicResource MaterialDesignFlatButton}"    Margin="4"  VerticalAlignment="Center">
                         CLOSE ALL
                     </Button>
-                    <Button
-        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-        CommandParameter="{x:Static Dock.Top}"
-        Style="{DynamicResource MaterialDesignFlatButton}"
-        Margin="4"
-        VerticalAlignment="Center">
+                    <Button  Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"   CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
                         CLOSE THIS
                     </Button>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
-        </materialDesign:DrawerHost>-->
-      
+        </materialDesign:DrawerHost>
 
-       
+
+
 
 
         <!--<materialDesign:DialogHost  IsOpen="{Binding OpenOrclose}">
@@ -134,7 +114,7 @@
                 <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
             </Button>
         </materialDesign:DialogHost>-->
-        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{s:Action Click}"></Button>
+        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{s:Action Click}">5555555</Button>
     </Grid>
 
 </Window>

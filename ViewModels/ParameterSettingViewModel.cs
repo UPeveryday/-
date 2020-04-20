@@ -247,10 +247,41 @@ namespace PortableEquipment.ViewModels
         #endregion
 
         #region 感应耐压
+
+        private int _ratadvolateselectindex;
+
+        public int RatadVolataSelectIndex
+        {
+            get
+            {
+                if (_ratadvolateselectindex == 0)
+                    Promotion = 0.03;
+                if (_ratadvolateselectindex == 1)
+                    Promotion = 0.04;
+                if (_ratadvolateselectindex == 2)
+                    Promotion = 0.05;
+                if (_ratadvolateselectindex == 3)
+                    Promotion = 0.08;
+                return _ratadvolateselectindex;
+            }
+            set { _ratadvolateselectindex = value; }
+        }
+
         public bool HighOverVolateCheck { get; set; } = true;
         public bool LowOverVolateCheck { get; set; } = false;
 
-        public double OutgoingTestVoltage { get; set; }
+        private double _OutgoingTestVoltage;
+
+        public double OutgoingTestVoltage
+        {
+            get { return _OutgoingTestVoltage; }
+            set
+            {
+                _OutgoingTestVoltage = value;
+                if (VariableThan != 0)
+                    TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)), 2);
+            }
+        }
         public DetectionType detectionType
         {
             get
@@ -261,9 +292,21 @@ namespace PortableEquipment.ViewModels
         }
         public double TestVoltage { get; set; }
         public double HighOverVolate { get; set; }//高压过压值
-        public double TestFre { get; set; }
-        public double TestTime { get; set; }
-        public double VariableThan { get; set; }//变比
+        public double TestFre { get; set; } = 50;
+        public double TestTime { get; set; } = 60;
+
+        private double _VariableThan = 1.0;
+        public double VariableThan
+        {
+            get { return _VariableThan; }
+            set
+            {
+                _VariableThan = value;
+                if (_VariableThan != 0)
+                    TestVoltage = Math.Round(_OutgoingTestVoltage / (_VariableThan * (1 + Promotion)), 2);
+            }
+        }
+
         public double Promotion { get; set; }//荣升系数
 
         public System.Windows.Visibility OverVolateVisibility { get; set; } = System.Windows.Visibility.Visible;

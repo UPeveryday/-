@@ -67,7 +67,6 @@ namespace PortableEquipment.ViewModels
         #region Command
         private BindableCollection<TransformerDataStep> GetdatagridData()
         {
-            var needvolate = (int)_ratavoltage;
             BindableCollection<TransformerDataStep> tempdata = new BindableCollection<TransformerDataStep>();
             tempdata.Add(GetTransformerDataStep("A", 5, 1.1));
             tempdata.Add(GetTransformerDataStep("B", 5, 1.3));
@@ -79,10 +78,23 @@ namespace PortableEquipment.ViewModels
 
         private TransformerDataStep GetTransformerDataStep(string name, int time, double needs)
         {
+            double Um = 0.00;
+            if (_ratavoltage == 10000)
+                Um = 12;
+            if (_ratavoltage == 35000)
+                Um = 40.5;
+            if (_ratavoltage == 110000)
+                Um = 126;
+            if (_ratavoltage == 220000)
+                Um = 252;
+            if (_ratavoltage == 330000)
+                Um = 363;
+            if (_ratavoltage == 500000)
+                Um = 550;
             TransformerDataStep transformerData = new TransformerDataStep();
             transformerData.Stepname = name;
             transformerData.TestTime = time;
-            transformerData.TestVolate = (int)(needs * _ratavoltage / Math.Sqrt(3));
+            transformerData.TestVolate = Math.Round(needs * Um / Math.Sqrt(3), 2);
             return transformerData;
         }
         #endregion
@@ -91,9 +103,7 @@ namespace PortableEquipment.ViewModels
     {
         #region Bindings
         public string TestId { get; set; }
-
         private double _ratavoltage;
-
         public double RatedVoltage
         {
             get { return _ratavoltage; }
@@ -103,6 +113,31 @@ namespace PortableEquipment.ViewModels
                 DatagridData = GetdatagridData();
             }
         }
+
+        private int _ratadselectindex = 1;
+
+        public int RatadvolateSelectIndex
+        {
+            get
+            {
+                if (_ratadselectindex == 0)
+                    RatedVoltage = 10000;
+                if (_ratadselectindex == 1)
+                    RatedVoltage = 35000;
+                if (_ratadselectindex == 2)
+                    RatedVoltage = 110000;
+                if (_ratadselectindex == 3)
+                    RatedVoltage = 220000;
+                if (_ratadselectindex == 4)
+                    RatedVoltage = 330000;
+                if (_ratadselectindex == 5)
+                    RatedVoltage = 500000;
+                return _ratadselectindex;
+            }
+            set { _ratadselectindex = value; }
+        }
+
+
         public string WindingGroup { get; set; }
         public double Temperature { get; set; }
         public string RatedCapacity { get; set; }

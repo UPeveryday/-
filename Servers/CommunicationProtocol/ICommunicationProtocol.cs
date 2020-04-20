@@ -16,6 +16,10 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         Task<bool> ThicknessAdjustable(bool Adjustt);
         Task<bool> GetPowerStata();
         Task<double> GetCgfVolateDouble();
+
+        Task<int> SwitchThincness(bool open, ICommunicationProtocol _communicationProtocol);
+
+        Task<bool> PressThincness();
     }
 
     public struct StataTwo

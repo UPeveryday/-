@@ -15,10 +15,10 @@ using System.Windows;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>,IHandle<OutTestResult>,IHandle<string>
+    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>, IHandle<OutTestResult>, IHandle<string>
     {
         #region 
-    public IEventAggregator _eventAggregator;
+        public IEventAggregator _eventAggregator;
         private MutualTranslator _mutualTranslator;
         [Inject]
         Servers.SqlDeel.ISqlHelp _sqlHelp;
@@ -30,13 +30,17 @@ namespace PortableEquipment.ViewModels
         public Servers.Xmldata.IXmlconfig _xmlconfig;
         [Inject]
         public StyletLogger.ILogger _logger;
+
+        [Inject]
+        public Servers.Json.IJsondeel _jsondeel;
         public VoltageTestViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
+            InitCreateChart();
+
 
 #if DEBUG
-            InitCreateChart();
             AddNodePoint(new Random().NextDouble(), 2);
             AddNodePoint(2, 3);
             AddNodePoint(4, 5);
@@ -51,6 +55,7 @@ namespace PortableEquipment.ViewModels
         }
         #endregion
 
+        #region Handle
         public void Handle(OutTestResult message)
         {
             if (message.stataThree.Checked)
@@ -75,6 +80,7 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
+        #endregion
     }
     public partial class VoltageTestViewModel
     {
@@ -114,6 +120,9 @@ namespace PortableEquipment.ViewModels
 
         public void SaveTestResult()
         {
+            _mutualTranslator.Chartvalues = TanEleVolatevalue; 
+            _mutualTranslator.LcDatagrid = LcDatagrid;
+            //处理其他结果
             _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
         }
         #endregion
@@ -235,7 +244,7 @@ namespace PortableEquipment.ViewModels
         /// <summary>
         /// 初始化chart表格
         /// </summary>
-        public void InitCreateChart()
+        public  void InitCreateChart()
         {
             TanEleVolatevalue = new ChartValues<ObservablePoint>();
             LineSeries t1 = new LineSeries
@@ -283,6 +292,7 @@ namespace PortableEquipment.ViewModels
 
         #endregion
     }
+    #region Pra
     public class LcdatagridColletion
     {
         public string TestNum { get; set; }
@@ -320,4 +330,6 @@ namespace PortableEquipment.ViewModels
         FinishByhand = 10
 
     }
+    #endregion
+
 }

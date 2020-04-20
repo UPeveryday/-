@@ -71,7 +71,7 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("正在开始调压中...");
-                if (await _setVolate.SettindHighVolate(volate, _communicationProtocol, _xmlconfig))
+                if (await _setVolate.SettindHighVolateByLow(VolateNeed, _communicationProtocol, _xmlconfig))
                 {
                     AddHideList("调压至 " + volate + "kV成功");
                 }
@@ -111,9 +111,13 @@ namespace PortableEquipment.ViewModels
         }
         public async void ConfireOutVolate()
         {
+
+            //   await ChnageVolate(VolateNeed);
+            //  await _setVolate.SetVolatedata(VolateNeed, _communicationProtocol, _xmlconfig);
             await ChnageHighVolate(VolateNeed);
-            await ChnageVolate(VolateNeed);
-            //await ChnageFre(Fre);
+            AddHideList("success");
+            //await ChnageVolate(VolateNeed);
+            //await ChnageFre(Fre);ed
         }
         public void Handle(OutTestResult message)
         {
@@ -172,13 +176,21 @@ namespace PortableEquipment.ViewModels
             }
             TestStata = false;
         }
-
         private void AddHideList(string content)
         {
             if (HideList == null)
                 HideList = new BindableCollection<string>();
             HideList.Insert(0, DateTime.Now.ToString() + " :" + content);
         }
+
+        public void ShowHeader(string par)
+        {
+            if (par == "Open")
+                OpenOrclose = true;
+            if (par == "Close")
+                OpenOrclose = true;
+        }
+
         #endregion
     }
 
@@ -206,6 +218,7 @@ namespace PortableEquipment.ViewModels
         public bool PowerStata { get; set; }
 
         public bool TestStata { get; set; }
+        public bool OpenOrclose { get; set; }
         #endregion
     }
 }

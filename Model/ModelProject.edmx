@@ -25,6 +25,7 @@
           <Property Name="Parameters" Type="text" />
           <Property Name="DateTime" Type="datetime" />
           <Property Name="TestKind" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestResult" Type="text" />
         </EntityType>
         <EntityType Name="Transformer">
           <Key>
@@ -122,6 +123,7 @@
           <Property Name="Parameters" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DateTime" Type="DateTime" Precision="3" />
           <Property Name="TestKind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestResult" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -173,6 +175,7 @@
           <EntitySetMapping Name="MutualTranslators">
             <EntityTypeMapping TypeName="jsModel.MutualTranslator">
               <MappingFragment StoreEntitySet="MutualTranslator">
+                <ScalarProperty Name="TestResult" ColumnName="TestResult" />
                 <ScalarProperty Name="TestKind" ColumnName="TestKind" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="Parameters" ColumnName="Parameters" />

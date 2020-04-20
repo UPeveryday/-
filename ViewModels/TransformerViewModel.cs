@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>,IHandle<string>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>
     {
         #region 依赖注入
         [Inject]
@@ -198,21 +198,27 @@ namespace PortableEquipment.ViewModels
             {
                 _isrunning = value;
                 if (_isrunning)
-                    statacolor = Brushes.LightGreen;
+                {
+                    StartTestText = "测量中...";
+                    BarVisibility = Visibility.Visible; ;
+                }
                 else
-                    statacolor = Brushes.Red;
+                {
+                    BarVisibility = Visibility.Collapsed;
+                    StartTestText = "启动测量";
+                }
             }
         }
         public bool OpenOrclose { get; set; }
+        public string StartTestText { get; set; } = "启动测量";
+        public Visibility BarVisibility { get; set; } = Visibility.Collapsed;
+
         /// <summary>
         /// 提示信息
         /// </summary>
         public string HideMessage { get; set; }
         public string AlarmText { get; set; } = "警告";
-
-        public System.Windows.Visibility CancerVisibility { get; set; } = System.Windows.Visibility.Hidden;
-
-        public Brush statacolor { get; set; } = Brushes.Red;
+        public Visibility CancerVisibility { get; set; } = Visibility.Hidden;
         #endregion
         #region 实时显示
         public double UVolateUi { get; set; }
@@ -241,7 +247,7 @@ namespace PortableEquipment.ViewModels
         CancellationToken token = tokenSource.Token;
         ManualResetEvent resetEvent = new ManualResetEvent(true);
         private Task task;
-        public async void StartAuto()
+        public async Task StartAuto()
         {
             if (tokenSource != null && task != null)
             {
@@ -273,7 +279,7 @@ namespace PortableEquipment.ViewModels
                     {
                         for (int i = 0; i < data.Length; i++)
                         {
-                            //  await _setVolate.SettindVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig);
+                             await _setVolate.SettindVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig);
                             for (int j = 0; j < data[i].TestTime / 5; j++)
                             {
                                 for (int pi = 0; pi < 5; pi++)
@@ -290,7 +296,7 @@ namespace PortableEquipment.ViewModels
                             }
                             if (data[i].TestTime % 5 != 0)
                             {
-                                for (int pi = 0; pi < 5/*(data[i].TestTime % 5) * 60*/; pi++)
+                                for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
                                 {
                                     if (token.IsCancellationRequested)
                                     {
@@ -338,10 +344,10 @@ namespace PortableEquipment.ViewModels
         {
             resetEvent.Set();
         }
-        public void CancelTest()
+        public async void CancelTest()
         {
             tokenSource.Cancel();
-            SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
+            await SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
         }
         private async Task SetDiaSata(bool openorclose, string hideMessage, System.Windows.Visibility cancerVisibility,
             string alarmText = "警告")

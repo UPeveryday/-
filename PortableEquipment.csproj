@@ -141,6 +141,7 @@
     <Compile Include="Comport\ISerialCommunication.cs" />
     <Compile Include="Convert.cs" />
     <Compile Include="Converts\CheckConverter.cs" />
+    <Compile Include="Converts\DoubleAddSi.cs" />
     <Compile Include="Converts\DoubleConvert.cs" />
     <Compile Include="Converts\KeepTwoDouble.cs" />
     <Compile Include="Dll\CvtTestDriver.cs" />

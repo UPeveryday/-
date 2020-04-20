@@ -148,13 +148,13 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 int recnum = 0;
             Start: await Task.Run(() =>
             {
-                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 20);
+                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 5);
             });
                 if (recnum > 1)
                     return Encoding.ASCII.GetString(rec.Skip(0).Take(recnum).ToArray()).Replace("F", "").Trim().Replace("?", "");
                 else
                 {
-                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
+                    //_logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "。 解析GetCgfVolate数据头出错");
                     goto Start;
                 }
             }
@@ -226,6 +226,31 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             return false;
         }
 
+
+        public async Task<bool> PressThincness()
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[2];
+            byte[] comman = new byte[3] { 0xa6, 0x01, 0xa7 };
+            try
+            {
+                await Task.Run(() =>
+                {
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (rec[0] == 0xAA && rec[1] == 0x05)
+                    return true;
+                else
+                    _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行" + "Press False");
+
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "Press异常");
+            }
+            return false;
+        }
+
         public async Task<StataThree> ReadStataThree(int num)
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
@@ -280,6 +305,73 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "获取电源状态异常");
             }
             return false;
+        }
+
+        public async Task<int> GetCurrentThickness(ICommunicationProtocol _communicationProtocol)
+        {
+            double startvolate = (await _communicationProtocol.ReadStataThree()).AVolate;
+            double finishvolate = 0;
+            bool cf = await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 3);
+            if (cf)
+            {
+                finishvolate = (await _communicationProtocol.ReadStataThree()).AVolate;
+                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 3);
+                if (Math.Abs(startvolate - finishvolate) > 5)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            return -1;
+        }
+
+        public async Task<int> SwitchThincness(bool open, ICommunicationProtocol _communicationProtocol)
+        {
+            if (open)
+            {
+                if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                {
+                    return 1;
+                }
+                else
+                {
+                    await _communicationProtocol.ThicknessAdjustable(true);
+                    if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                    {
+                        return 1;
+                    }
+                    await _communicationProtocol.ThicknessAdjustable(false);
+                    if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                    {
+                        return 1;
+                    }
+                }
+            }
+            else
+            {
+                if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    await _communicationProtocol.ThicknessAdjustable(false);
+                    if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                    {
+                        return 0;
+                    }
+                    await _communicationProtocol.ThicknessAdjustable(true);
+                    if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                    {
+                        return 0;
+                    }
+                }
+
+            }
+            return -1;
         }
     }
     public enum TestKind

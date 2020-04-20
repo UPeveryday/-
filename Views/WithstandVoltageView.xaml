@@ -154,7 +154,15 @@
                     </Viewbox>
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
-                    <TextBox Margin="20,8" BorderThickness="0" Text="{Binding RatedVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <ComboBox Margin="20,8" BorderThickness="0" SelectedIndex="{Binding RatadvolateSelectIndex,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="18" HorizontalContentAlignment="Center"   >
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">10kV</ComboBoxItem>
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">35kV</ComboBoxItem>
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">110kV</ComboBoxItem>
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">220kV</ComboBoxItem>
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">330kV</ComboBoxItem>
+                        <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">500kV</ComboBoxItem>
+
+                    </ComboBox>
                 </Grid>
 
                 <Grid Grid.Row="2" Grid.Column="0">
@@ -252,7 +260,7 @@
                     <DataGrid  Margin="10,0" AlternationCount="2" GridLinesVisibility="All"  CanUserAddRows="False" BorderBrush="#00a3ff"  AutoGenerateColumns="False" ItemsSource="{Binding DatagridData,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}">
-                                    <Style.Triggers>
+                                <Style.Triggers>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                                         <Setter Property="Background" Value="#E8ECEF" />
                                     </Trigger>
@@ -265,7 +273,7 @@
                         <DataGrid.Columns >
                             <DataGridTextColumn Width="1*"  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Header="步骤" IsReadOnly="True" Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn  Width="1*"  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Header="试验时间(Min)"   Binding="{Binding TestTime,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Width="1*" HeaderStyle="{StaticResource dataGridHeaderStyle}"   Header="试验电压(V)"   Binding="{Binding TestVolate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Width="1*" HeaderStyle="{StaticResource dataGridHeaderStyle}"   Header="试验电压(kV)"   Binding="{Binding TestVolate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

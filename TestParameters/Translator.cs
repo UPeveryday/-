@@ -1,4 +1,6 @@
-﻿using PortableEquipment.ViewModels;
+﻿using LiveCharts;
+using LiveCharts.Defaults;
+using PortableEquipment.ViewModels;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -43,6 +45,9 @@ namespace PortableEquipment.TestParameters
         public ExcitationCharacteristic ExcitationCharacteristicR;
         public NoLoadCurrent NoLoadCurrentR;
         public DateTime DateTime;
+
+        public ChartValues<ObservablePoint> Chartvalues;
+        public BindableCollection<LcdatagridColletion> LcDatagrid;
 
 
     }

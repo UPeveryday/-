@@ -112,7 +112,7 @@ namespace PortableEquipment.ViewModels
                         var cgddata = await _communicationProtocol.GetCgfVolate();
                         if (cgddata != string.Empty)
                             _eventAggregator.Publish(cgddata);
-                        Thread.Sleep(100);
+                        Thread.Sleep(50);
                     }
                 }
             }, TaskCreationOptions.LongRunning);

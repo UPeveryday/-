@@ -8,7 +8,8 @@
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment.Converts"
-        mc:Ignorable="d"
+                      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                      mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ManualVoltageViewModel}"
         Title="ManualVoltageView" Height="500" Width="800"  WindowStyle="None" IsEnabled="{Binding WindowEnable}" UseNoneWindowStyle="True">
     <Window.Resources>
@@ -464,16 +465,15 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox  Grid.Row="0" x:Name="vb" VerticalAlignment="Center"  Grid.Column="1" TextAlignment="Right"></TextBox>
-                        <Button Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="0" Style="{StaticResource CommanButton}">
+                        <Button Command="{s:Action ShowHeader}" CommandParameter="Open" Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="0" Style="{StaticResource CommanButton}">
                             <Viewbox>
                                 <TextBlock Margin="0,2" Style="{StaticResource TextBlockPriview}" >启动计时
 
                                 </TextBlock>
                             </Viewbox>
                         </Button>
-                        <ListBox Grid.Row="1" BorderThickness="1"  BorderBrush="Blue" Grid.RowSpan="2" ItemsSource="{Binding HideList,UpdateSourceTrigger=PropertyChanged}" Margin="5" Grid.ColumnSpan="4">
-
-                        </ListBox>
+                        
+                      
 
 
                     </Grid>
@@ -482,5 +482,21 @@
             </Grid>
         </Grid>
 
+        <Grid Grid.RowSpan="2">
+            <materialDesign:DrawerHost  HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                <materialDesign:DrawerHost.BottomDrawerContent>
+                    <StackPanel Orientation="Horizontal">
+                        <ListBox  Width="400" BorderBrush="Blue" ItemsSource="{Binding HideList,UpdateSourceTrigger=PropertyChanged}" Margin="5">
+                        </ListBox>
+                        <Button HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"   CommandParameter="{x:Static Dock.Bottom}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
+                            CLOSE THIS
+                        </Button>
+                    </StackPanel>
+                </materialDesign:DrawerHost.BottomDrawerContent>
+            </materialDesign:DrawerHost>
+        </Grid>
+        
+        
+        
     </Grid>
 </Controls:MetroWindow>

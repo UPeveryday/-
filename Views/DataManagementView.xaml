@@ -338,7 +338,23 @@
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <lvc:CartesianChart Width="250"></lvc:CartesianChart>
+                        <lvc:CartesianChart  Name="control5" Width="250" Series="{Binding LcCurrentVolate}">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis  MinValue="0" Foreground="Black"   LabelFormatter="{Binding XFormatter}"   Title="&#x000A;电流">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="1" StrokeDashArray="1" Stroke="Green"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Foreground="Black"  LabelFormatter="{Binding YFormatter}"   Title="电压">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="1"  StrokeDashArray="1" Stroke="Green"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+
                     </Grid>
 
                 </Grid>

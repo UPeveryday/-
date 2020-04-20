@@ -1,4 +1,7 @@
-﻿using PortableEquipment.TestParameters;
+﻿using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
+using PortableEquipment.TestParameters;
 using Stylet;
 using StyletIoC;
 using System;
@@ -177,6 +180,8 @@ namespace PortableEquipment.ViewModels
                         KeepVolate = mc.InducedOvervoltageR.TestVoltage + " V";
                         KeepFre = mc.InducedOvervoltageR.TestFre + " Hz";
                         KeepTime = mc.InducedOvervoltageR.TestTime + " S";
+                        TanEleVolatevalue = mc.Chartvalues;
+                        InitCreateChart();
                         LcGetTestVolateRange(mc.ExcitationCharacteristicR);//画图表
                     }
                     if (Selectdata != null && Selectdata.TestKind == "配电变压器试验")
@@ -190,6 +195,7 @@ namespace PortableEquipment.ViewModels
                         TrsOverCurrent = (double)c.ToArray()[0].currentnum;
                         TrsOverVolata = (double)c.ToArray()[0].Volate;
                         TrsWindGroup = c.ToArray()[0].WindingGroup;
+
                         GetUpVolate(mc, ret);
                     }
                 }
@@ -199,7 +205,6 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
-
         public string FirstName { get; set; } = "序号";
         public string SecondName { get; set; } = "电压(V)";
         public string ThirdName { get; set; } = "电流(A)";
@@ -216,6 +221,31 @@ namespace PortableEquipment.ViewModels
         public string TrsWindGroup { get; set; }
 
 
+        #endregion
+
+
+        #region chart
+        public Func<double, string> XFormatter { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+        public SeriesCollection LcCurrentVolate { get; set; }
+        public ChartValues<ObservablePoint> TanEleVolatevalue { get; set; }
+        public void InitCreateChart()
+        {
+            LineSeries t1 = new LineSeries
+            {
+                StrokeThickness = 2,
+                Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(28, 142, 196)),
+                Fill = System.Windows.Media.Brushes.Transparent,
+                LineSmoothness = 1,//0为折现样式
+                PointGeometrySize = 8,
+                PointForeground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49)),
+                Values = TanEleVolatevalue
+            };
+            LcCurrentVolate = new SeriesCollection { };
+            LcCurrentVolate.Add(t1);
+            XFormatter = val => (val).ToString("N3") + "A";
+            YFormatter = val => (val).ToString("N3") + " V";
+        }
         #endregion
 
     }

@@ -8,6 +8,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment.Models"
+        xmlns:cvt="clr-namespace:PortableEquipment.Converts"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ParameterSettingViewModel}"
@@ -25,8 +26,7 @@
                 <Separator></Separator>
             </ContextMenu>
 
-
-
+            <cvt:DoubleAddSi x:Key="doubleaddsi"></cvt:DoubleAddSi>
             <model:Convert x:Key="cvt"></model:Convert>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
@@ -141,8 +141,13 @@
                             <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">电压等级</TextBlock>
                         </Viewbox>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.Column="1">
-                        <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding TestLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
+                    <Grid Grid.Row="3" Grid.Column="1"><!--Text="{Binding TestLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
+                        <ComboBox Margin="20,5" HorizontalContentAlignment="Center" FontSize="18" BorderThickness="0"  SelectedIndex="{Binding RatadVolataSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center"  >
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">35kV</ComboBoxItem>
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">66kV</ComboBoxItem>
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">110kV</ComboBoxItem>
+                            <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">220kV</ComboBoxItem>
+                        </ComboBox>
                     </Grid>
 
                     <Grid Grid.Row="5" Grid.Column="0">
@@ -239,7 +244,7 @@
                             <RowDefinition Height="0.2*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="1" Grid.Column="1">
-                            <TextBox Margin="3" BorderThickness="1" Text="{Binding OutgoingTestVoltage,Mode=TwoWay}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                            <TextBox Margin="3" BorderThickness="1" Text="{Binding OutgoingTestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="0">
                             <Grid.RowDefinitions>
@@ -252,7 +257,7 @@
                         <RadioButton  Grid.Row="1" Grid.Column="3" Margin="7,2" GroupName="Same" IsChecked="{Binding LowOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Content="低压耐压检测"></RadioButton>
                         <RadioButton  Grid.Row="1" Grid.Column="2"  Margin="7,2" GroupName="Same"  IsChecked="{Binding HighOverVolateCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Content="高压耐压检测"></RadioButton>
                         <Grid Grid.Row="3" Grid.Column="1" >
-                            <TextBox Margin="3"  BorderThickness="1"  Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                            <TextBox Margin="3"  BorderThickness="1"  Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="0">
                             <Grid.RowDefinitions>
