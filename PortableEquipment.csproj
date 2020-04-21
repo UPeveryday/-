@@ -165,6 +165,7 @@
     <Compile Include="Servers\CommunicationProtocol\ICommunicationProtocol.cs" />
     <Compile Include="Servers\CommunicationProtocol\IParsingdata.cs" />
     <Compile Include="Servers\CommunicationProtocol\Parsingdata.cs" />
+    <Compile Include="Servers\EmbeddedApp\EmbeddedApp.cs" />
     <Compile Include="Servers\EntityModelServer.cs" />
     <Compile Include="Servers\IEntityServer.cs" />
     <Compile Include="Servers\ILogin.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="StyletLogger\WriteDataToFile.cs" />
     <Compile Include="TestParameters\Translator.cs" />
     <Compile Include="ViewModels\DataManagementViewModel.cs" />
+    <Compile Include="ViewModels\JfViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManuallySetParametersViewModel.cs" />
@@ -198,6 +200,9 @@
     <Compile Include="ViewModels\WithstandVoltageViewModel.cs" />
     <Compile Include="Views\DataManagementView.xaml.cs">
       <DependentUpon>DataManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JfView.xaml.cs">
+      <DependentUpon>JfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -291,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DataManagementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JfView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

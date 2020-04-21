@@ -30,9 +30,6 @@ namespace PortableEquipment.Views
             this.DragMove();
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
+     
     }
 }

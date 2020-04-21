@@ -26,7 +26,7 @@
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
-            <materialDesign:DialogHost   IsOpen="{Binding OpenOrclose}">
+            <materialDesign:DialogHost   IsOpen="{Binding OpenOrclose,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                 <materialDesign:DialogHost.DialogContent>
                     <Grid  Height="200" Width="200">
                         <Grid.RowDefinitions>
@@ -95,7 +95,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" Height="40" Width="48" ToolTip="退出"   MouseDown="Grid_MouseDown">
+                    <Grid Grid.Column="1" Height="40" Width="48" ToolTip="退出"    MouseDown="{s:Action TransformerClose}">
                         <Grid.Background >
                             <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                         </Grid.Background>

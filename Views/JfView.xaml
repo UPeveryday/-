@@ -1,0 +1,59 @@
+﻿<Window
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="PortableEquipment.Views.JfView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortableEquipment.Views"
+        xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
+        xmlns:s="https://github.com/canton7/Stylet"
+        mc:Ignorable="d"
+         d:DataContext="{d:DesignInstance local1:JfViewModel}"
+        Title="JfView" Height="800" Width="1200" Loaded="Window_Loaded" 
+    WindowStyle="None" Topmost="{Binding windowslocation,UpdateSourceTrigger=PropertyChanged}"
+    WindowState="{Binding WindowState,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="9.0*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition ></RowDefinition>
+                <RowDefinition Height="6*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Background="White" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Column="1" Margin="0,2">
+                    <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >数字式局部放电检测系统</TextBlock>
+                </Viewbox>
+                <Grid Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1" Margin="16,4" Visibility="Collapsed" ToolTip="退出"  MouseDown="{s:Action CloseJf}">
+                        <Grid.Background >
+                            <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
+                        </Grid.Background>
+                    </Grid>
+
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                    <TextBox Width="100" Margin="10 2" FontSize="14" Text="{Binding Jfdata,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"></TextBox>
+                    <Button Width="100"  Margin="10 2"  FontSize="14" Command="{s:Action JfConfire}">确定</Button>
+                </StackPanel>
+                
+            </Grid>
+        </Grid>
+        <Border  x:Name="WndHost"  Grid.Row="1"></Border>
+    </Grid>
+</Window>

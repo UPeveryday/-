@@ -35,6 +35,7 @@ namespace PortableEquipment.StyletIocModules
             Bind<ViewModels.TransformerViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.ManualVoltageViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.MainViewModel>().ToSelf().InSingletonScope();
+            Bind<ViewModels.JfViewModel>().ToSelf().InSingletonScope();
         }
     }
 }

@@ -4,6 +4,7 @@ using Stylet;
 using StyletIoC;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,7 +14,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>, IHandle<JfTestResult>
     {
         #region 依赖注入
         [Inject]
@@ -32,6 +33,9 @@ namespace PortableEquipment.ViewModels
         public IContainer _container;
         [Inject]
         public IWindowManager _windowManager;
+
+        [Inject]
+        public ViewModels.JfViewModel _JfViewModel;
         public IEventAggregator _eventAggregator;
         public TransformerViewModel(IEventAggregator eventAggregator)
         {
@@ -63,6 +67,12 @@ namespace PortableEquipment.ViewModels
                     _logger.Writer("Cgf电压解析出错");
                 }
             }
+        }
+
+        public void Handle(JfTestResult jfc)
+        {
+            JfStataControl = jfc.Jffinish;
+            JfData = jfc.Jfdata;
         }
         #endregion
     }
@@ -136,7 +146,7 @@ namespace PortableEquipment.ViewModels
         /// </summary>
         /// <param name="GetIndexFromDataGrid">获取需要添加的行</param>
         /// <param name="MarkPhama"></param>
-        private void AddTestData(Translator TestPra, int currentvolateIndex, double currenttesttime, int MarkPhama)
+        private void AddTestData(Translator TestPra, int currentvolateIndex, double currenttesttime, int MarkPhama, string Jf)
         {
             int p = 0;
             foreach (var item in DatagridTestData)
@@ -144,11 +154,11 @@ namespace PortableEquipment.ViewModels
                 if (p == GetIndexFromDataGrid(TestPra.DatagridData.ToArray(), currentvolateIndex, currenttesttime) - 1)
                 {
                     if (MarkPhama == 1)
-                        item.UVoltage = UVolateUi.ToString();
+                        item.UVoltage = Jf.ToString();
                     if (MarkPhama == 2)
-                        item.VVoltage = UVolateUi.ToString();
+                        item.VVoltage = Jf.ToString();
                     if (MarkPhama == 3)
-                        item.WVoltage = UVolateUi.ToString();
+                        item.WVoltage = Jf.ToString();
                     DatagridTestData.Refresh();
                 }
                 p++;
@@ -170,17 +180,35 @@ namespace PortableEquipment.ViewModels
         {
             try
             {
-                var c = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
-                System.Diagnostics.Process.Start(c);
+                _windowManager.ShowDialog(_JfViewModel);
+                _eventAggregator.Publish(WindowState.Normal);
             }
             catch
             {
                 _logger.Writer("文件被破坏，请检查");
             }
         }
+
+        public async void TransformerClose()
+        {
+            WindowsStataIsOpen = false;
+            foreach (var item in Process.GetProcessesByName("数字式局部放电检测系统7.0"))
+            {
+                item.Kill();
+                await Task.Delay(10);
+            }
+            _JfViewModel.RequestClose();
+            this.RequestClose();
+        }
+
     }
     public partial class TransformerViewModel
     {
+        #region 局放电源设置
+        public bool JfStataControl { get; set; }
+        public string JfData { get; set; }
+        public bool WindowsStataIsOpen { get; set; } = false;
+        #endregion 
         #region 试验状态控制
         /// <summary>
         /// 按下确定或者取消，是否开始试验
@@ -272,9 +300,14 @@ namespace PortableEquipment.ViewModels
                 InitDataGrid(data);
                 for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                 {
-                    IsClicked = false;
-                    await SetDiaSata(true, "开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                        Visibility.Visible, alarmText: "测量提示");
+                    //IsClicked = false;
+                    //await SetDiaSata(true, "开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                    //    Visibility.Visible, alarmText: "测量提示");
+                    await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                     {
+                         IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                             "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                     }));
                     if (IsokOrCan)
                     {
                         for (int i = 0; i < data.Length; i++)
@@ -293,7 +326,7 @@ namespace PortableEquipment.ViewModels
                                     resetEvent.WaitOne();
                                     await Task.Delay(100);
                                 }
-                                AddTestData(TestPra, i, (j + 1) * 5, TestPosition);
+                                await JfControls(TestPra, i, (j + 1) * 5, TestPosition, JfData);
                             }
                             if (data[i].TestTime % 5 != 0)
                             {
@@ -307,7 +340,7 @@ namespace PortableEquipment.ViewModels
                                     resetEvent.WaitOne();
                                     await Task.Delay(100);
                                 }
-                                AddTestData(TestPra, i, data[i].TestTime, TestPosition);
+                                await JfControls(TestPra, i, data[i].TestTime, TestPosition, JfData);
                             }
                         }
                     }
@@ -317,8 +350,34 @@ namespace PortableEquipment.ViewModels
             else
             {
                 IsRunning = false;
-                await SetDiaSata(true, "启动测量失败\t\n可能未结束测量\t\n请手动结束为结束的测量", System.Windows.Visibility.Hidden, alarmText: "警告");
+                // await SetDiaSata(true, "启动测量失败\t\n可能未结束测量\t\n请手动结束为结束的测量", System.Windows.Visibility.Hidden, alarmText: "警告");
+                await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _windowManager.ShowMessageBox("启动测量失败\t\n可能未结束测量\t\n请手动结束为结束的测量",
+                       "提示", MessageBoxButton.OK);
+                }));
             }
+        }
+
+        private async Task JfControls(Translator TestPra, int currentvolateIndex, double currenttesttime, int MarkPhama, string Jf)
+        {
+            #region 局放试验控制
+            JfStataControl = false;
+            await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+             {
+                 if (!WindowsStataIsOpen)
+                 {
+                     _windowManager.ShowWindow(_JfViewModel);
+                     WindowsStataIsOpen = true;
+                 }
+                 _eventAggregator.Publish(WindowState.Normal);
+             }));
+            while (!JfStataControl)
+            {
+                await Task.Delay(10);
+            }
+            AddTestData(TestPra, currentvolateIndex, currenttesttime, MarkPhama, JfData);
+            #endregion
         }
         public void Canclick()
         {
@@ -345,12 +404,14 @@ namespace PortableEquipment.ViewModels
         {
             resetEvent.Set();
         }
-        public async void CancelTest()
+        public void CancelTest()
         {
             tokenSource.Cancel();
-            await SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
+            _windowManager.ShowMessageBox("试验已经结束",
+                          "提示", MessageBoxButton.OK);
+            //  await SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
         }
-        private async Task SetDiaSata(bool openorclose, string hideMessage, System.Windows.Visibility cancerVisibility,
+        private async Task SetDiaSata(bool openorclose, string hideMessage, Visibility cancerVisibility,
             string alarmText = "警告")
         {
             OpenOrclose = openorclose;
@@ -363,6 +424,7 @@ namespace PortableEquipment.ViewModels
             }
         }
         private bool IsClicked = false;
+
     }
 
 
