@@ -95,7 +95,7 @@ namespace PortableEquipment.ViewModels
             transformerData.Stepname = name;
             transformerData.TestTime = time;
             if (name == "C")
-                transformerData.TestTime =Math.Round( (120 * (50 / Frequency) / 60),2);
+                transformerData.TestTime = Math.Round((120 * (50 / Frequency) / 60), 2);
             transformerData.TestVolate = Math.Round(needs * Um / Math.Sqrt(3), 2);
             return transformerData;
         }
@@ -147,7 +147,7 @@ namespace PortableEquipment.ViewModels
         public string TestLocation { get; set; }
         public string Tester { get; set; }
         public double Frequency { get; set; } = 50.0;
-        public double Volate { get; set; } = 10000;
+        public double Volate { get; set; } = 10.00;
         public double Current { get; set; } = 5.0;
         #endregion
         #region Data

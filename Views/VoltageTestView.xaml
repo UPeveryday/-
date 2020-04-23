@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
         xmlns:model="clr-namespace:PortableEquipment"
+        xmlns:convert="clr-namespace:PortableEquipment.Converts"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:s="https://github.com/canton7/Stylet"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -16,6 +17,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <model:Convertsigal x:Key="cvt"></model:Convertsigal>
+            <convert:KeepTwoDouble x:Key="cvtTwo"></convert:KeepTwoDouble> 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -145,7 +147,7 @@
                                     </Grid>
                                 </Grid>
                                 <Viewbox Grid.Column="2" Grid.RowSpan="2">
-                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding UVolateUi,UpdateSourceTrigger=PropertyChanged}" Foreground="#df0404"></TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding UVolateUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}" Foreground="#df0404"></TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>
@@ -165,7 +167,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">频率(Hz)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding FreUi,UpdateSourceTrigger=PropertyChanged}"  Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding FreUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
 
@@ -192,7 +194,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电压(V)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding VolateUi,UpdateSourceTrigger=PropertyChanged}" Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding VolateUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="1" Margin="2,0,0,2" Background="#242e3b">
@@ -211,7 +213,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电流(A)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding CurrentUi,UpdateSourceTrigger=PropertyChanged}"  Foreground="#00ff7f" >5.0</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding CurrentUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="2" Margin="2,0,0,2" Background="#242e3b">
@@ -230,7 +232,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">时间(S)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" >60S</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding PresurreTime,UpdateSourceTrigger=PropertyChanged}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                     </Grid>
@@ -250,7 +252,7 @@
                                 <TextBlock Foreground="White" Style="{StaticResource TextBlockPriview}"> 过压值:</TextBlock>
                             </Viewbox>
                             <Viewbox Margin="10,5" Grid.Column="1" >
-                                <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}">10kV</TextBlock>
+                                <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}" Text="{Binding KeepHighOverVolate,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="1" Background="#242e3b" Margin="0,0,2,2">
@@ -262,7 +264,11 @@
                                 <TextBlock Foreground="White" Style="{StaticResource TextBlockPriview}"> 过流值:</TextBlock>
                             </Viewbox>
                             <Viewbox  Margin="10,5" Grid.Column="1" >
-                                <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}">10A</TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}" Text="{Binding KzOverCurrent}"></TextBlock>
+                                    <TextBlock   Style="{StaticResource TextBlockPriview}" HorizontalAlignment="Right"
+                                                 Foreground="White" >A</TextBlock>
+                                </StackPanel>
                             </Viewbox>
                         </Grid>
                     </Grid>
@@ -292,13 +298,13 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Viewbox Margin="5" Grid.Row="1" Grid.Column="0">
-                            <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#545f79" Content="感应耐压" GroupName="One" Grid.Column="0"></RadioButton>
+                            <CheckBox Grid.Row="1" HorizontalAlignment="Center"  IsChecked="{Binding FirstTestEnable,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="#545f79" Content="感应耐压"  Grid.Column="0"></CheckBox>
                         </Viewbox>
                         <Viewbox Margin="5"  Grid.Row="1" Grid.Column="1">
-                            <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#545f79"  Content="励磁特性" GroupName="One"  Grid.Column="1"></RadioButton>
+                            <CheckBox Grid.Row="1" HorizontalAlignment="Center" IsChecked="{Binding SeconedTestEnable,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center"  Foreground="#545f79"  Content="励磁特性"  Grid.Column="1"></CheckBox>
                         </Viewbox>
                         <Viewbox Margin="5"  Grid.Row="1" Grid.Column="2">
-                            <RadioButton Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#545f79"  Content="空载电流" GroupName="One"  Grid.Column="2"></RadioButton>
+                            <CheckBox Grid.Row="1" HorizontalAlignment="Center" IsChecked="{Binding ThirdTestEnable,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center"  Foreground="#545f79"  Content="空载电流"  Grid.Column="2"></CheckBox>
 
                         </Viewbox>
                     </Grid>
@@ -419,7 +425,7 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">拐点电压</TextBlock>
                                 <Viewbox  Grid.Row="1">
-                                    <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}">10.0kV</TextBlock>
+                                    <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}" Text="{Binding GuaiPointVolate,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                 </Viewbox>
                             </Grid>
                             <Grid  Grid.Column="1">
@@ -429,7 +435,7 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Foreground="#545f79" Style="{StaticResource TextBlockPriview}">拐点电流</TextBlock>
                                 <Viewbox  Grid.Row="1">
-                                    <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}">10.0A</TextBlock>
+                                    <TextBlock Foreground="#189aff" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"  Text="{Binding GuaiPointCurrent,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>

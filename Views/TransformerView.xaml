@@ -7,12 +7,14 @@
         xmlns:local="clr-namespace:PortableEquipment.Views"
         xmlns:local1="clr-namespace:PortableEquipment.ViewModels"
                       xmlns:s="https://github.com/canton7/Stylet"
+                      xmlns:convert="clr-namespace:PortableEquipment.Converts"
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:TransformerViewModel}"
         Title="TransformerView" Height="800" Width="1280"  UseNoneWindowStyle="True" WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary>
+            <convert:KeepTwoDouble x:Key="cvtTwo"></convert:KeepTwoDouble>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -165,7 +167,7 @@
                                     </Grid>
                                 </Grid>
                                 <Viewbox Grid.Column="2" Grid.RowSpan="2">
-                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding UVolateUi,UpdateSourceTrigger=PropertyChanged}" Foreground="#df0404"></TextBlock>
+                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding UVolateUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}" Foreground="#df0404"></TextBlock>
                                 </Viewbox>
                             </Grid>
                         </Grid>
@@ -185,7 +187,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">频率(Hz)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding FreUi,UpdateSourceTrigger=PropertyChanged}"  Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding FreUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
 
@@ -212,7 +214,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电压(V)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding VolateUi,UpdateSourceTrigger=PropertyChanged}" Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding VolateUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="1" Margin="2,0,0,2" Background="#242e3b">
@@ -231,7 +233,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">电流(A)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding CurrentUi,UpdateSourceTrigger=PropertyChanged}"  Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}"  Text="{Binding CurrentUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="2" Margin="2,0,0,2" Background="#242e3b">
@@ -250,7 +252,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">时间(A)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" ></TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding TimeMul,UpdateSourceTrigger=PropertyChanged}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                     </Grid>

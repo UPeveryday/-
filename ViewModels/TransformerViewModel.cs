@@ -197,7 +197,9 @@ namespace PortableEquipment.ViewModels
                 item.Kill();
                 await Task.Delay(10);
             }
-            _JfViewModel.RequestClose();
+
+            if (_container.Get<JfViewModel>().ScreenState == ScreenState.Active)
+                _JfViewModel.RequestClose();
             this.RequestClose();
         }
 
@@ -255,6 +257,9 @@ namespace PortableEquipment.ViewModels
         public double CurrentUi { get; set; }
         public double TimeUi { get; set; }
         public double Jf { get; set; } = 0.00;
+
+        public string TimeMul { get; set; } = "300S";
+
         #endregion
         #region bindinds
         public Translator TestPra;
@@ -312,11 +317,10 @@ namespace PortableEquipment.ViewModels
                     {
                         for (int i = 0; i < data.Length; i++)
                         {
-                            // await _setVolate.SettindVolate(data[i].TestVolate * 1000 / 125, _communicationProtocol, _xmlconfig);
-
+                            await _setVolate.SettindVolate(data[i].TestVolate * 1000 / 125, _communicationProtocol, _xmlconfig);
                             for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
                             {
-                                for (int pi = 0; pi < 5; pi++)//data[i].TestTime * 60
+                                for (int pi = 0; pi < data[i].TestTime * 60; pi++)//
                                 {
                                     if (token.IsCancellationRequested)
                                     {
@@ -324,13 +328,14 @@ namespace PortableEquipment.ViewModels
                                         return;
                                     }
                                     resetEvent.WaitOne();
-                                    await Task.Delay(100);
+                                    await Task.Delay(1000);
+                                    TimeMul = (data[i].TestTime * 60 - pi - 1).ToString() + "S";
                                 }
                                 await JfControls(TestPra, i, (j + 1) * 5, TestPosition, JfData);
                             }
                             if (data[i].TestTime % 5 != 0)
                             {
-                                for (int pi = 0; pi < 6; pi++)//(data[i].TestTime % 5) * 60
+                                for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)//
                                 {
                                     if (token.IsCancellationRequested)
                                     {
@@ -338,12 +343,15 @@ namespace PortableEquipment.ViewModels
                                         return;
                                     }
                                     resetEvent.WaitOne();
-                                    await Task.Delay(100);
+                                    await Task.Delay(1000);
+                                    TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString() + "S";
+
                                 }
                                 await JfControls(TestPra, i, data[i].TestTime, TestPosition, JfData);
                             }
                         }
                     }
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
                 }
                 IsRunning = false;
             }

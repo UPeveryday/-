@@ -71,8 +71,12 @@ namespace PortableEquipment.Servers.CHangeVolate
         {
             await ControlsPowerStata(true, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(true);
-            byte num = (byte)((await _communicationProtocol.GetCgfVolateDouble()) * 1000 / Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs")) + 2);
-            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, num);
+            while (await _communicationProtocol.GetCgfVolateDouble() > 0.5)
+            {
+                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);
+            }
+            //byte num = (byte)((await _communicationProtocol.GetCgfVolateDouble()) * 1000 / Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs")) + 2);
+            //await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, num);
         }
 
         public async Task<bool> SettindHighVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, int TimeOver = 5)
