@@ -173,6 +173,8 @@
     <Compile Include="Servers\Json\JsondeelServers.cs" />
     <Compile Include="Servers\LoginRespontory.cs" />
     <Compile Include="Servers\LoginSingalRespontitory.cs" />
+    <Compile Include="Servers\SelfCheck\ISelfCheck.cs" />
+    <Compile Include="Servers\SelfCheck\SelfCheck.cs" />
     <Compile Include="Servers\SqlDeel\ISqlHelp.cs" />
     <Compile Include="Servers\SqlDeel\SqlHelp.cs" />
     <Compile Include="Servers\test.cs" />

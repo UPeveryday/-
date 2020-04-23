@@ -34,6 +34,8 @@ namespace PortableEquipment.ViewModels
         public Servers.Xmldata.IXmlconfig _xmlconfig;
         [Inject]
         public ICommunicationProtocol _CommunicationProtocol;
+        [Inject]
+        public Servers.SelfCheck.ISelfCheck _SelfCheck;
 
         public MainViewModel(IWindowManager windowManager, DataManagementViewModel ChildDialog,
             ManuallySetParametersViewModel manuallySetParametersViewModel, ManualVoltageViewModel manualVoltageViewModel,
@@ -88,35 +90,47 @@ namespace PortableEquipment.ViewModels
             });
             _windowManger.ShowDialog(_timeViewModel);
         }
-        public void CommitRecData()
+        public async void CommitRecData()
         {
-            Task powerdataupdata = new Task(async () =>
+            var p = await _SelfCheck.ComPortCheck();
+            if (p.IsOk)
             {
-                while (true)
+                Task powerdataupdata = new Task(async () =>
                 {
-                    if (StaticFlag.UI_FRESH)
+                    while (true)
                     {
-                        _eventAggregator.Publish(new OutTestResult { stataThree = await _communicationProtocol.ReadStataThree(0) });
-                        Thread.Sleep(System.Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                        if (StaticFlag.UI_FRESH)
+                        {
+                            _eventAggregator.Publish(new OutTestResult { stataThree = await _communicationProtocol.ReadStataThree(0) });
+                            Thread.Sleep(System.Convert.ToInt32(_xmlconfig.GetAddNodeValue("UpdataTransFormerSpeedUI")));
+                        }
                     }
-                }
-            }, TaskCreationOptions.LongRunning);
-            powerdataupdata.Start();
+                }, TaskCreationOptions.LongRunning);
+                powerdataupdata.Start();
 
-            Task cgfdataupdata = new Task(async () =>
-            {
-                while (true)
+                Task cgfdataupdata = new Task(async () =>
                 {
-                    if (StaticFlag.CFG_FRESH)
+                    while (true)
                     {
-                        var cgddata = await _communicationProtocol.GetCgfVolate();
-                        if (cgddata != string.Empty)
-                            _eventAggregator.Publish(cgddata);
-                        Thread.Sleep(50);
+                        if (StaticFlag.CFG_FRESH)
+                        {
+                            var cgddata = await _communicationProtocol.GetCgfVolate();
+                            if (cgddata != string.Empty)
+                                _eventAggregator.Publish(cgddata);
+                            Thread.Sleep(50);
+                        }
                     }
-                }
-            }, TaskCreationOptions.LongRunning);
-            cgfdataupdata.Start();
+                }, TaskCreationOptions.LongRunning);
+                cgfdataupdata.Start();
+            }
+            else
+            {
+                System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
+                if (c == System.Windows.MessageBoxResult.OK)
+                    this.RequestClose();
+            }
+
+
         }
         public void Handle(Stata message)
         {

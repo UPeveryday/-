@@ -270,7 +270,7 @@ namespace PortableEquipment.Comport
 
                 //打开串口
 
-                openPort();
+            //    openPort();
 
             }
 
@@ -315,7 +315,6 @@ namespace PortableEquipment.Comport
             catch 
 
             {
-
                 LoggerRunning.WriterByStatic(_serialPort.PortName +"打开失败");
 
             }

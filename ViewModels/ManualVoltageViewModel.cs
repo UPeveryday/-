@@ -155,7 +155,7 @@ namespace PortableEquipment.ViewModels
             if (!TestStata)
             {
                 TestStata = true;
-                AddHideList("开始增加频率...");
+                AddHideList("开始调整频率...");
                 if (addfre >= 1)
                 {
                     if (await _communicationProtocol.ThicknessAdjustable(true))
@@ -170,7 +170,27 @@ namespace PortableEquipment.ViewModels
                         await _communicationProtocol.SetTestPra(ts, (byte)SmallChange);
                     }
                 }
-                AddHideList("增加频率完成");
+                AddHideList("调整频率完成");
+
+            }
+            else
+            {
+                AddHideList("正在试验中，无法操作");
+            }
+            TestStata = false;
+        }
+
+
+        public async Task AddVolatage(string addvolatestring)
+        {
+            double changevolate = Convert.ToDouble(addvolatestring);
+            double needvolate = changevolate + UVolateUi;
+            if (!TestStata)
+            {
+                TestStata = true;
+                AddHideList("开始调整电压...");
+                await _setVolate.SettindHighVolate(needvolate, _communicationProtocol, _xmlconfig);
+                AddHideList("调整电压完成");
 
             }
             else

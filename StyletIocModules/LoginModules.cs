@@ -29,6 +29,7 @@ namespace PortableEquipment.StyletIocModules
             Bind<Servers.Json.IJsondeel>().To<Servers.Json.JsondeelServers>().InSingletonScope(); 
             Bind<Servers.CHangeVolate.ISetVolate>().To<Servers.CHangeVolate.SetVolate>().InSingletonScope();
             Bind<Servers.SqlDeel.ISqlHelp>().To<Servers.SqlDeel.SqlHelp>().InSingletonScope();
+            Bind<Servers.SelfCheck.ISelfCheck>().To<Servers.SelfCheck.SelfCheck>().InSingletonScope();
             // Bind<Comport.ISerialCommunication>().To<Comport.Serial>();
 
             Bind<ViewModels.VoltageTestViewModel>().ToSelf().InSingletonScope();

@@ -115,12 +115,12 @@ namespace PortableEquipment.ViewModels
             Humidity = mutualTranslator.Humidity;
             Temperature = mutualTranslator.Temperature;
 
-            KzTestVolate = mutualTranslator.NoLoadCurrentR.TestVolate;
-            KzOverCurrent = mutualTranslator.NoLoadCurrentR.OverCurrent;
+            KzTestVolate = 0.00;
+            KzOverCurrent = 0.00;
 
-            KeepTestVoltage = mutualTranslator.InducedOvervoltageR.TestVoltage;
-            KeepTestFre = mutualTranslator.InducedOvervoltageR.TestFre;
-            KeepTestTime = mutualTranslator.InducedOvervoltageR.TestTime;
+            KeepTestVoltage = 0.00;
+            KeepTestFre = 0.00;
+            KeepTestTime = 0.00;
 
             KeepHighOverVolate = mutualTranslator.InducedOvervoltageR.HighOverVolate + "kV";
         }
@@ -197,7 +197,10 @@ namespace PortableEquipment.ViewModels
 
         public async Task MutualTranslatorTest()
         {
+            #region 初始化试验和参数
             MutualTranslator mutualTranslator = _mutualTranslator;
+            await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
+            await _communicationProtocol.ThicknessAdjustable(false);
             List<double> Alltestvolate = new List<double>();//所有需要测试的电压
             List<double> Lcvolaterange = new List<double>();//励磁标准点
             if (mutualTranslator.InducedOvervoltageR.Enable)
@@ -210,96 +213,164 @@ namespace PortableEquipment.ViewModels
             }
             if (mutualTranslator.ExcitationCharacteristicR.Enable)
             {
-                Lcvolaterange.AddRange(mutualTranslator.ExcitationCharacteristicR.VolateRange);
-                Alltestvolate.AddRange(mutualTranslator.ExcitationCharacteristicR.VolateRange);
+                List<double> volaterange = new List<double>();
+                foreach (var item in mutualTranslator.ExcitationCharacteristicR.VolateRange)
+                {
+                    volaterange.Add(item * mutualTranslator.ExcitationCharacteristicR.TestVolate / 100);
+                }
+                Lcvolaterange.AddRange(volaterange);
+                Alltestvolate.AddRange(volaterange);
             }
             var vs = Alltestvolate.ToArray();
             Array.Sort(vs);
             double HighvolateMax = vs[vs.Length - 1];
-
             List<StataThree> Lcret = new List<StataThree>();
             PresurreTime = (int)mutualTranslator.InducedOvervoltageR.TestTime + "S";
             var NoLoadCurrentRVolate = mutualTranslator.NoLoadCurrentR.TestVolate;
             var Presuarvolate = mutualTranslator.InducedOvervoltageR.TestVoltage;
             var Lcvolate = mutualTranslator.ExcitationCharacteristicR.TestVolate;
             var NeedJd = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
-            while (Math.Abs(VolateUi - HighvolateMax) / HighvolateMax > NeedJd - 0.2)
+
+            bool FlagPressure = false;//单次试验状态
+            bool LossCurrent = false;
+            bool[] Lc = new bool[Lcvolaterange.Count];
+
+            bool TestFlag = false;
+
+            #endregion
+            #region 试验流程
+            //  while (Math.Abs(UVolateUi - HighvolateMax) / HighvolateMax > NeedJd - 0.2)
+
+            while (!TestFlag)
             {
+                if (UVolateUi > mutualTranslator.InducedOvervoltageR.HighOverVolate)
+                {
+                    _windowManager.ShowMessageBox("电压超过过压值", "警告", MessageBoxButton.OK);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
+                    return;
+                }
+                #region 中断
                 if (token.IsCancellationRequested)
                 {
                     return;
                 }
                 resetEvent.WaitOne();
-                if (VolateUi < HighvolateMax)
+                #endregion
+
+                #region 调压 记录曲线的点
+                if (UVolateUi < HighvolateMax)
                 {
                     await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1);
-                    await Task.Delay(50);
+                    await Task.Delay(10);
                 }
                 else
                 {
                     await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 1);
-                    await Task.Delay(50);
+                    await Task.Delay(10);
                 }
                 Lcret.Add(await _communicationProtocol.ReadStataThree());//记录所有的点
-                if (Math.Abs(UVolateUi - NoLoadCurrentRVolate) / NoLoadCurrentRVolate < NeedJd)
+                #endregion
+
+                #region 空载电流
+                if (!LossCurrent && mutualTranslator.NoLoadCurrentR.Enable)
                 {
-                    Flag = Flag.RunningKz;
-                    ControlsCurrentTest(true, false, true);
-                    var p = await _communicationProtocol.ReadStataThree();
-                    KzOverCurrent = p.ACurrent;
-                    KzTestVolate = UVolateUi;
-                    Flag = Flag.FinishKz;
-                    ControlsCurrentTest(true, false, false);
+                    if (Math.Abs(UVolateUi - NoLoadCurrentRVolate) / NoLoadCurrentRVolate < NeedJd)
+                    {
+                        Flag = Flag.RunningKz;
+                        ControlsCurrentTest(true, false, true);
+                        var p = await _communicationProtocol.ReadStataThree();
+                        if (p.ACurrent < mutualTranslator.NoLoadCurrentR.OverCurrent)
+                        {
+                            KzOverCurrent = p.ACurrent;
+                            KzTestVolate = UVolateUi;
+                            Flag = Flag.FinishKz;
+
+                        }
+                        else
+                        {
+                            KzOverCurrent = p.ACurrent;
+                            KzTestVolate = UVolateUi;
+                            Flag = Flag.False_2;
+
+                        }
+                        ControlsCurrentTest(true, false, false);
+                    }
+                    if (NoLoadCurrentRVolate == HighvolateMax)
+                        TestFlag = true;
+                    LossCurrent = true;
                 }
+                #endregion
+
+                #region 励磁特性
                 for (int i = 0; i < Lcvolaterange.Count; i++)//获取五个标准店
                 {
-                    Flag = Flag.RunningLc;
-
-                    ControlsCurrentTest(true, true, false);
-                    if (Math.Abs(UVolateUi - Lcvolaterange[i]) / Lcvolaterange[i] < NeedJd)
+                    if (!Lc[i] && mutualTranslator.ExcitationCharacteristicR.Enable)
                     {
-                        var p = await _communicationProtocol.ReadStataThree();
-                        LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestCurrent = p.ACurrent.ToString(), TestVoltage = p.AVolate.ToString() });
-                        AddNodePoint(p.ACurrent, p.AVolate);
-                        if (i == Lcvolaterange.Count - 1)
+                        Flag = Flag.RunningLc;
+                        ControlsCurrentTest(true, true, false);
+                        if (Math.Abs(UVolateUi - Lcvolaterange[i]) / Lcvolaterange[i] < NeedJd)
                         {
-                            ControlsCurrentTest(true, false, false);
-                            Flag = Flag.RunningLc;
-                        }
-                    }
-                }
-                if (Math.Abs(UVolateUi - Presuarvolate) / Presuarvolate < NeedJd)
-                {
-                    Flag = Flag.RunningPressure;
-                    ControlsCurrentTest(true, false, false);
-
-                    if (await _setVolate.SettingFre(mutualTranslator.InducedOvervoltageR.TestFre, _communicationProtocol))
-                    {
-                        for (int i = 0; i < ((int)mutualTranslator.InducedOvervoltageR.TestTime) * 10; i++)
-                        {
-                            if (token.IsCancellationRequested)
+                            var p = await _communicationProtocol.ReadStataThree();
+                            LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestCurrent = p.ACurrent.ToString(), TestVoltage = p.AVolate.ToString() });
+                            AddNodePoint(p.ACurrent, p.AVolate);
+                            if (i == Lcvolaterange.Count - 1)
                             {
-                                Flag = Flag.FinishPressure;
-                                return;
+                                ControlsCurrentTest(true, false, false);
+                                if (Lcvolaterange[i] == HighvolateMax)
+                                    TestFlag = true;
+                                Flag = Flag.RunningLc;
                             }
-                            resetEvent.WaitOne();
-                            PresurreTime = ((int)mutualTranslator.InducedOvervoltageR.TestTime - i) + "S";
-                            await Task.Delay(100);
                         }
+                        Lc[i] = true;
                     }
-                    else
-                    {
-                        _windowManager.ShowMessageBox("调节频率失败\t\n请检查", "警告", MessageBoxButton.OK);
-                    }
-                    ControlsCurrentTest(false, false, false);
-                    Flag = Flag.FinishPressure;
                 }
+
+                #endregion
+
+                #region 耐压
+                if (!FlagPressure && mutualTranslator.InducedOvervoltageR.Enable)
+                {
+                    if (Math.Abs(UVolateUi - Presuarvolate) / Presuarvolate < NeedJd)
+                    {
+                        Flag = Flag.RunningPressure;
+                        ControlsCurrentTest(true, false, false);
+
+                        if (await _setVolate.SettingFre(mutualTranslator.InducedOvervoltageR.TestFre, _communicationProtocol))
+                        {
+                            for (int i = 0; i < ((int)mutualTranslator.InducedOvervoltageR.TestTime); i++)
+                            {
+                                if (token.IsCancellationRequested)
+                                {
+                                    Flag = Flag.FinishPressure;
+                                    return;
+                                }
+                                resetEvent.WaitOne();
+                                PresurreTime = ((int)mutualTranslator.InducedOvervoltageR.TestTime - i) + "S";
+                                await Task.Delay(1000);
+                            }
+                        }
+                        else
+                        {
+                            _windowManager.ShowMessageBox("调节频率失败\t\n请检查", "警告", MessageBoxButton.OK);
+                        }
+                        ControlsCurrentTest(false, false, false);
+                        Flag = Flag.FinishPressure;
+                    }
+                    if (Presuarvolate == HighvolateMax)
+                        TestFlag = true;
+                    FlagPressure = true;
+                }
+
+                #endregion
             }
+            #endregion
+            #region 计算拐点
             if (!GetGuaiMessage(GetAllCharyValues(Lcret)))
             {
                 GuaiPointVolate = "None";
                 GuaiPointCurrent = "None";
             }
+            #endregion
             await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
         }
 

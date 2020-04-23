@@ -326,7 +326,7 @@
 
                         </Grid>
                         <Grid Grid.Row="1" Background="White">
-                            <Grid Grid.Column="0" IsEnabled="False">
+                            <Grid Grid.Column="0" IsEnabled="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -343,32 +343,32 @@
                                     <RowDefinition Height="2*"></RowDefinition>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Column="1"  BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="1"  BorderThickness="0" Margin="3"  Command="{s:Action AddVolatage}" CommandParameter="+10"  Grid.Row="1" Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">+10.0kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}" >+10.0kV</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Command="{s:Action AddVolatage}" CommandParameter="+1"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">+1.0kV</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Command="{s:Action AddVolatage}" CommandParameter="+0.1"  Grid.Row="1" Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">+0.1kV</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="1"  BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="1"  BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddVolatage}" CommandParameter="-10"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">-10.0kV</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="-1"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">-1.0kV</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="+0.1"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">-0.1kV</TextBlock>
                                     </Viewbox>

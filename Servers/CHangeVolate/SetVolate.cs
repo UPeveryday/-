@@ -71,6 +71,7 @@ namespace PortableEquipment.Servers.CHangeVolate
         {
             await ControlsPowerStata(true, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(true);
+            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 38);
             while (await _communicationProtocol.GetCgfVolateDouble() > 0.5)
             {
                 await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);

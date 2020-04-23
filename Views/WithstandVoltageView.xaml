@@ -304,7 +304,7 @@
                             <ColumnDefinition Width="40"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Frequency,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
-                        <Label Grid.Column="1"  HorizontalAlignment="Left"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="kV"></Label>
+                        <Label Grid.Column="1"  HorizontalAlignment="Left"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Hz"></Label>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -322,7 +322,7 @@
                             <ColumnDefinition Width="40"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBox Margin="20,5" BorderThickness="0"  Text="{Binding Volate,Mode=TwoWay}"  VerticalAlignment="Center" TextAlignment="Center" ></TextBox>
-                        <Label Grid.Column="1"  HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="Hz"></Label>
+                        <Label Grid.Column="1"  HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="kV"></Label>
 
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">

@@ -359,7 +359,7 @@ namespace PortableEquipment.ViewModels
             }
         }
 
-        public double LcOverCurrent { get; set; }
+        public double LcOverCurrent { get; set; } = 1.00;
 
         public System.Windows.Visibility VolataGroups { get; set; } = System.Windows.Visibility.Collapsed;
 
@@ -389,7 +389,7 @@ namespace PortableEquipment.ViewModels
 
         #region 空载
         public double KzTestVolate { get; set; }
-        public double KzOverCurrent { get; set; }
+        public double KzOverCurrent { get; set; } = 1.00;
         #endregion
     }
 }
