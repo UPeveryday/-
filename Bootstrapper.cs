@@ -42,8 +42,8 @@ namespace PortableEquipment
 
         protected override void OnStart()
         {
-            Stylet.Logging.LogManager.LoggerFactory = name => new StyletLogger.MyLogger();
-            Stylet.Logging.LogManager.Enabled = true;
+            //Stylet.Logging.LogManager.LoggerFactory = name => new StyletLogger.MyLogger();
+            //Stylet.Logging.LogManager.Enabled = true;
         }
     }
 }

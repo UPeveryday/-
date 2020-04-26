@@ -39,15 +39,23 @@ namespace PortableEquipment.Views
                 item.Kill();
                 await Task.Delay(10);
             }
-            if (Process.GetProcessesByName("数字式局部放电检测系统7.0").Length == 0)
+            try
             {
-                string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
-                EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
-                WndHost.Child = ea;
-                EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
-                eb.IsOpen = true;
-                WndHost.Child = eb;
+                if (Process.GetProcessesByName("数字式局部放电检测系统7.0").Length == 0)
+                {
+                    string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
+                    EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
+                    WndHost.Child = ea;
+                    EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
+                    eb.IsOpen = true;
+                    WndHost.Child = eb;
+                }
             }
+            catch 
+            {
+                StyletLogger.LoggerRunning.WriterByStatic("启动局放软件失败");
+            }
+           
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

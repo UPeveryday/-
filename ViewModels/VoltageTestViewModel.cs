@@ -41,18 +41,17 @@ namespace PortableEquipment.ViewModels
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
             InitCreateChart();
-
-
         }
+        #endregion
+        #region Handle
+
         public void Handle(MutualTranslator message)
         {
             _mutualTranslator = message;
             // LcGetTestVolateRange(_mutualTranslator.ExcitationCharacteristicR);
             GetBasePra(message);
         }
-        #endregion
 
-        #region Handle
         public void Handle(OutTestResult message)
         {
             if (message.stataThree.Checked)
@@ -116,7 +115,6 @@ namespace PortableEquipment.ViewModels
 
             KeepHighOverVolate = mutualTranslator.InducedOvervoltageR.HighOverVolate + "kV";
         }
-
         public void SaveTestResult()
         {
             OpenOrclose = true;
@@ -125,7 +123,6 @@ namespace PortableEquipment.ViewModels
             //处理其他结果
             _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
         }
-
         /// <summary>
         /// 获取拐点信息
         /// </summary>
@@ -169,8 +166,6 @@ namespace PortableEquipment.ViewModels
             }
             return points;
         }
-
-
         public async void CloseVolate()
         {
             if (IsRunning)
@@ -257,11 +252,14 @@ namespace PortableEquipment.ViewModels
                     if (mutualTranslator.NoLoadCurrentR.Enable == LossCurrent && mutualTranslator.InducedOvervoltageR.Enable == FlagPressure &&
                         mutualTranslator.ExcitationCharacteristicR.Enable == !Lc.Contains(mutualTranslator.ExcitationCharacteristicR.Enable))
                     {
+                        IsRunning = false;
+                        await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
                         return;
                     }
                     if (UVolateUi >= mutualTranslator.InducedOvervoltageR.HighOverVolate)
                     {
                         _windowManager.ShowMessageBox("过压保护", "警告", MessageBoxButton.OK);
+                        await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
                         IsRunning = false;
                         return;
                     }
@@ -344,6 +342,7 @@ namespace PortableEquipment.ViewModels
                                     {
                                         Flag = Flag.False_2;
                                         _windowManager.ShowMessageBox("空载电流过流保护", "警告", MessageBoxButton.OK);
+                                        await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
                                         IsRunning = false;
                                         return;
                                     }
@@ -383,6 +382,7 @@ namespace PortableEquipment.ViewModels
                                     if (token.IsCancellationRequested)
                                     {
                                         Flag = Flag.FinishPressure;
+                                        IsRunning = false;
                                         return;
                                     }
                                     resetEvent.WaitOne();
@@ -432,8 +432,8 @@ namespace PortableEquipment.ViewModels
         {
             tokenSource.Cancel();
             IsRunning = false;
+            await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
             await Task.Delay(1000);
-            // await StartTest();
             Flag = Flag.Free;
         }
 
