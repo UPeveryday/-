@@ -11,10 +11,11 @@
                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                       mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:TransformerViewModel}"
-        Title="TransformerView" Height="800" Width="1280"  UseNoneWindowStyle="True" WindowStyle="None">
+        Title="TransformerView" Height="850" Width="1280"  UseNoneWindowStyle="True" WindowStyle="None" Loaded="Window_Loaded">
     <Window.Resources>
         <ResourceDictionary>
             <convert:KeepTwoDouble x:Key="cvtTwo"></convert:KeepTwoDouble>
+            <convert:DoubleConvert x:Key="dt"></convert:DoubleConvert>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -84,7 +85,7 @@
                             <TextBlock Grid.Column="2" FontSize="18" Style="{StaticResource TextBlockPriview}" FontWeight="Bold">立即中断</TextBlock>
                         </Grid>
                     </Button>
-                    <Button Grid.Column="3"  FontSize="20"  Height="40" Width="160"  Background="Green" Margin="5,0" Click="{s:Action StartAuto}" ToolTip="启动测量" Style="{StaticResource ButtonF}">
+                    <Button Grid.Column="3" Opacity="{Binding StartOpacity}" FontSize="20"  Height="40" Width="160"  Background="Green" Margin="5,0" Click="{s:Action StartAuto}" ToolTip="启动测量" Style="{StaticResource ButtonF}">
                         <DockPanel>
                             <TextBlock Text="{Binding StartTestText}"></TextBlock>
                             <ProgressBar HorizontalAlignment="Right"  VerticalAlignment="Center"  Grid.Column="0" ToolTip="试验状态"   Margin="10 0" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="50" Foreground="Yellow" IsIndeterminate="True" Visibility="{Binding BarVisibility}" >
@@ -249,52 +250,71 @@
                                 <RowDefinition  Height="0.5*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Viewbox  Grid.Row="1" Grid.Column="1" Margin="3">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">时间(A)</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">时间(S)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding TimeMul,UpdateSourceTrigger=PropertyChanged}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                     </Grid>
-
-
-                    <Grid Grid.Row="3" Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" Background="#38514d" Margin="0,0,2,2">
-                            <Button  Style="{StaticResource JFButton}" Command="{s:Action StartJf}">
-                                <Viewbox Margin="25">
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Foreground="White" Style="{StaticResource TextBlockPriview}">局放</TextBlock>
-                                        <TextBlock  FontWeight="Bold"  Foreground="White"  Style="{StaticResource TextBlockPriview}">检测</TextBlock>
-                                    </StackPanel>
-                                </Viewbox>
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Column="1" Background="#242e3b" Margin="0,0,0,2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition Height="2*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Viewbox Grid.Column="1">
-                                    <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White" Text="局放量(pC)"></TextBlock>
-                                </Viewbox>
-                            </Grid>
-                            <Grid Grid.Row="1" >
-                                <Viewbox >
-                                    <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding Jf,Mode=TwoWay}" Foreground="#00ff7f">100</TextBlock>
-                                </Viewbox>
-                            </Grid>
-                        </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1" Background="#242e3b">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="LightGreen" FontSize="55" FontWeight="Bold" Text="{Binding hidetest}" ></TextBlock>
                     </Grid>
+
+                    <materialDesign:DrawerHost Margin="0,0"  Grid.Row="3" Grid.Column="1"  BorderThickness="0"  IsTopDrawerOpen="{Binding ShowOrHide}" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                        <materialDesign:DrawerHost.TopDrawerContent>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition  Width="0.5*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="1" Background="#38514d" Margin="5,0,2,2">
+                                    <Button  Style="{StaticResource JFButton}" Command="{s:Action StartJf}">
+                                        <Viewbox Margin="25">
+                                            <StackPanel>
+                                                <TextBlock FontWeight="Bold" Foreground="White" Style="{StaticResource TextBlockPriview}">确认</TextBlock>
+                                                <TextBlock  FontWeight="Bold"  Foreground="White"  Style="{StaticResource TextBlockPriview}">保存</TextBlock>
+                                            </StackPanel>
+                                        </Viewbox>
+                                    </Button>
+                                </Grid>
+                                <Grid Grid.Column="0" Background="#242e3b" Margin="0,0,0,2" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition Height="2*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Viewbox Grid.Column="1">
+                                            <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="Red" Text="请输入局放量(pC)"></TextBlock>
+                                        </Viewbox>
+                                    </Grid>
+                                    <Grid Grid.Row="1" >
+                                        <Viewbox >
+                                            <TextBox HorizontalContentAlignment="Center" BorderBrush="Blue" Margin="0 3" BorderThickness="0 0 0 1" Width="60" Text="{Binding JfData,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource dt}}" Background="Transparent" Foreground="#00ff7f"></TextBox>
+                                        </Viewbox>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+
+                            <!--<StackPanel  Margin="16" HorizontalAlignment="Center"  Orientation="Horizontal">
+                                <TextBlock  Margin="4" VerticalAlignment="Center"> TOP BANANA</TextBlock>
+                                <Button  Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" Style="{DynamicResource MaterialDesignFlatButton}"    Margin="4"  VerticalAlignment="Center">
+                                    CLOSE ALL
+                                </Button>
+                                <Button  Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"   CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
+                                    CLOSE THIS
+                                </Button>
+                            </StackPanel>-->
+                        </materialDesign:DrawerHost.TopDrawerContent>
+                    </materialDesign:DrawerHost>
+
+
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -405,6 +425,10 @@
             </Grid>
 
             <Grid Grid.Column="1" Margin="0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition Height="2.5*"></RowDefinition>
+                </Grid.RowDefinitions>
                 <DataGrid Margin="5,0" AlternationCount="2" GridLinesVisibility="All"  CanUserAddRows="False" BorderBrush="#00a3ff"  AutoGenerateColumns="False" IsReadOnly="True"
                           ItemsSource="{Binding DatagridTestData,UpdateSourceTrigger=PropertyChanged}">
                     <DataGrid.RowStyle>
@@ -428,6 +452,7 @@
                         <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W" Width="1*"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Border  x:Name="WndHost"  Grid.Row="1"></Border>
             </Grid>
         </Grid>
 

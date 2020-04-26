@@ -35,9 +35,6 @@ namespace PortableEquipment.Views
 
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
+       
     }
 }

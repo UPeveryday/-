@@ -23,7 +23,7 @@ namespace PortableEquipment.ViewModels
         public void JfConfire()
         {
             windowslocation = false;
-            _eventAggregator.Publish(new JfTestResult { Jffinish = true, Jfdata = Jfdata == null ? "0.00" : Jfdata });
+            _eventAggregator.Publish(new JfTestResult { Jffinish = true, Jfdata = Jfdata});
             WindowState = WindowState.Minimized;
         }
 
@@ -32,7 +32,7 @@ namespace PortableEquipment.ViewModels
             WindowState = message;
         }
 
-        public string Jfdata { get; set; }
+        public double Jfdata { get; set; }
         public bool windowslocation { get; set; } = true;
 
         public WindowState WindowState { get; set; } = WindowState.Normal;
@@ -40,6 +40,6 @@ namespace PortableEquipment.ViewModels
     public struct JfTestResult
     {
         public bool Jffinish;
-        public string Jfdata;
+        public double Jfdata;
     }
 }

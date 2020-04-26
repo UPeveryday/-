@@ -1,6 +1,8 @@
 ﻿using MahApps.Metro.Controls;
+using PortableEquipment.Servers.EmbeddedApp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,27 @@ namespace PortableEquipment.Views
             this.DragMove();
         }
 
-     
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in Process.GetProcessesByName("数字式局部放电检测系统7.0"))
+            {
+                item.Kill();
+                await Task.Delay(10);
+            }
+            if (Process.GetProcessesByName("数字式局部放电检测系统7.0").Length == 0)
+            {
+                string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
+                EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
+                WndHost.Child = ea;
+                EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
+                eb.IsOpen = true;
+                WndHost.Child = eb;
+            }
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

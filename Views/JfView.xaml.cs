@@ -26,7 +26,7 @@ namespace PortableEquipment.Views
         {
             InitializeComponent();
             this.Topmost = true;
-           
+
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -43,8 +43,7 @@ namespace PortableEquipment.Views
             }
             if (Process.GetProcessesByName("数字式局部放电检测系统7.0").Length == 0)
             {
-
-                String path = @"G:\金山\bin\Debug\Jf\数字式局部放电检测系统7.0.exe";
+                string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
                 EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
                 WndHost.Child = ea;
                 EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
@@ -53,6 +52,6 @@ namespace PortableEquipment.Views
             }
         }
 
-      
+
     }
 }

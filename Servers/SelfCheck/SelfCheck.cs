@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StyletIoC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace PortableEquipment.Servers.SelfCheck
 {
     public class SelfCheck : ISelfCheck
     {
+        [Inject]
+        public Servers.CommunicationProtocol.ICommunicationProtocol _CommunicationProtocol;
+        [Inject]
+        public Servers.CHangeVolate.ISetVolate _setVolate;
+        [Inject]
+        public Servers.Xmldata.IXmlconfig _xmlconfig;
         public async Task<SelfCheckMesssage> ComPortCheck()
         {
             string ret = string.Empty;
@@ -31,6 +38,40 @@ namespace PortableEquipment.Servers.SelfCheck
             checkMesssage.hidemessage = ret;
             return checkMesssage;
         }
+
+        public async Task<bool> SeleCheck()
+        {
+            bool Power = false;
+            bool Set = false;
+            if ((await ComPortCheck()).IsOk)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var p = await _CommunicationProtocol.ReadStataThree();
+                    if (p.Checked)
+                    {
+                        Power = true;
+                        break;
+                    }
+                }
+                var rec = new byte[1];
+                byte[] comman = new byte[3] { 0xa5, 0x0a, 0xaf };
+                await Task.Run(() =>
+                {
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (rec[0] == 0xAA)
+                    Set = true;
+                else if (rec[0] == 0xAB)
+                    Set = true;
+                else
+                    Set = false;
+            }
+            if (Power == Set == true)
+                return true;
+            return false;
+        }
+
     }
 
     public struct SelfCheckMesssage

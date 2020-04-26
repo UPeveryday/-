@@ -9,5 +9,6 @@ namespace PortableEquipment.Servers.SelfCheck
     public interface ISelfCheck
     {
         Task<SelfCheckMesssage> ComPortCheck();
+        Task<bool> SeleCheck();
     }
 }

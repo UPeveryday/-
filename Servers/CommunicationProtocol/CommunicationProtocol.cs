@@ -83,7 +83,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         {
             try
             {
-                await Task.Delay(500);
                 var rec = new byte[2];
                 byte TestKindByte = 0x00;
                 byte Mark = 0x00;
@@ -128,12 +127,18 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                     Comport.Serial.upserialport.SendCommand(sendc, ref rec, 10000);
                 });
                 if (rec[0] == 0xaa && rec[1] == Mark)
+                {
+                    await Task.Delay(100);
                     return true;
+                }
+                await Task.Delay(100);
+
                 return false;
             }
             catch
             {
                 _logger.Writer("Class: CommunicationProtocol.SetTestPra出错");
+                await Task.Delay(100);
                 return false;
             }
 

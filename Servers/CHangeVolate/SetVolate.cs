@@ -201,24 +201,34 @@ namespace PortableEquipment.Servers.CHangeVolate
             await _communicationProtocol.ThicknessAdjustable(true);
         Here: while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) >= 1)
             {
-                var range = Fre - (await _communicationProtocol.ReadStataThree()).Fre;
+            p1: var tpd = await _communicationProtocol.ReadStataThree();
+                if (!tpd.Checked)
+                    goto p1;
+                var range = Fre - tpd.Fre;
+                var data = (byte)(Math.Abs((int)(Math.Round(range, 1))));
                 if (range > 0)
-                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, (byte)Math.Abs(range));
+                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, data);
                 else
-                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, (byte)Math.Abs(range));
+                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, data);
+                await Task.Delay(1000);
             }
             await _communicationProtocol.ThicknessAdjustable(false);
-            while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) > 0.2)
+            while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) < 1)
             {
-                var range = Fre - (await _communicationProtocol.ReadStataThree()).Fre;
-                if (range > 0.1)
-                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, (byte)(Math.Abs(range) * 10));
-                else if (range < -0.1)
-                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, (byte)(Math.Abs(range) * 10));
+            p2: var tpd = await _communicationProtocol.ReadStataThree();
+                if (!tpd.Checked)
+                    goto p2;
+                var range = Fre - tpd.Fre;
+                var data = (byte)(Math.Abs((int)Math.Round((range * 10))));
+                if (range > 0)
+                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, data);
+                else if (range < 0)
+                    await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, data);
                 else
                     return true;
+                await Task.Delay(1000);
             }
-            if (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) < 0.2)
+            if (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree()).Fre) == 0)
             {
                 return true;
             }
@@ -256,6 +266,11 @@ namespace PortableEquipment.Servers.CHangeVolate
                     return true;
                 }
             }
+        }
+
+        public async Task SetFre(double fre)
+        {
+
         }
 
     }

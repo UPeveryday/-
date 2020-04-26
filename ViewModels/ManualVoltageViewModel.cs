@@ -113,12 +113,10 @@ namespace PortableEquipment.ViewModels
         {
             OpenOrclose = true;
             AddHideList("开始试验...");
-
-            //   await ChnageVolate(VolateNeed);
-            //  await _setVolate.SetVolatedata(VolateNeed, _communicationProtocol, _xmlconfig);
-            await ChnageHighVolate(VolateNeed);
-            //await ChnageVolate(VolateNeed);
-            //await ChnageFre(Fre);ed
+            if (VolateUi < 10)
+                await _setVolate.SettindVolate(15, _communicationProtocol, _xmlconfig);
+            await ChnageFre(Fre);
+            //    await ChnageHighVolate(VolateNeed);
             AddHideList("试验已结束...");
             OpenOrclose = false;
         }
