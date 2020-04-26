@@ -232,6 +232,30 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         }
 
 
+        public async Task<bool> Boom()
+        {
+            var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
+            var rec = new byte[2];
+            byte[] comman = new byte[2] { 0xa5, 0x0e };
+            try
+            {
+                int recnum = 0;
+                await Task.Run(() =>
+                 {
+                     recnum = Comport.Serial.upserialport.SendCommandBoom(comman, ref rec, 50);
+                 });
+                if (recnum == 2 && rec[0] == 0xaa && rec[1] == 0x0e)
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "粗细条异常");
+            }
+            return false;
+        }
+
         public async Task<bool> PressThincness()
         {
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
@@ -378,6 +402,9 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return -1;
         }
+
+
+
     }
     public enum TestKind
     {

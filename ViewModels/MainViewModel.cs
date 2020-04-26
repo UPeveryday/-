@@ -122,6 +122,17 @@ namespace PortableEquipment.ViewModels
                     }
                 }, TaskCreationOptions.LongRunning);
                 cgfdataupdata.Start();
+
+                Task BoomTest = new Task(async () =>
+                {
+                    while (true)
+                    {
+                        await _CommunicationProtocol.Boom();
+                        await Task.Delay(1000);
+                    }
+                }, TaskCreationOptions.LongRunning);
+                BoomTest.Start();
+
             }
             else
             {

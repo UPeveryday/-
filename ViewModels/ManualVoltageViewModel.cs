@@ -116,7 +116,7 @@ namespace PortableEquipment.ViewModels
             if (VolateUi < 10)
                 await _setVolate.SettindVolate(15, _communicationProtocol, _xmlconfig);
             await ChnageFre(Fre);
-            //    await ChnageHighVolate(VolateNeed);
+               await ChnageHighVolate(VolateNeed);
             AddHideList("试验已结束...");
             OpenOrclose = false;
         }

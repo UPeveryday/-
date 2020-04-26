@@ -271,7 +271,7 @@ namespace PortableEquipment.Servers.CHangeVolate
         public async Task DownAndClosePower(ICommunicationProtocol _communicationProtocolk, Xmldata.IXmlconfig _xmlconfig)
         {
             await DownVolateZero(_communicationProtocolk, _xmlconfig);
-            await DownVolateZero(_communicationProtocolk, _xmlconfig);
+            await ControlsPowerStata(false,_communicationProtocolk);
         }
 
     }
