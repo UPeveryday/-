@@ -24,6 +24,11 @@ namespace PortableEquipment.ViewModels
         private TransformerViewModel _TransformerViewModel;
         private VoltageTestViewModel _VoltageTestViewModel;
         private WithstandVoltageViewModel _WithstandVoltageViewModel;
+        [Inject]
+        private IMessageBoxViewModel _MessgeShowDiaglog;
+
+        [Inject]
+        private ViewModels.MessageBoxViewModel _MessageBoxViewModel;
         private StyletLogger.ILogger _logger;
         private TimeViewModel _timeViewModel;
         [Inject]

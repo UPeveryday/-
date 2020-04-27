@@ -115,13 +115,15 @@ namespace PortableEquipment.ViewModels
 
             KeepHighOverVolate = mutualTranslator.InducedOvervoltageR.HighOverVolate + "kV";
         }
-        public void SaveTestResult()
+        public async void SaveTestResult()
         {
             OpenOrclose = true;
             _mutualTranslator.Chartvalues = TanEleVolatevalue;
             _mutualTranslator.LcDatagrid = LcDatagrid;
             //处理其他结果
             _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
+            await Task.Delay(1000);
+            OpenOrclose = false;
         }
         /// <summary>
         /// 获取拐点信息
@@ -168,6 +170,7 @@ namespace PortableEquipment.ViewModels
         }
         public async void CloseVolate()
         {
+            SetHide("正在退出...", true);
             if (IsRunning)
             {
                 if (tokenSource != null)
@@ -176,10 +179,12 @@ namespace PortableEquipment.ViewModels
             }
             if (await _communicationProtocol.GetPowerStata())
             {
+                SetHide("正在降压...", true);
                 await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
+                SetHide("正在关闭电源...", true);
                 await _setVolate.ControlsPowerStata(false, _communicationProtocol);
             }
-
+            SetHide("退出成功.", true);
             this.RequestClose();
         }
         #endregion
@@ -192,10 +197,12 @@ namespace PortableEquipment.ViewModels
         public bool OpenOrclose { get; set; }
         public async Task StartTest()
         {
+            SetHide("已经开始测量", true, true);
             tokenSource = new CancellationTokenSource();
             token = tokenSource.Token;
             resetEvent = new ManualResetEvent(true);
             await MutualTranslatorTest();
+            SetHide("试验已经结束", true, true);
         }
 
 
@@ -430,11 +437,13 @@ namespace PortableEquipment.ViewModels
         /// </summary>
         public async void FinishTest()
         {
+            SetHide("正在结束试验...", true);
             tokenSource.Cancel();
             IsRunning = false;
             await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
             await Task.Delay(1000);
             Flag = Flag.Free;
+            SetHide("试验已结束", true, true);
         }
 
         private void ControlsCurrentTest(bool ctrols1, bool ctrols2, bool ctrols3)
@@ -442,6 +451,16 @@ namespace PortableEquipment.ViewModels
             FirstTestEnable = ctrols1;
             SeconedTestEnable = ctrols2;
             ThirdTestEnable = ctrols3;
+        }
+        private async void SetHide(string hidemessage, bool IsOpen, bool isTimeout = false, int timeout = 1000)
+        {
+            OpenOrclose = IsOpen;
+            HideText = hidemessage;
+            if (isTimeout)
+            {
+                await Task.Delay(timeout);
+                IsOpen = false;
+            }
         }
         #endregion
     }

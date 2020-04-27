@@ -17,7 +17,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <model:Convertsigal x:Key="cvt"></model:Convertsigal>
-            <convert:KeepTwoDouble x:Key="cvtTwo"></convert:KeepTwoDouble> 
+            <convert:KeepTwoDouble x:Key="cvtTwo"></convert:KeepTwoDouble>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/PortableEquipment;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -37,21 +37,25 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="1" Background="White" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="14*"></ColumnDefinition>
+                    <ColumnDefinition Width="138*"></ColumnDefinition>
+                    <ColumnDefinition Width="122*"></ColumnDefinition>
+                    <ColumnDefinition Width="293*"/>
+                    <ColumnDefinition Width="69*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Viewbox Grid.Column="1" Margin="0,2">
                     <TextBlock HorizontalAlignment="Center" Foreground="#333333" FontWeight="Bold" VerticalAlignment="Center" >电压互感器试验</TextBlock>
                 </Viewbox>
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
+
+                    <!--<materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="SnackbarThree" Foreground="Blue" Message="保存成功" />-->
+
                     <Button Grid.Column="3" Opacity="{Binding StartOpacity}"  FontSize="20" IsEnabled="{Binding StartTestVisibility}"  Margin="5,3"  Background="Green"  Click="{s:Action StartTest}" ToolTip="启动测量" Style="{StaticResource ButtonF}">
                         <DockPanel>
                             <TextBlock Text="{Binding StartTestText}"></TextBlock>
@@ -79,7 +83,7 @@
                         </Grid>
                     </Button>
                 </Grid>
-                <Grid Grid.Column="3">
+                <Grid Grid.Column="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -585,12 +589,14 @@
         </Grid>
 
         <Grid Grid.RowSpan="2">
+            <!--{Binding OpenOrclose}-->
             <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Top" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" >
                 <materialDesign:DrawerHost.TopDrawerContent>
-                    <StackPanel Orientation="Horizontal"   Background="#007ACC"  MinHeight="100" Width="800">
-                        <TextBlock Margin="200 0" Foreground="White" FontSize="22"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                    <StackPanel Orientation="Horizontal" MinHeight="80" Width="800" Background="#FF00FF86">
+                        <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
+                        <TextBlock Margin="100 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                         <Button FontSize="22"  HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
-                                CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="4" VerticalAlignment="Center">
+                                CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="100 0" VerticalAlignment="Center">
                             CLOSE THIS
                         </Button>
                     </StackPanel>

@@ -43,19 +43,6 @@ namespace PortableEquipment.ViewModels
             Cancertext = message.Cancertext;
         }
 
-        public void Setup(string messageBoxText, string caption = null,
-            MessageBoxButton buttons = MessageBoxButton.OK, 
-            MessageBoxImage icon = MessageBoxImage.None, 
-            MessageBoxResult defaultResult = MessageBoxResult.None, 
-            MessageBoxResult cancelResult = MessageBoxResult.None, 
-            IDictionary<MessageBoxResult, string> buttonLabels = null,
-            FlowDirection? flowDirection = null, 
-            TextAlignment? textAlignment = null)
-        {
-
-        }
-        public MessageBoxResult ClickedButton => throw new NotImplementedException();
-
         public string HeaderText { get; set; } = "警告";
         public string Cancertext { get; set; } = "取消";
         public string Messages { get; set; }

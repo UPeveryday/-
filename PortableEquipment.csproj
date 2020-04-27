@@ -193,6 +193,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ManuallySetParametersViewModel.cs" />
     <Compile Include="ViewModels\ManualVoltageViewModel.cs" />
+    <Compile Include="ViewModels\MessageBoxViewModel.cs" />
     <Compile Include="ViewModels\ParameterSettingViewModel.cs" />
     <Compile Include="ViewModels\SignupViewModel.cs" />
     <Compile Include="ViewModels\TestWindowViewModel.cs" />
@@ -217,6 +218,9 @@
     </Compile>
     <Compile Include="Views\ManualVoltageView.xaml.cs">
       <DependentUpon>ManualVoltageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MessageBoxView.xaml.cs">
+      <DependentUpon>MessageBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ParameterSettingView.xaml.cs">
       <DependentUpon>ParameterSettingView.xaml</DependentUpon>
@@ -318,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ManualVoltageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

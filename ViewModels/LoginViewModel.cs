@@ -74,7 +74,7 @@ namespace PortableEquipment.ViewModels
         {
             Usernamehnit = "UserName";
         }
-        public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.YesNo, MessageBoxImage.Information);
+        public MessageBoxResult ShowMessage() => _windowManger.ShowMessageBox("Hello", "警告", MessageBoxButton.OKCancel);
         public void Close() => this.RequestClose();
         public void Pisher() => _eventAggregator.Publish("手动调压");
 
