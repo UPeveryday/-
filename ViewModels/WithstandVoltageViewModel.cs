@@ -147,7 +147,7 @@ namespace PortableEquipment.ViewModels
         public string TestLocation { get; set; }
         public string Tester { get; set; }
         public double Frequency { get; set; } = 50.0;
-        public double Volate { get; set; } = 10.00;
+        public double Volate { get; set; } = 100.00;
         public double Current { get; set; } = 5.0;
         #endregion
         #region Data

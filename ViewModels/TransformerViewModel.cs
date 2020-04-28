@@ -178,6 +178,7 @@ namespace PortableEquipment.ViewModels
         public void StartJf()
         {
             SaveFlag = true;
+            JfData = 0;
         }
 
         public async void TransformerClose()
@@ -269,7 +270,7 @@ namespace PortableEquipment.ViewModels
         public double TimeUi { get; set; }
         public double Jf { get; set; } = 0.00;
 
-        public string TimeMul { get; set; } = "300S";
+        public string TimeMul { get; set; } = "--";
 
         #endregion
         #region bindinds
@@ -311,7 +312,7 @@ namespace PortableEquipment.ViewModels
         }
         private async void StartTest()
         {
-            if (!IsRunning&& await _SelfCheck.SeleCheck())
+            if (!IsRunning && await _SelfCheck.SeleCheck())
             {
                 IsRunning = true;
                 hidetest = "正在测量中...";
@@ -321,11 +322,11 @@ namespace PortableEquipment.ViewModels
 
                 for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                 {
-                    await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                            "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
-                    }));
+                    Application.Current.Dispatcher.Invoke(() =>
+                   {
+                       IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                           "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                   });
                     if (IsokOrCan)
                     {
                         if (VolateUi > 12 || await _setVolate.SettindVolate(15, _communicationProtocol, _xmlconfig))
@@ -334,9 +335,11 @@ namespace PortableEquipment.ViewModels
                             {
                                 for (int i = 0; i < data.Length; i++)
                                 {
-                                    if (UVolateUi <= TestPra.Volate)
+
+                                    if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig))
                                     {
-                                        if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig))
+
+                                        if (UVolateUi <= TestPra.Volate)
                                         {
                                             for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
                                             {
@@ -363,7 +366,6 @@ namespace PortableEquipment.ViewModels
                                                     }
 
                                                 }
-                                                //  await JfControls(TestPra, i, (j + 1) * 5, TestPosition, JfData);
                                             }
                                             if (data[i].TestTime % 5 != 0)
                                             {
@@ -394,15 +396,20 @@ namespace PortableEquipment.ViewModels
                                                 }
                                             }
                                         }
+                                        else
+                                        {
+                                            Application.Current.Dispatcher.Invoke(() =>
+                                            {
+                                                _windowManager.ShowMessageBox("过压\t\n已经自动退出 试验", "提示", MessageBoxButton.OK);
+                                            });
+                                            hidetest = "空闲中";
+                                            IsRunning = false;
+                                            return;
+                                        }
 
                                     }
-                                    else
-                                    {
-                                        _windowManager.ShowMessageBox("过压\t\n已经自动退出 试验", "提示", MessageBoxButton.OK);
-                                        hidetest = "空闲中";
-                                        IsRunning = false;
-                                        return;
-                                    }
+
+
                                 }
                             }
                             else
@@ -427,12 +434,11 @@ namespace PortableEquipment.ViewModels
             else
             {
                 IsRunning = false;
-                // await SetDiaSata(true, "启动测量失败\t\n可能未结束测量\t\n请手动结束为结束的测量", System.Windows.Visibility.Hidden, alarmText: "警告");
-                await Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    _windowManager.ShowMessageBox("启动测量失败\t\n请检查接线\t\n请手动结束为结束的测量",
-                       "提示", MessageBoxButton.OK);
-                }));
+                Application.Current.Dispatcher.Invoke(() =>
+               {
+                   _windowManager.ShowMessageBox("启动测量失败\t\n请检查接线\t\n请手动结束为结束的测量",
+                      "提示", MessageBoxButton.OK);
+               });
             }
             hidetest = "空闲中";
         }
@@ -488,7 +494,7 @@ namespace PortableEquipment.ViewModels
             {
                 tokenSource.Cancel();
                 await _setVolate.SettindVolate(0, _communicationProtocol, _xmlconfig);
-                TimeMul = "300S";
+                TimeMul = "--";
                 _windowManager.ShowMessageBox("试验已经结束",
                               "提示", MessageBoxButton.OK);
             }

@@ -592,14 +592,20 @@
             <!--{Binding OpenOrclose}-->
             <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Top" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" >
                 <materialDesign:DrawerHost.TopDrawerContent>
-                    <StackPanel Orientation="Horizontal" MinHeight="80" Width="800" Background="#FF00FF86">
-                        <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
-                        <TextBlock Margin="100 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                        <Button FontSize="22"  HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
-                                CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  Margin="100 0" VerticalAlignment="Center">
+                    <Grid MinHeight="80" Width="800" Background="#FF00FF86">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" MinHeight="80" Width="800" Background="#FF00FF86">
+                            <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
+                            <TextBlock Margin="80 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                        </StackPanel>
+                        <Button FontSize="22" Grid.Column="1" HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
+                                CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  VerticalAlignment="Center">
                             CLOSE THIS
                         </Button>
-                    </StackPanel>
+                    </Grid>
                 </materialDesign:DrawerHost.TopDrawerContent>
             </materialDesign:DrawerHost>
         </Grid>

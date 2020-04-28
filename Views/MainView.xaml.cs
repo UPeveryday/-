@@ -18,7 +18,7 @@ namespace PortableEquipment.Views
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : Window
+    public partial class MainView : MetroWindow
     {
         public MainView()
         {

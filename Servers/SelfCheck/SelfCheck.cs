@@ -33,7 +33,7 @@ namespace PortableEquipment.Servers.SelfCheck
             if (!await Task.Factory.StartNew(Comport.Serial.upserialport.openPort))
             {
                 checkMesssage.IsOk = false;
-                ret += "变配电源:" + new Xmldata.Xmlconfig().GetAddNodeValue("upComport") + " 打开失败\t\n";
+                ret += "变频电源:" + new Xmldata.Xmlconfig().GetAddNodeValue("upComport") + " 打开失败\t\n";
             }
             checkMesssage.hidemessage = ret;
             return checkMesssage;

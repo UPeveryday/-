@@ -295,7 +295,7 @@
                                     </Grid>
                                     <Grid Grid.Row="1" >
                                         <Viewbox >
-                                            <TextBox HorizontalContentAlignment="Center" BorderBrush="Blue" Margin="0 3" BorderThickness="0 0 0 1" Width="60" Text="{Binding JfData,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource dt}}" Background="Transparent" Foreground="#00ff7f"></TextBox>
+                                            <TextBox HorizontalContentAlignment="Center" BorderBrush="Blue" Margin="0 3" BorderThickness="0 0 0 1" Width="60" Text="{Binding JfData,Mode=TwoWay,Converter={StaticResource dt}}" Background="Transparent" Foreground="#00ff7f"></TextBox>
                                         </Viewbox>
                                     </Grid>
                                 </Grid>
@@ -325,7 +325,7 @@
                     <Grid Grid.Row="1">
                         <TextBlock HorizontalAlignment="Left" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="#545f79">试品信息</TextBlock>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="2" IsEnabled="False">
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
