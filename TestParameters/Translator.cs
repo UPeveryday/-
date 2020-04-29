@@ -10,6 +10,14 @@ using System.Threading.Tasks;
 
 namespace PortableEquipment.TestParameters
 {
+
+    public enum TestLebel
+    {
+        _35KV=0,
+        _66KV1,
+        _110KV=2,
+        _220KV=3
+    }
     /// <summary>
     /// 变压器实验
     /// </summary>
@@ -36,14 +44,18 @@ namespace PortableEquipment.TestParameters
     public struct MutualTranslator
     {
         public string TestId;
-        public string TestLevel;
+        public int TestLevel;
         public double Humidity;
         public double Temperature;
         public string TestLocation;
         public string Tester;
         public InducedOvervoltage InducedOvervoltageR;
+        public InducedOvervoltageResult inducedOvervoltageResult;
         public ExcitationCharacteristic ExcitationCharacteristicR;
+        public ExcitationCharacteristicResult excitationCharacteristicResult;
         public NoLoadCurrent NoLoadCurrentR;
+        public NoLoadCurrentResult noLoadCurrentResult;
+
         public DateTime DateTime;
 
         public ChartValues<ObservablePoint> Chartvalues;
@@ -68,8 +80,8 @@ namespace PortableEquipment.TestParameters
 
     public enum VolateKind
     {
-        High=0,
-        Low=1
+        High = 0,
+        Low = 1
     }
     public enum CurrentKind
     {
@@ -93,6 +105,14 @@ namespace PortableEquipment.TestParameters
         public double OverCurrent;
 
     }
+    public struct InducedOvervoltageResult
+    {
+        public bool Finish;
+        public double Volate;
+        public double Cueent;
+        public double Fre;
+        public double TestTime;
+    }
 
 
 
@@ -107,6 +127,14 @@ namespace PortableEquipment.TestParameters
         public double[] VolateRange;
         public double VariableThan;//变比
     }
+    public struct ExcitationCharacteristicResult
+    {
+        public ChartValues<ObservablePoint> Chartvalues;
+        public BindableCollection<LcdatagridColletion> LcDatagrid;
+        public string GuaiVolate;
+        public string GuaiCueent;
+        public bool Finish;
+    }
     /// <summary>
     /// 空载电流
     /// </summary>
@@ -118,13 +146,20 @@ namespace PortableEquipment.TestParameters
         public double VariableThan;//变比
 
     }
-    public enum DetectionType
+    public struct NoLoadCurrentResult
+    {
+        public double Volate;
+        public double Current;
+        public bool Finish;
+
+    }
+        public enum DetectionType
     {
         HighpressureResistanceTest = 0,
         LowessureResistanceTest = 1
     }
 
-   
+
 
 
 }

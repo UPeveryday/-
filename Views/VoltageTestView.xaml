@@ -88,7 +88,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1" MouseMove="Grid_MouseMove" Margin="8,4" ToolTip="退出"  MouseDown="{s:Action CloseVolate}">
+                    <Grid Grid.Column="1" Height="30" Width="30" MouseMove="Grid_MouseMove" Margin="8,4" ToolTip="退出"  MouseDown="{s:Action CloseVolate}">
                         <Grid.Background >
                             <ImageBrush  ImageSource="/PortableEquipment;component/Resources/退出.png"></ImageBrush>
                         </Grid.Background>
@@ -504,11 +504,14 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Viewbox  Margin="9">
+                            <Viewbox  Margin="16">
                                 <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电压</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1" Margin="5">
-                                <TextBlock Foreground="#189aff" Text="{Binding KzTestVolate}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Foreground="#189aff" Text="{Binding KzTestVolate}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                    <Label Foreground="#189AFF"  FontWeight="Bold"  HorizontalContentAlignment="Center">V</Label>
+                                </StackPanel>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="3">
@@ -516,11 +519,14 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Viewbox  Margin="9">
+                            <Viewbox  Margin="16">
                                 <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电流</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1" Margin="5">
-                                <TextBlock Foreground="#189aff" Text="{Binding KzOverCurrent}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Foreground="#189aff" Text="{Binding KzOverCurrent}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                    <Label Foreground="#189AFF"  FontWeight="Bold"  HorizontalContentAlignment="Center">A</Label>
+                                </StackPanel>
                             </Viewbox>
                         </Grid>
                     </Grid>
@@ -551,23 +557,14 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Viewbox Margin="5">
+                            <Viewbox Margin="10">
                                 <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电压</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1"  Margin="2">
-                                <TextBlock Foreground="#189aff" Text="{Binding KeepTestVoltage }" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
-                            </Viewbox>
-                        </Grid>
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition ></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Viewbox Margin="5">
-                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">频率</TextBlock>
-                            </Viewbox>
-                            <Viewbox  Grid.Column="1"  Margin="2">
-                                <TextBlock Foreground="#189aff" Text="{Binding KeepTestFre }"  FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Foreground="#189aff" Text="{Binding KeepTestVoltage }" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                    <Label Foreground="#189AFF"  FontWeight="Bold"  HorizontalContentAlignment="Center">V</Label>
+                                </StackPanel>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Row="3">
@@ -575,11 +572,29 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Viewbox Margin="5">
-                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">时间</TextBlock>
+                            <Viewbox Margin="10">
+                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验频率</TextBlock>
+                            </Viewbox>
+                            <Viewbox  Grid.Column="1"  Margin="2">
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Foreground="#189aff" Text="{Binding KeepTestFre }"  FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                    <Label Foreground="#189AFF"  FontWeight="Bold"  HorizontalContentAlignment="Center">Hz</Label>
+                                </StackPanel>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox Margin="10">
+                                <TextBlock  Style="{StaticResource TextBlockPriview}" Foreground="#545f79">试验电流</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Column="1" Margin="2">
-                                <TextBlock Foreground="#189aff" Text="{Binding KeepTestTime}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <TextBlock Foreground="#189aff" Text="{Binding KeepTestCurrent}" FontWeight="Bold" Style="{StaticResource TextBlockPriview}"></TextBlock>
+                                    <Label Foreground="#189AFF"  FontWeight="Bold"  HorizontalContentAlignment="Center">A</Label>
+                                </StackPanel>
                             </Viewbox>
                         </Grid>
                     </Grid>

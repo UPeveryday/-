@@ -56,7 +56,7 @@ namespace PortableEquipment.Servers.SqlDeel
             {
                 Model.MutualTranslator trs = new Model.MutualTranslator
                 {
-                    TestLevel = testmessage.TestLevel,
+                    TestLevel = testmessage.TestLevel.ToString(),
                     TestId = testmessage.TestId,
                     Humidity = testmessage.Humidity,
                     Temperature = testmessage.Temperature,
@@ -70,7 +70,7 @@ namespace PortableEquipment.Servers.SqlDeel
                 entityServer.EfModel.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 _logger.Writer("ParameterSettingViewModel,保存任务单EF错误");
             }

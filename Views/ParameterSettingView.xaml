@@ -413,7 +413,7 @@
                         <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
-                                <TextBox BorderThickness="1" Width="60" Text="{Binding LcTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding LcTestVolate,Mode=TwoWay,UpdateSourceTrigger=Default,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                                 <Label Content="kV" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                             </StackPanel>
                         </Grid>

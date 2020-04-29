@@ -60,11 +60,12 @@ namespace PortableEquipment.ViewModels
                             DataBaseId = item.id,
                             Id = item.TestId,
                             TestKind = item.TestKind,
-                            VolateRange = item.TestLevel,
+                            VolateRange = ((TestLebel)Convert.ToInt32(item.TestLevel)).ToString().Replace("_", ""),
                             Tester = item.Tester,
                             Humidity = item.Humidity.ToString(),
                             Temperature = item.Temperature.ToString(),
                             TestLocation = item.TestLocation,
+
                             TestTime = item.DateTime.ToString()
                         });
                     }
@@ -103,6 +104,7 @@ namespace PortableEquipment.ViewModels
             });
 
         }
+
 
         private void LcGetTestVolateRange(ExcitationCharacteristic ec)
         {
@@ -175,14 +177,19 @@ namespace PortableEquipment.ViewModels
                         TransformerVisibility = System.Windows.Visibility.Hidden;
                         var c = _entityServer.EfModel.MutualTranslators.Where(p => p.id == Selectdata.DataBaseId);//查找Id对应任务单
                         var mc = _jsondeel.GetClassFromStr<MutualTranslator>(c.ToArray()[0].Parameters);//序列化回类
-                        KzVolate = mc.NoLoadCurrentR.TestVolate + " V";
-                        KzCurrent = mc.NoLoadCurrentR.OverCurrent + " A";
-                        KeepVolate = mc.InducedOvervoltageR.TestVoltage + " V";
-                        KeepFre = mc.InducedOvervoltageR.TestFre + " Hz";
-                        KeepTime = mc.InducedOvervoltageR.TestTime + " S";
-                        TanEleVolatevalue = mc.Chartvalues;
+                        KzVolate = mc.noLoadCurrentResult.Volate + " V";
+                        KzCurrent = mc.noLoadCurrentResult.Current + " A";
+                        KeepVolate = mc.inducedOvervoltageResult.Volate + " V";
+                        KeepFre = mc.inducedOvervoltageResult.Fre + " Hz";
+                        KeepTime = mc.inducedOvervoltageResult.TestTime + " S";
                         InitCreateChart();
-                        LcGetTestVolateRange(mc.ExcitationCharacteristicR);//画图表
+                        if (mc.excitationCharacteristicResult.Chartvalues != null)
+                            TanEleVolatevalue = mc.excitationCharacteristicResult.Chartvalues;
+                        if (mc.excitationCharacteristicResult.LcDatagrid != null)
+                            LcDatagrid = mc.excitationCharacteristicResult.LcDatagrid;
+                        GuaiPointscurrent = mc.excitationCharacteristicResult.GuaiCueent;
+                        GuaiPointsVolate = mc.excitationCharacteristicResult.GuaiVolate;
+                        // LcGetTestVolateRange(mc.ExcitationCharacteristicR);//画图表
                     }
                     if (Selectdata != null && Selectdata.TestKind == "配电变压器试验")
                     {
@@ -195,7 +202,6 @@ namespace PortableEquipment.ViewModels
                         TrsOverCurrent = (double)c.ToArray()[0].currentnum;
                         TrsOverVolata = (double)c.ToArray()[0].Volate;
                         TrsWindGroup = c.ToArray()[0].WindingGroup;
-
                         GetUpVolate(mc, ret);
                     }
                 }
@@ -205,6 +211,9 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
+
+        public string GuaiPointscurrent { get; set; }
+        public string GuaiPointsVolate { get; set; }
         public string FirstName { get; set; } = "序号";
         public string SecondName { get; set; } = "电压(V)";
         public string ThirdName { get; set; } = "电流(A)";
@@ -236,8 +245,8 @@ namespace PortableEquipment.ViewModels
                 StrokeThickness = 2,
                 Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(28, 142, 196)),
                 Fill = System.Windows.Media.Brushes.Transparent,
-                LineSmoothness = 1,//0为折现样式
-                PointGeometrySize = 8,
+                LineSmoothness = 10,//0为折现样式
+                PointGeometrySize = 0,
                 PointForeground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(34, 46, 49)),
                 Values = TanEleVolatevalue
             };

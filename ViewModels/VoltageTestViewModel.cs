@@ -101,7 +101,14 @@ namespace PortableEquipment.ViewModels
         private void GetBasePra(MutualTranslator mutualTranslator)
         {
             TestId = mutualTranslator.TestId;
-            TestLevel = mutualTranslator.TestLevel;
+            if (mutualTranslator.TestLevel == 0)
+                TestLevel = "35KV";
+            else if (mutualTranslator.TestLevel == 1)
+                TestLevel = "66KV";
+            else if (mutualTranslator.TestLevel == 2)
+                TestLevel = "110KV";
+            else
+                TestLevel = "220KV";
             Humidity = mutualTranslator.Humidity;
             Temperature = mutualTranslator.Temperature;
             LcOverCurrent = mutualTranslator.ExcitationCharacteristicR.OverCurrent;
@@ -116,45 +123,60 @@ namespace PortableEquipment.ViewModels
         }
         public async void SaveTestResult()
         {
-            OpenOrclose = true;
+            await SetHide("正在保存数据", true);
             _mutualTranslator.Chartvalues = TanEleVolatevalue;
             _mutualTranslator.LcDatagrid = LcDatagrid;
+            if (TanEleVolatevalue != null)
+                _mutualTranslator.excitationCharacteristicResult.Chartvalues = TanEleVolatevalue;
+            if (LcDatagrid != null)
+                _mutualTranslator.excitationCharacteristicResult.LcDatagrid = LcDatagrid;
+            _mutualTranslator.excitationCharacteristicResult.GuaiCueent = GuaiPointCurrent;
+            _mutualTranslator.excitationCharacteristicResult.GuaiVolate = GuaiPointVolate;
+            _mutualTranslator.inducedOvervoltageResult.Cueent = KeepTestCurrent;
+            _mutualTranslator.inducedOvervoltageResult.Fre = KeepTestFre;
+            _mutualTranslator.inducedOvervoltageResult.Volate = KeepTestVoltage;
+            _mutualTranslator.noLoadCurrentResult.Current = KzOverCurrent;
+            _mutualTranslator.noLoadCurrentResult.Volate = KzTestVolate;
             //处理其他结果
             _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
-            await Task.Delay(1000);
-            OpenOrclose = false;
+            await SetHide("数据保存完成", true, true);
         }
         /// <summary>
         /// 获取拐点信息
         /// </summary>
         /// <returns></returns>
-        private bool GetGuaiMessage(List<ObservablePoint> observablePoints)
+        private Tuple<string, string> GetGuaiMessage(List<ObservablePoint> observablePoints)
         {
-            var chartvalues = observablePoints.ToArray();
-            if (observablePoints.Count > 2)
+            string guaivol = string.Empty;
+            string guaicurent = string.Empty;
+
+            var chartvalues = observablePoints.ToArray().ToList();
+        regetguai: for (int i = chartvalues.Count - 1; i > 0; i--)
             {
-                for (int i = 1; i < observablePoints.Count - 1; i++)
+                var vol = chartvalues[chartvalues.Count - 1].Y;
+                if (chartvalues[i].Y < vol * 0.9)
                 {
-                    var Xmin = chartvalues[i].X;
-                    var Xmax = chartvalues[i + 1].X;
-                    var Ymin = chartvalues[i].Y;
-                    var Ymax = chartvalues[i + 1].Y;
-                    if (Xmax == 0 || Ymax == 0 || Ymax == Ymin || Xmax == Xmin)
+                    if ((Math.Abs(chartvalues[chartvalues.Count - 1].X - chartvalues[i].X) / chartvalues[i].X / (Math.Abs(vol - chartvalues[i].Y) /
+                        chartvalues[i].Y)) > (5))
                     {
-                        continue;
-                    }
-                    if (Math.Abs(Ymax - Ymin) > 0.5)
-                    {
-                        if (((Math.Abs(Xmax - Xmin) / Xmin) / (Math.Abs(Ymax - Ymin) / Ymin)) > (0.5 / 0.1))
-                        {
-                            GuaiPointVolate = Ymax.ToString("N3") + "V";
-                            GuaiPointCurrent = Xmax.ToString("N3") + "A";
-                            return true;
-                        }
+                        GuaiPointVolate = chartvalues[i].Y.ToString("N2") + "V";
+                        GuaiPointCurrent = chartvalues[i].X.ToString("N2") + "A";
+                        guaivol = GuaiPointVolate;
+                        guaicurent = GuaiPointCurrent;
+                        chartvalues.RemoveAt(chartvalues.Count - 1);
+                        if (chartvalues.Count > observablePoints.Count * 0.1)
+                            goto regetguai;
+                        else
+                            return new Tuple<string, string>(GuaiPointVolate, GuaiPointCurrent);
                     }
                 }
             }
-            return false;
+            if (guaivol != string.Empty && guaicurent != string.Empty)
+                return new Tuple<string, string>(GuaiPointVolate, GuaiPointCurrent);
+            else
+            {
+                return new Tuple<string, string>("NONE", "NONE");
+            }
         }
         /// <summary>
         /// 获取完整charts数据，计算拐点信息
@@ -187,6 +209,7 @@ namespace PortableEquipment.ViewModels
                 await _setVolate.ControlsPowerStata(false, _communicationProtocol);
             }
             await SetHide("退出成功.", true);
+
             this.RequestClose();
         }
         #endregion
@@ -270,24 +293,25 @@ namespace PortableEquipment.ViewModels
                         if (VolateUi < lcdatas[lcdatas.Length - 1])
                         {
                             await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1);
-                            await Task.Delay(10);
                         }
                         else
                         {
                             await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 1);
-                            await Task.Delay(10);
                         }
-                        var p1 = await _communicationProtocol.ReadStataThree();
-                        if (p1.Checked)
+                        if (token.IsCancellationRequested)
                         {
-                            if (p1.ACurrent > mutualTranslator.ExcitationCharacteristicR.OverCurrent)
-                            {
-                                _windowManager.ShowMessageBox("励磁特性过流", "警告", MessageBoxButton.OK);
-                                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
-                                IsRunning = false;
-                                Finish = false;
-                                return;
-                            }
+                            IsRunning = false;
+                            Finish = false;
+                            return;
+                        }
+                        resetEvent.WaitOne();
+                        if (CurrentUi > mutualTranslator.ExcitationCharacteristicR.OverCurrent)
+                        {
+                            _windowManager.ShowMessageBox("励磁特性过流", "警告", MessageBoxButton.OK);
+                            await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
+                            IsRunning = false;
+                            Finish = false;
+                            return;
                         }
                         if (VolateUi >= 10)
                         {
@@ -295,7 +319,7 @@ namespace PortableEquipment.ViewModels
                         qs: var p = await _communicationProtocol.ReadStataThree();
                             if (p.Checked)
                             {
-                                Lcret.Add(await _communicationProtocol.ReadStataThree());//记录所有的点
+                                Lcret.Add(p);//记录所有的点
                                 AddNodePoint(p.ACurrent, p.AVolate);
                             }
                             else
@@ -317,7 +341,6 @@ namespace PortableEquipment.ViewModels
                                     if (p.Checked)
                                     {
                                         LcDatagrid.Add(new LcdatagridColletion { TestNum = (i + 1).ToString(), TestCurrent = p.ACurrent.ToString(), TestVoltage = p.AVolate.ToString() });
-                                        // AddNodePoint(p.ACurrent, p.AVolate);
                                     }
                                     else
                                     {
@@ -333,6 +356,7 @@ namespace PortableEquipment.ViewModels
                         }
                         #endregion
                     }
+
                 }
                 else
                 {
@@ -340,11 +364,10 @@ namespace PortableEquipment.ViewModels
                         _windowManager.ShowMessageBox("励磁特性开始试验失败\t\n试验初始化出错", "警告", MessageBoxButton.OK);
                     goto redo;
                 }
-                if (!GetGuaiMessage(GetAllCharyValues(Lcret)))
-                {
-                    GuaiPointVolate = "None";
-                    GuaiPointCurrent = "None";
-                }
+                _logger.Writer(_jsondeel.GetJsonByclass(Lcret));
+                var guaret = GetGuaiMessage(GetAllCharyValues(Lcret));
+                GuaiPointVolate = guaret.Item1;
+                GuaiPointCurrent = guaret.Item2;
             }
             await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
             IsRunning = false;
@@ -369,6 +392,7 @@ namespace PortableEquipment.ViewModels
                             if (token.IsCancellationRequested)
                             {
                                 IsRunning = false;
+                                Finish = false;
                                 return;
                             }
                             resetEvent.WaitOne();
@@ -397,6 +421,7 @@ namespace PortableEquipment.ViewModels
                         KeepTestVoltage = VolateUi;
                         KeepTestFre = FreUi;
                         KeepTestTime = (int)mutualTranslator.InducedOvervoltageR.TestTime;
+                        KeepTestCurrent = CurrentUi;
                     }
                     else
                     {
@@ -431,6 +456,13 @@ namespace PortableEquipment.ViewModels
                     {
                         for (int i = 0; i < 30; i++)
                         {
+                            if (token.IsCancellationRequested)
+                            {
+                                IsRunning = false;
+                                Finish = false;
+                                return;
+                            }
+                            resetEvent.WaitOne();
                             PresurreTime = (30 - i - 1).ToString();
                             await Task.Delay(1000);
                         }
@@ -625,6 +657,7 @@ namespace PortableEquipment.ViewModels
         public double KeepTestVoltage { get; set; }
         public double KeepTestFre { get; set; }
         public double KeepTestTime { get; set; }
+        public double KeepTestCurrent { get; set; }
         public string KeepHighOverVolate { get; set; }
 
         public bool IsTopDrawerOpen { get; set; } = false;

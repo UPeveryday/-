@@ -70,7 +70,7 @@ namespace PortableEquipment.ViewModels
             return new MutualTranslator
             {
                 TestId = TestId == null ? "--未指定--" : TestId,
-                TestLevel = TestLevel == null ? "--未指定--" : TestLevel,
+                TestLevel = RatadVolataSelectIndex,
                 Humidity = Humidity,
                 Temperature = Temperature,
                 TestLocation = TestLocation == null ? "--未指定--" : TestLocation,
@@ -86,7 +86,7 @@ namespace PortableEquipment.ViewModels
                     TestFre = TestFre,
                     TestTime = TestTime,
                     VariableThan = VariableThan,
-                    OverCurrent=OverVolateCurrent,
+                    OverCurrent = OverVolateCurrent,
                     Promotion = Promotion
                 },
                 ExcitationCharacteristicR = new ExcitationCharacteristic
@@ -159,7 +159,7 @@ namespace PortableEquipment.ViewModels
         }
         private string GetSingalVolateGroup(double Percent)
         {
-            return "\t电压点在" + Percent + "% 处 :" + (int)_lctestvolate * Percent / 100 + "kV";
+            return "\t电压点在" + Percent + "% 处 :" + (int)(_lctestvolate * 1000 / LcAbs * Percent / 100) + "V";
         }
         /// <summary>
         /// 解析配置文件的电塔等级
@@ -407,7 +407,18 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
-        public double LcAbs { get; set; } = 125;
+        private double _lcabs = 125;
+        public double LcAbs
+        {
+            get { return _lcabs; }
+            set
+            {
+                _lcabs = value;
+                if (GetXmlVoltageRange() != null)
+                    GetDefaultGroupdata(GetXmlVoltageRange());
+            }
+        }
+
         public double Conetnt { get; set; }
         public string Selectdata { get; set; }
         #endregion
