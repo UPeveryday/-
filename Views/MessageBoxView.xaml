@@ -27,7 +27,7 @@
                     <RowDefinition Height="55"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock HorizontalAlignment="Left" Text="{Binding Caption}" Margin="20 0 0 0" FontSize="25" FontWeight="Black" VerticalAlignment="Center">警告</TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding MessageBoxText}" Margin="20 0 0 0" FontSize="22"  Foreground="#666666" ></TextBlock>
+                <TextBox Grid.Row="1" Text="{Binding MessageBoxText}" HorizontalContentAlignment="Center" TextAlignment="Center" VerticalContentAlignment="Center" Margin="20 0 0 0" FontSize="22"  Foreground="#666666" ></TextBox>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>

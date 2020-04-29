@@ -86,6 +86,7 @@ namespace PortableEquipment.ViewModels
                     TestFre = TestFre,
                     TestTime = TestTime,
                     VariableThan = VariableThan,
+                    OverCurrent=OverVolateCurrent,
                     Promotion = Promotion
                 },
                 ExcitationCharacteristicR = new ExcitationCharacteristic
@@ -93,6 +94,7 @@ namespace PortableEquipment.ViewModels
                     Enable = LiciCheck,
                     TestVolate = LcTestVolate,
                     OverCurrent = LcOverCurrent,
+                    VariableThan = LcAbs,
                     VolateRange = GetBackGroupdata()
 
 
@@ -101,6 +103,7 @@ namespace PortableEquipment.ViewModels
                 {
                     Enable = CurrentCheck,
                     TestVolate = KzTestVolate,
+                    VariableThan = KzAbs,
                     OverCurrent = KzOverCurrent
                 }
             };
@@ -156,7 +159,7 @@ namespace PortableEquipment.ViewModels
         }
         private string GetSingalVolateGroup(double Percent)
         {
-            return "\t电压点在" + Percent + "% 处 :" + (int)_lctestvolate * Percent / 100 + "V";
+            return "\t电压点在" + Percent + "% 处 :" + (int)_lctestvolate * Percent / 100 + "kV";
         }
         /// <summary>
         /// 解析配置文件的电塔等级
@@ -248,6 +251,8 @@ namespace PortableEquipment.ViewModels
 
         #region 感应耐压
 
+        public double OverVolateCurrent { get; set; } = 3.0;
+
         private int _ratadvolateselectindex;
 
         public int RatadVolataSelectIndex
@@ -267,7 +272,7 @@ namespace PortableEquipment.ViewModels
             set { _ratadvolateselectindex = value; }
         }
 
-        private double _OutgoingTestVoltage;
+        private double _OutgoingTestVoltage = 110.0;
         public double OutgoingTestVoltage
         {
             get { return _OutgoingTestVoltage; }
@@ -278,9 +283,9 @@ namespace PortableEquipment.ViewModels
                 if (VariableThan != 0)
                 {
                     if (HighOrLow == 0)
-                        TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)) * 0.8, 2);
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 1000 / (VariableThan * (1 + Promotion)) * 0.8, 2);
                     else
-                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8,2);
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8, 2);
                 }
             }
         }
@@ -291,18 +296,18 @@ namespace PortableEquipment.ViewModels
             set
             {
                 _highorlow = value;
-                if(_highorlow==0)
+                if (_highorlow == 0)
                 {
                     if (VariableThan != 0)
                     {
-                        TestVoltage = Math.Round(_OutgoingTestVoltage / (VariableThan * (1 + Promotion)) * 0.8, 2);
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 1000 / (VariableThan * (1 + Promotion)) * 0.8, 2);
                     }
                 }
                 else
                 {
                     if (VariableThan != 0)
                     {
-                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8,2);
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8, 2);
                     }
                 }
             }
@@ -317,11 +322,11 @@ namespace PortableEquipment.ViewModels
             }
         }
         public double TestVoltage { get; set; }
-        public double HighOverVolate { get; set; }//高压过压值
-        public double TestFre { get; set; } = 50;
+        public double HighOverVolate { get; set; } = 110;//高压过压值
+        public double TestFre { get; set; } = 150;
         public double TestTime { get; set; } = 60;
 
-        private double _VariableThan = 1.0;
+        private double _VariableThan = 125;
         public double VariableThan
         {
             get { return _VariableThan; }
@@ -331,14 +336,33 @@ namespace PortableEquipment.ViewModels
                 if (_VariableThan != 0)
                 {
                     if (HighOrLow == 0)
-                        TestVoltage = Math.Round(_OutgoingTestVoltage / (_VariableThan * (1 + Promotion)) * 0.8, 2);
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 1000 / (_VariableThan * (1 + Promotion)) * 0.8, 2);
                     else
                         TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8);
                 }
             }
         }
 
-        public double Promotion { get; set; }//荣升系数
+
+
+        private double _promotion;
+
+        public double Promotion
+        {
+            get { return _promotion; }
+            set
+            {
+                _promotion = value;
+                if (_VariableThan != 0)
+                {
+                    if (HighOrLow == 0)
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 1000 / (_VariableThan * (1 + Promotion)) * 0.8, 2);
+                    else
+                        TestVoltage = Math.Round(_OutgoingTestVoltage * 0.8);
+                }
+            }
+        }
+
 
         public System.Windows.Visibility OverVolateVisibility { get; set; } = System.Windows.Visibility.Visible;
         #endregion
@@ -359,7 +383,7 @@ namespace PortableEquipment.ViewModels
             }
         }
 
-        public double LcOverCurrent { get; set; } = 1.00;
+        public double LcOverCurrent { get; set; } = 3.00;
 
         public System.Windows.Visibility VolataGroups { get; set; } = System.Windows.Visibility.Collapsed;
 
@@ -383,13 +407,16 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
+        public double LcAbs { get; set; } = 125;
         public double Conetnt { get; set; }
         public string Selectdata { get; set; }
         #endregion
 
         #region 空载
         public double KzTestVolate { get; set; }
-        public double KzOverCurrent { get; set; } = 1.00;
+        public double KzOverCurrent { get; set; } = 3.00;
+        public double KzAbs { get; set; } = 125;
+
         #endregion
     }
 }

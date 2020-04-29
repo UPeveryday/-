@@ -71,8 +71,8 @@ namespace PortableEquipment.Servers.CHangeVolate
         {
             await ControlsPowerStata(true, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(true);
-            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 38);
-            while (await _communicationProtocol.GetCgfVolateDouble() > 0.5)
+            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 10);
+            while ((await _communicationProtocol.ReadStataThree()).AVolate > 5)
             {
                 await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);
             }
@@ -270,8 +270,17 @@ namespace PortableEquipment.Servers.CHangeVolate
 
         public async Task DownAndClosePower(ICommunicationProtocol _communicationProtocolk, Xmldata.IXmlconfig _xmlconfig)
         {
-            await DownVolateZero(_communicationProtocolk, _xmlconfig);
-            await ControlsPowerStata(false,_communicationProtocolk);
+            if ((await _communicationProtocolk.ReadStataThree()).AVolate > 10 && await _communicationProtocolk.GetPowerStata())
+            {
+                await DownVolateZero(_communicationProtocolk, _xmlconfig);
+                await ControlsPowerStata(false, _communicationProtocolk);
+            }
+            else
+            {
+                await ControlsPowerStata(false, _communicationProtocolk);
+            }
+            await ControlsPowerStata(false, _communicationProtocolk);
+
         }
 
     }

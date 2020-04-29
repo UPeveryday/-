@@ -90,6 +90,8 @@ namespace PortableEquipment.TestParameters
         public double TestTime;
         public double VariableThan;//变比
         public double Promotion;//荣升系数
+        public double OverCurrent;
+
     }
 
 
@@ -103,6 +105,7 @@ namespace PortableEquipment.TestParameters
         public double TestVolate;
         public double OverCurrent;
         public double[] VolateRange;
+        public double VariableThan;//变比
     }
     /// <summary>
     /// 空载电流
@@ -112,6 +115,8 @@ namespace PortableEquipment.TestParameters
         public bool Enable;
         public double TestVolate;
         public double OverCurrent;
+        public double VariableThan;//变比
+
     }
     public enum DetectionType
     {

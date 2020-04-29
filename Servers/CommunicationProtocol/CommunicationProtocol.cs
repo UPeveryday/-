@@ -41,7 +41,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         }
         public async Task<StataThree> ReadStataThree()
         {
-            Models.StaticFlag.UI_FRESH = false;
             await Task.Delay(10);
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[53]; int i = 0;
@@ -49,7 +48,9 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
             p: await Task.Run(() =>
             {
+                Models.StaticFlag.UI_FRESH = false;
                 int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 20);
+                Models.StaticFlag.UI_FRESH = true;
             });
                 if (rec[0] == 0xda && rec[1] == 0xda)
                 {
@@ -70,7 +71,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
-            Models.StaticFlag.UI_FRESH = true;
             return new StataThree { Checked = false };
         }
         /// <summary>
@@ -286,7 +286,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             var rec = new byte[53]; int i = 0;
             try
             {
-            p: await Task.Run(() =>
+            readdo: await Task.Run(() =>
             {
                 int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 100);
             });
@@ -299,7 +299,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 else
                 {
                     if (++i < 50)
-                        goto p;
+                        goto readdo;
                 }
             }
             catch

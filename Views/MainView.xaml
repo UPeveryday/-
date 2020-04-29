@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:MainViewModel}"
         Title="MainView" Height="500" Width="800" WindowStyle="None" 
-            WindowState="Maximized" Loaded="{s:Action CommitRecData}" >
+            WindowState="Maximized" Loaded="{s:Action CommitRecData}"  UseNoneWindowStyle="True">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -36,9 +36,9 @@
             <RowDefinition Height="0.5*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
-        
-        
+
+
+
         <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -155,7 +155,8 @@
                     <ColumnDefinition Width="4*"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Viewbox Grid.Column="1"><!--ShowManuallySet-->
+                <Viewbox Grid.Column="1">
+                    <!--ShowManuallySet-->
                     <Button    Height="60" Width="60" Click="{s:Action ShowManuallySet}" ToolTip="进入手动调压" Style="{StaticResource CircleButton}" >
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

@@ -141,7 +141,8 @@
                             <TextBlock Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">电压等级</TextBlock>
                         </Viewbox>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.Column="1"><!--Text="{Binding TestLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <!--Text="{Binding TestLevel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"-->
                         <ComboBox Margin="20,5" HorizontalContentAlignment="Center" FontSize="18" BorderThickness="0"  SelectedIndex="{Binding RatadVolataSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Height="{Binding ElementName=cc, Path=ActualHeight,  Converter={StaticResource cvt}}" VerticalAlignment="Center"  >
                             <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">35kV</ComboBoxItem>
                             <ComboBoxItem HorizontalContentAlignment="Center" FontSize="18">66kV</ComboBoxItem>
@@ -242,6 +243,7 @@
                             <RowDefinition Height="0.2*"></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition Height="0.2*"></RowDefinition>
+
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="1" Grid.Column="1">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
@@ -257,14 +259,14 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">出厂试验电压</TextBlock>
                         </Grid>
-                        <ComboBox HorizontalContentAlignment="Center" BorderThickness="0" Margin="10,0,3,1" Grid.Row="1" SelectedIndex="{Binding HighOrLow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" FontFamily="14" Grid.ColumnSpan="2">
+                        <ComboBox HorizontalContentAlignment="Center" BorderThickness="0" Margin="10,0,3,1" Grid.Row="1" IsEnabled="False" SelectedIndex="{Binding HighOrLow,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" FontFamily="14" Grid.ColumnSpan="2">
                             <ComboBoxItem HorizontalContentAlignment="Center" FontFamily="14">低压耐压检测</ComboBoxItem>
                             <ComboBoxItem HorizontalContentAlignment="Center" FontFamily="14">高压耐压检测</ComboBoxItem>
                         </ComboBox>
                         <Grid Grid.Row="3" Grid.Column="1" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
                                 <TextBox BorderThickness="1" Width="80" Text="{Binding TestVoltage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
-                                <Label Content="kV" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                                <Label Content="V" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                             </StackPanel>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="0">
@@ -331,13 +333,16 @@
                         <Grid Grid.Row="7" Grid.Column="3">
                             <TextBox Margin="3" BorderThickness="1" Width="80" Text="{Binding Promotion,Mode=TwoWay}"  HorizontalAlignment="Left"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
                         </Grid>
+                        <Grid Grid.Row="7" Grid.Column="3">
+                            <TextBox Margin="3" BorderThickness="1" Width="80" Text="{Binding OverVolateCurrent,Mode=TwoWay}"  HorizontalAlignment="Left"  VerticalAlignment="Center" TextAlignment="Right" ></TextBox>
+                        </Grid>
                         <Grid Grid.Row="7" Grid.Column="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition Height="2.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">荣升系数</TextBlock>
+                            <TextBlock  Grid.Row="1" Foreground="#545f79"  Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         </Grid>
                     </Grid>
                     <DockPanel  Grid.Row="4"  HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -356,8 +361,10 @@
                             <ColumnDefinition Width="1.5*"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="1" Grid.ColumnSpan="4" Margin="0,5" Name="exp" Visibility="{Binding VolataGroups,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                        <Grid Grid.Row="1" Grid.ColumnSpan="6" Margin="0,5" Name="exp" Visibility="{Binding VolataGroups,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                             <materialDesign:DialogHost DialogClosing="Sample1_DialogHost_OnDialogClosing" >
                                 <materialDesign:DialogHost.DialogContent>
                                     <StackPanel Margin="16">
@@ -406,17 +413,24 @@
                         <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
-                                <TextBox BorderThickness="1" Width="80" Text="{Binding LcTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding LcTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                                 <Label Content="kV" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                             </StackPanel>
                         </Grid>
                         <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         <Grid Grid.Column="3">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
-                                <TextBox BorderThickness="1" Width="80" Text="{Binding LcOverCurrent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding LcOverCurrent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                                 <Label Content="A" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
                             </StackPanel>
                         </Grid>
+                        <TextBlock  Margin="6" Grid.Column="4" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">变比</TextBlock>
+                        <Grid Grid.Column="5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding LcAbs,Mode=TwoWay}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                            </StackPanel>
+                        </Grid>
+
                     </Grid>
                     <CheckBox Height="18" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsChecked="{Binding CurrentCheck,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" Content="空载电流" Foreground="#545f79"></CheckBox>
                     <Grid Grid.Row="10" IsEnabled="{Binding CurrentEnable}" Opacity="{Binding CurrentOpacity}" Background="White">
@@ -425,19 +439,29 @@
                             <ColumnDefinition Width="1.5*"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition  Width="1.5*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition  Width="1.5*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBlock  Margin="6" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">试验电压</TextBlock>
                         <Grid Grid.Column="1">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="3">
-                                <TextBox BorderThickness="1" Width="80" Text="{Binding KzTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
-                                <Label Content="kV" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding KzTestVolate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                <Label Content="kV" HorizontalAlignment="Center" HorizontalContentAlignment="Left" VerticalAlignment="Center"></Label>
                             </StackPanel>
                         </Grid>
                         <TextBlock  Margin="6" Grid.Column="2" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">过流值</TextBlock>
                         <Grid Grid.Column="3">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
-                                <TextBox BorderThickness="1" Width="80" Text="{Binding KzOverCurrent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
-                                <Label Content="A" HorizontalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding KzOverCurrent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource doubleaddsi}}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
+                                <Label Content="A" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left"></Label>
+                            </StackPanel>
+                        </Grid>
+
+
+                        <TextBlock  Margin="6" Grid.Column="4" Foreground="#545f79" Style="{StaticResource TextBlockPriview}">变比</TextBlock>
+                        <Grid Grid.Column="5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3">
+                                <TextBox BorderThickness="1" Width="60" Text="{Binding KzAbs,Mode=TwoWay}" VerticalAlignment="Center"  TextAlignment="Right"></TextBox>
                             </StackPanel>
                         </Grid>
                     </Grid>

@@ -141,12 +141,12 @@ namespace PortableEquipment.ViewModels
             }
             else
             {
-                System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
-                if (c == System.Windows.MessageBoxResult.OK)
-                    this.RequestClose();
+                //System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
+                //if (c == System.Windows.MessageBoxResult.OK)
+                //    this.RequestClose();
             }
 
-
+             
         }
         public void Handle(Stata message)
         {
