@@ -72,10 +72,19 @@ namespace PortableEquipment.Servers.CHangeVolate
             await ControlsPowerStata(true, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(true);
             await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 10);
-            while ((await _communicationProtocol.ReadStataThree()).AVolate > 5)
+            while (true)
             {
-                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);
+            newst: var data = await _communicationProtocol.ReadStataThree();
+                if (data.Checked)
+                {
+                    if (data.AVolate > 5)
+                        await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);
+
+                }
+                else
+                    goto newst;
             }
+
             //byte num = (byte)((await _communicationProtocol.GetCgfVolateDouble()) * 1000 / Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs")) + 2);
             //await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, num);
         }

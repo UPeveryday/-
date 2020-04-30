@@ -523,7 +523,6 @@ namespace PortableEquipment.ViewModels
         }
         #endregion
 
-
         public void InitUi()
         {
             InitCreateChart();

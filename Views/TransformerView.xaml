@@ -447,9 +447,9 @@
                         <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="步骤"  Width="0.6*"></DataGridTextColumn>
                         <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Binding="{Binding TestVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="电压(kV)" Width="1*"></DataGridTextColumn>
                         <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding TestTime,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="测量时间(min)" Width="1.3*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding UVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="U" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding VVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="V" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding UVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="U(pC)" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding VVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="V(pC)" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W(pC)" Width="1*"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Border  x:Name="WndHost"  Grid.Row="1"></Border>

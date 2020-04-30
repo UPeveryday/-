@@ -177,6 +177,7 @@
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="1">
                     <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding RatedCapacity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox IsReadOnly="True" Margin="20 0"  Width="30" BorderThickness="0"  Text="kVA"  VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" ></TextBox>
                 </Grid>
                 <Grid Grid.Row="3" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -203,6 +204,8 @@
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="1">
                     <TextBox Margin="20,8" BorderThickness="0"  Text="{Binding Temperature,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}"  VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox IsReadOnly="True" Margin="20 0" Width="30" BorderThickness="0"  Text="℃"  VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" ></TextBox>
+
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -216,6 +219,8 @@
                 </Grid>
                 <Grid Grid.Row="5" Grid.Column="1">
                     <TextBox Margin="20,8" BorderThickness="0"   Text="{Binding Humidity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvt}}" VerticalAlignment="Stretch" TextAlignment="Center" ></TextBox>
+                    <TextBox IsReadOnly="True" Margin="20 0" Width="30" BorderThickness="0"  Text="RH"  VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" ></TextBox>
+
                 </Grid>
                 <Grid Grid.Row="6" Grid.Column="0">
                     <Grid.RowDefinitions>
