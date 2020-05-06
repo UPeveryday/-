@@ -34,8 +34,25 @@ namespace PortableEquipment.Models
             return string.Empty;
         }
 
-       
-
-
+        public static string RetStringVolate(double volate)
+        {
+           switch(volate)
+            {
+                case 10000:
+                    return "10kV";
+                case 35000:
+                    return "35kV";
+                case 110000:
+                    return "110kV";
+                case 220000:
+                    return "220kV";
+                case 330000:
+                    return "330kV";
+                case 500000:
+                    return "500kV";
+                default:
+                    return "35kV";
+            }
+        }
     }
 }

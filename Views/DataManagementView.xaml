@@ -221,19 +221,19 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Background="#2070ea" Height="45" Grid.Row="1" Grid.Column="1" Style="{StaticResource OrdenaryButtonThree}">
+                    <Button Background="#2070ea" Visibility="Collapsed" Height="45" Grid.Row="1" Grid.Column="1" Style="{StaticResource OrdenaryButtonThree}">
                         <Viewbox>
                             <TextBlock  Margin="5,3" Style="{StaticResource TextBlockPriview}">重新测量</TextBlock>
                         </Viewbox>
                     </Button>
-                    <Button Background="Green" Height="45"  Margin="5,0"  Grid.Row="1"  Grid.Column="2"  Style="{StaticResource OrdenaryButtonThree}">
+                    <Button Visibility="Collapsed" Background="Green" Height="45"  Margin="5,0"  Grid.Row="1"  Grid.Column="2"  Style="{StaticResource OrdenaryButtonThree}">
                         <Viewbox>
                             <TextBlock Margin="5,3"  Style="{StaticResource TextBlockPriview}">打印</TextBlock>
                         </Viewbox>
                     </Button>
-                    <Button Background="Red" Height="45"  Grid.Row="1" Grid.Column="3" Click="{s:Action DeleteNeedNotdata}" Style="{StaticResource OrdenaryButtonThree}">
+                    <Button Background="Red" Height="45" Margin="5" Grid.Row="1" Grid.Column="3" Click="{s:Action DeleteNeedNotdata}" Style="{StaticResource OrdenaryButtonThree}">
                         <Viewbox>
-                            <TextBlock Margin="5,3"  Style="{StaticResource TextBlockPriview}">删除</TextBlock>
+                            <TextBlock Margin="5"  Style="{StaticResource TextBlockPriview}">删除</TextBlock>
                         </Viewbox>
                     </Button>
                 </Grid>

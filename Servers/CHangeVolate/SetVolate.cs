@@ -45,20 +45,46 @@ namespace PortableEquipment.Servers.CHangeVolate
             await Task.Delay(100); int i = 0;
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
             await _communicationProtocol.ThicknessAdjustable(true);
-        here: while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) >= 16)
+        here: while (true)
             {
-                await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), 1);
-            }
-            await _communicationProtocol.ThicknessAdjustable(false);
-            while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) < 16)
-            {
-                if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
+                TestKind ts;
+            ReReadPower: var data = await _communicationProtocol.ReadStataThree();
+                if (data.Checked)
                 {
-                    await _communicationProtocol.SetTestPra(await GetUpOrdownAsync(voltage, _communicationProtocol), 1);
+                    ts = (voltage - data.AVolate) > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
+                    if (Math.Abs(voltage - data.AVolate) >= 16)
+                        await _communicationProtocol.SetTestPra(ts, 1);
+                    else
+                        break;
                 }
                 else
-                    break;
+                    goto ReReadPower;
+
             }
+            await _communicationProtocol.ThicknessAdjustable(false);
+            while (true)
+            {
+                TestKind ts;
+            ReReadPowerTwo: var data = await _communicationProtocol.ReadStataThree();
+                if (data.Checked)
+                {
+                    ts = (voltage - data.AVolate) > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
+                    if (Math.Abs(voltage - data.AVolate) < 16)
+                    {
+                        if (Math.Abs(voltage - data.AVolate) / voltage > needdouble)
+                        {
+                            await _communicationProtocol.SetTestPra(ts, 1);
+                        }
+                        else
+                            break;
+                    }
+                    else
+                        break;
+                }
+                else
+                    goto ReReadPowerTwo;
+            }
+
             if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree()).AVolate) / voltage > needdouble)
             {
                 if (++i > TimeOver)
@@ -71,7 +97,7 @@ namespace PortableEquipment.Servers.CHangeVolate
         {
             await ControlsPowerStata(true, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(true);
-            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 10);
+            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 5);
             while (true)
             {
             newst: var data = await _communicationProtocol.ReadStataThree();
@@ -79,6 +105,10 @@ namespace PortableEquipment.Servers.CHangeVolate
                 {
                     if (data.AVolate > 5)
                         await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 2);
+                    else
+                    {
+                        break;
+                    }
 
                 }
                 else
@@ -279,7 +309,7 @@ namespace PortableEquipment.Servers.CHangeVolate
 
         public async Task DownAndClosePower(ICommunicationProtocol _communicationProtocolk, Xmldata.IXmlconfig _xmlconfig)
         {
-            if ((await _communicationProtocolk.ReadStataThree()).AVolate > 10 && await _communicationProtocolk.GetPowerStata())
+            if (await _communicationProtocolk.GetPowerStata() && (await _communicationProtocolk.ReadStataThree()).AVolate > 10  )
             {
                 await DownVolateZero(_communicationProtocolk, _xmlconfig);
                 await ControlsPowerStata(false, _communicationProtocolk);

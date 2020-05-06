@@ -204,7 +204,7 @@
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">时间(S)</TextBlock>
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
-                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="#00ff7f" >60S</TextBlock>
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding OverVolatetime}" Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
                     </Grid>
@@ -222,7 +222,7 @@
                                 <TextBlock Foreground="White" Style="{StaticResource TextBlockPriview}"> 过压值:</TextBlock>
                             </Viewbox>
                             <Viewbox Margin="10,5" Grid.Column="1" >
-                                <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}">10kV</TextBlock>
+                                <TextBlock  Foreground="White" Text="{Binding OverVolate}" Style="{StaticResource TextBlockPriview}"></TextBlock>
                             </Viewbox>
                         </Grid>
                         <Grid Grid.Column="1" Background="#242e3b" Margin="0,0,2,2">
@@ -234,7 +234,7 @@
                                 <TextBlock Foreground="White" Style="{StaticResource TextBlockPriview}"> 过流值:</TextBlock>
                             </Viewbox>
                             <Viewbox  Margin="10,5" Grid.Column="1" >
-                                <TextBlock  Foreground="White"  Style="{StaticResource TextBlockPriview}">10A</TextBlock>
+                                <TextBlock  Foreground="White" Text="{Binding OverCurrent }"  Style="{StaticResource TextBlockPriview}">10A</TextBlock>
                             </Viewbox>
                         </Grid>
                     </Grid>
@@ -343,34 +343,34 @@
                                     <RowDefinition Height="2*"></RowDefinition>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Column="1"  BorderThickness="0" Margin="3"  Command="{s:Action AddVolatage}" CommandParameter="+10"  Grid.Row="1" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="1"  BorderThickness="0" Margin="3"  Command="{s:Action AddVolatage}" CommandParameter="+50"  Grid.Row="1" Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}" >+10.0kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}" >+50.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Command="{s:Action AddVolatage}" CommandParameter="+1"  Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="1" Command="{s:Action AddVolatage}" CommandParameter="+10"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">+1.0kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}">+10.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Command="{s:Action AddVolatage}" CommandParameter="+0.1"  Grid.Row="1" Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Command="{s:Action AddVolatage}" CommandParameter="+1.0"  Grid.Row="1" Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">+0.1kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}">+1.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="1"  BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddVolatage}" CommandParameter="-10"  Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="1"  BorderThickness="0" Margin="3" Grid.Row="3" Command="{s:Action AddVolatage}" CommandParameter="-50"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">-10.0kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}">-50.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="-1"  Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="3"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="-10"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">-1.0kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}">-10.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="+0.1"  Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="+1"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
-                                        <TextBlock Style="{StaticResource TextBlockPriview}">-0.1kV</TextBlock>
+                                        <TextBlock Style="{StaticResource TextBlockPriview}">-1.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
                             </Grid>
@@ -464,8 +464,8 @@
                             <ColumnDefinition Width="0.3*"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox  Grid.Row="0" x:Name="vb" VerticalAlignment="Center"  Grid.Column="1" TextAlignment="Right"></TextBox>
-                        <Button Command="{s:Action ShowHeader}" CommandParameter="Open" Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="0" Style="{StaticResource CommanButton}">
+                        <TextBox  Grid.Row="1" x:Name="vb" VerticalAlignment="Center" Text="{Binding MulTime}"  Grid.Column="1" TextAlignment="Right"></TextBox>
+                        <Button Command="{s:Action ShowHeader}" CommandParameter="Open" Grid.Column="3" BorderThickness="0" Margin="3" Grid.Row="1" Style="{StaticResource CommanButton}">
                             <Viewbox>
                                 <TextBlock Margin="0,2" Style="{StaticResource TextBlockPriview}" >启动计时
 

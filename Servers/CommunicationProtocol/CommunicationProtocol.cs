@@ -60,6 +60,11 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                         Models.StaticFlag.UI_FRESH = true;
                         return ret;
                     }
+                    else
+                    {
+                        if (++i < 50)
+                            goto p;
+                    }
                 }
                 else
                 {
@@ -295,6 +300,11 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                     var ret = _parsingdata.ParsingThree(rec);
                     if (ret.Checked)
                         return ret;
+                    else
+                    {
+                        if (++i < 50)
+                            goto readdo;
+                    }
                 }
                 else
                 {

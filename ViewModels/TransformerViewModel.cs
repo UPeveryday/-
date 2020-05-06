@@ -85,7 +85,7 @@ namespace PortableEquipment.ViewModels
         {
             TestPra = message;
             TestId = message.TestId;
-            RatedVoltage = message.RatedVoltage;
+            RatedVoltage = Models.StaticClass.RetStringVolate(message.RatedVoltage);
             RatedCapacity = message.RatedCapacity;
             WindingGroup = message.WindingGroup;
             Temperature = message.Temperature;
@@ -278,7 +278,7 @@ namespace PortableEquipment.ViewModels
 
         public double Fre { get; set; }
         public string TestId { get; set; }
-        public double RatedVoltage { get; set; }
+        public string RatedVoltage { get; set; }
         public string WindingGroup { get; set; }
         public double Temperature { get; set; }
         public string RatedCapacity { get; set; }
@@ -341,63 +341,7 @@ namespace PortableEquipment.ViewModels
 
                                 if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig))
                                 {
-                                    if (UVolateUi <= TestPra.Volate)
-                                    {
-                                        for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
-                                        {
-                                            for (int pi = 0; pi < data[i].TestTime * 60; pi++)//
-                                            {
-                                                if (token.IsCancellationRequested)
-                                                {
-                                                    IsRunning = false;
-                                                    return;
-                                                }
-                                                resetEvent.WaitOne();
-                                                await Task.Delay(1000);
-                                                TimeMul = (data[i].TestTime * 60 - pi - 1).ToString();
-                                            }
-                                            ShowOrHide = true;
-                                            while (true)
-                                            {
-                                                if (SaveFlag)
-                                                {
-                                                    AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
-                                                    ShowOrHide = false;
-                                                    SaveFlag = false;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        if (data[i].TestTime % 5 != 0)
-                                        {
-                                            for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
-                                            {
-                                                if (token.IsCancellationRequested)
-                                                {
-                                                    IsRunning = false;
-                                                    return;
-                                                }
-                                                resetEvent.WaitOne();
-                                                await Task.Delay(1000);
-                                                TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString();
-
-                                            }
-                                            ShowOrHide = true;
-
-                                            while (true)
-                                            {
-                                                if (SaveFlag)
-                                                {
-                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString());
-                                                    SaveFlag = false;
-                                                    ShowOrHide = false;
-                                                    break;
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                    else
+                                    if (UVolateUi > TestPra.Volate)
                                     {
                                         Application.Current.Dispatcher.Invoke(() =>
                                         {
@@ -407,6 +351,61 @@ namespace PortableEquipment.ViewModels
                                         IsRunning = false;
                                         return;
                                     }
+                                    for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
+                                    {
+                                        for (int pi = 0; pi < data[i].TestTime * 60; pi++)//
+                                        {
+                                            if (token.IsCancellationRequested)
+                                            {
+                                                IsRunning = false;
+                                                return;
+                                            }
+                                            resetEvent.WaitOne();
+                                            await Task.Delay(1000);
+                                            TimeMul = (data[i].TestTime * 60 - pi - 1).ToString();
+                                        }
+                                        ShowOrHide = true;
+                                        while (true)
+                                        {
+                                            if (SaveFlag)
+                                            {
+                                                AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
+                                                ShowOrHide = false;
+                                                SaveFlag = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (data[i].TestTime % 5 != 0)
+                                    {
+                                        for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
+                                        {
+                                            if (token.IsCancellationRequested)
+                                            {
+                                                IsRunning = false;
+                                                return;
+                                            }
+                                            resetEvent.WaitOne();
+                                            await Task.Delay(1000);
+                                            TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString();
+
+                                        }
+                                        ShowOrHide = true;
+
+                                        while (true)
+                                        {
+                                            if (SaveFlag)
+                                            {
+                                                AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString());
+                                                SaveFlag = false;
+                                                ShowOrHide = false;
+                                                break;
+                                            }
+
+                                        }
+                                    }
+                                    
+                                   
                                 }
                             }
                         }
@@ -415,9 +414,9 @@ namespace PortableEquipment.ViewModels
 
                             _logger.Writer("设置测量频率失败，结束试验");
                         }
+                        IsokOrCan = false;
                     }
-                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
-                    await _setVolate.ControlsPowerStata(false, _communicationProtocol);
+                    await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
                 }
 
                 #endregion
@@ -486,7 +485,7 @@ namespace PortableEquipment.ViewModels
             if (IsRunning)
             {
                 tokenSource.Cancel();
-                await _setVolate.SettindVolate(0, _communicationProtocol, _xmlconfig);
+                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
                 TimeMul = "--";
                 _windowManager.ShowMessageBox("试验已经结束",
                               "提示", MessageBoxButton.OK);
