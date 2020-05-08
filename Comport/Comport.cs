@@ -529,11 +529,60 @@ namespace PortableEquipment.Comport
 
         public int SendCommand(byte[] SendData, ref byte[] ReceiveData, int Overtime)
         {
+            lock (Models.StaticFlag.CgfLock)
+            {
+                if (_serialPort.IsOpen)
+                {
+                    try
+                    {
+                        Models.StaticFlag.BOOMFLAG = true;
+                        ReceiveEventFlag = true;        //关闭接收事件
+                        _serialPort.DiscardInBuffer();  //清空接收缓冲区                
+                        _serialPort.Write(SendData, 0, SendData.Length);
+                        int num = 0, ret = 0;
+                        Thread.Sleep(10);
+                        ReceiveEventFlag = false;      //打开事件
+                        while (num++ < Overtime)
+                        {
+                            if (_serialPort.BytesToRead >= ReceiveData.Length)
+                                break;
+                            Thread.Sleep(10);
+                        }
+                        if (_serialPort.BytesToRead >= ReceiveData.Length)
+                        {
+                            ret = _serialPort.Read(ReceiveData, 0, ReceiveData.Length);
+                        }
+                        else
+                        {
+                            ret = _serialPort.Read(ReceiveData, 0, _serialPort.BytesToRead);
+                        }
+                        ReceiveEventFlag = false;      //打开事件
+                        Models.StaticFlag.BOOMFLAG = false;
+                        return ret;
+                    }
+                    catch
+                    {
+
+                        ReceiveEventFlag = false;
+                        LoggerRunning.WriterByStatic("SerialClass: " + new StackTrace(new StackFrame(true)).GetFrame(0).GetFileLineNumber().ToString() + " 行" + "。 sendcommand 出错");
+
+                    }
+
+                }
+                Models.StaticFlag.BOOMFLAG = false;
+                return -1;
+            }
+        }
+
+
+        public int SendCommandBoom(byte[] SendData, ref byte[] ReceiveData, int Overtime)
+        {
+            //if (!Models.StaticFlag.BOOMFLAG)
+            //{
             if (_serialPort.IsOpen)
             {
                 try
                 {
-                    Models.StaticFlag.BOOMFLAG = true;
 
                     ReceiveEventFlag = true;        //关闭接收事件
 
@@ -576,9 +625,8 @@ namespace PortableEquipment.Comport
 
                     }
                     ReceiveEventFlag = false;      //打开事件
-                    //LoggerRunning.WriterByStatic(SendData, true);
-                    //LoggerRunning.WriterByStatic(ReceiveData, false);
-                    Models.StaticFlag.BOOMFLAG = false;
+                                                   //LoggerRunning.WriterByStatic(SendData, true);
+                                                   //LoggerRunning.WriterByStatic(ReceiveData, false);
                     return ret;
 
                 }
@@ -592,78 +640,6 @@ namespace PortableEquipment.Comport
                 }
 
             }
-            Models.StaticFlag.BOOMFLAG = false;
-
-            return -1;
-
-        }
-
-
-        public int SendCommandBoom(byte[] SendData, ref byte[] ReceiveData, int Overtime)
-        {
-            //if (!Models.StaticFlag.BOOMFLAG)
-            //{
-                if (_serialPort.IsOpen)
-                {
-                    try
-                    {
-
-                        ReceiveEventFlag = true;        //关闭接收事件
-
-                        _serialPort.DiscardInBuffer();  //清空接收缓冲区                
-
-                        _serialPort.Write(SendData, 0, SendData.Length);
-
-                        int num = 0, ret = 0;
-
-                        System.Threading.Thread.Sleep(10);
-
-                        ReceiveEventFlag = false;      //打开事件
-
-                        while (num++ < Overtime)
-
-                        {
-
-                            if (_serialPort.BytesToRead >= ReceiveData.Length)
-
-                                break;
-
-                            System.Threading.Thread.Sleep(10);
-
-                        }
-
-
-
-                        if (_serialPort.BytesToRead >= ReceiveData.Length)
-
-                        {
-
-                            ret = _serialPort.Read(ReceiveData, 0, ReceiveData.Length);
-
-                        }
-
-                        else
-                        {
-
-                            ret = _serialPort.Read(ReceiveData, 0, _serialPort.BytesToRead);
-
-                        }
-                        ReceiveEventFlag = false;      //打开事件
-                                                       //LoggerRunning.WriterByStatic(SendData, true);
-                                                       //LoggerRunning.WriterByStatic(ReceiveData, false);
-                        return ret;
-
-                    }
-
-                    catch
-                    {
-
-                        ReceiveEventFlag = false;
-                        LoggerRunning.WriterByStatic("SerialClass: " + new StackTrace(new StackFrame(true)).GetFrame(0).GetFileLineNumber().ToString() + " 行" + "。 sendcommand 出错");
-
-                    }
-
-                }
             //}
             //else
             //{

@@ -53,6 +53,7 @@ namespace PortableEquipment.ViewModels
                 CurrentUi = message.stataThree.ACurrent;
                 VolateUi = message.stataThree.AVolate;
                 FreUi = message.stataThree.Fre;
+                DataPower = message.stataThree.APower;
             }
         }
 
@@ -200,8 +201,8 @@ namespace PortableEquipment.ViewModels
             }
             if (await _communicationProtocol.GetPowerStata())
             {
-                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig);
-                await _setVolate.ControlsPowerStata(false, _communicationProtocol);
+                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
+                await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
             }
 
             this.RequestClose();
@@ -266,6 +267,7 @@ namespace PortableEquipment.ViewModels
         public double UVolateUi { get; set; }
         public double VolateUi { get; set; }
         public double FreUi { get; set; }
+        public double DataPower { get; set; }
         public double CurrentUi { get; set; }
         public double TimeUi { get; set; }
         public double Jf { get; set; } = 0.00;
@@ -312,12 +314,17 @@ namespace PortableEquipment.ViewModels
         }
         private async void StartTest()
         {
-            if (!IsRunning && await _SelfCheck.SeleCheck())
+            if (!IsRunning && await _SelfCheck.SeleCheck(token))
             {
                 IsRunning = true;
                 hidetest = "正在测量中...";
                 var data = TestPra.DatagridData.ToArray();
                 InitDataGrid(data);
+                if (await _communicationProtocol.TestKindVolateOrHgq(true))
+                {
+                    IsRunning = false;
+                    return;
+                }
                 #region 调频
                 for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                 {
@@ -328,18 +335,18 @@ namespace PortableEquipment.ViewModels
                    });
                     if (IsokOrCan)
                     {
-                        await _setVolate.ControlsPowerStata(true, _communicationProtocol);
+                        await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
                         while (VolateUi < 12)
                         {
-                            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1);
+                            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
                             await Task.Delay(30);
                         }
-                        if (await _setVolate.SettingFre(Fre, _communicationProtocol))
+                        if (await _setVolate.SettingFre(Fre, _communicationProtocol, token))
                         {
                             for (int i = 0; i < data.Length; i++)
                             {
 
-                                if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig))
+                                if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig, token))
                                 {
                                     if (UVolateUi > TestPra.Volate)
                                     {
@@ -358,7 +365,7 @@ namespace PortableEquipment.ViewModels
                                             if (token.IsCancellationRequested)
                                             {
                                                 IsRunning = false;
-                                                return;
+                                                throw new OperationCanceledException();
                                             }
                                             resetEvent.WaitOne();
                                             await Task.Delay(1000);
@@ -383,7 +390,8 @@ namespace PortableEquipment.ViewModels
                                             if (token.IsCancellationRequested)
                                             {
                                                 IsRunning = false;
-                                                return;
+                                                throw new OperationCanceledException();
+
                                             }
                                             resetEvent.WaitOne();
                                             await Task.Delay(1000);
@@ -404,8 +412,8 @@ namespace PortableEquipment.ViewModels
 
                                         }
                                     }
-                                    
-                                   
+
+
                                 }
                             }
                         }
@@ -416,7 +424,7 @@ namespace PortableEquipment.ViewModels
                         }
                         IsokOrCan = false;
                     }
-                    await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
+                    await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 }
 
                 #endregion
@@ -485,7 +493,7 @@ namespace PortableEquipment.ViewModels
             if (IsRunning)
             {
                 tokenSource.Cancel();
-                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
+                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 TimeMul = "--";
                 _windowManager.ShowMessageBox("试验已经结束",
                               "提示", MessageBoxButton.OK);

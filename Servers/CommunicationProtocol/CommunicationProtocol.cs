@@ -39,8 +39,9 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return new StataTwo { stata = Methonstata.False };
         }
-        public async Task<StataThree> ReadStataThree()
+        public async Task<StataThree> ReadStataThree(CancellationToken token)
         {
+
             await Task.Delay(10);
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[53]; int i = 0;
@@ -52,6 +53,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 int recnum = Comport.Serial.serialport.SendCommand(new byte[2] { 0x03, 0xda }, ref rec, 20);
                 Models.StaticFlag.UI_FRESH = true;
             });
+                token.ThrowIfCancellationRequested();
                 if (rec[0] == 0xda && rec[1] == 0xda)
                 {
                     var ret = _parsingdata.ParsingThree(rec);
@@ -77,6 +79,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
             }
             return new StataThree { Checked = false };
+
         }
         /// <summary>
         /// 设置参数
@@ -84,7 +87,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         /// <param name="testKind">选择实验类型</param>
         /// <param name="ClickNum">按键次数</param>
         /// <returns></returns>
-        public async Task<bool> SetTestPra(TestKind testKind, byte ClickNum)
+        public async Task<bool> SetTestPra(TestKind testKind, byte ClickNum, CancellationToken token)
         {
             try
             {
@@ -129,14 +132,12 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
                 await Task.Run(() =>
                 {
-                    Comport.Serial.upserialport.SendCommand(sendc, ref rec, 10000);
+                    Comport.Serial.upserialport.SendCommand(sendc, ref rec, ClickNum * 400);
                 });
                 if (rec[0] == 0xaa && rec[1] == Mark)
                 {
-                    await Task.Delay(100);
                     return true;
                 }
-                await Task.Delay(100);
 
                 return false;
             }
@@ -346,15 +347,15 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             return false;
         }
 
-        public async Task<int> GetCurrentThickness(ICommunicationProtocol _communicationProtocol)
+        public async Task<int> GetCurrentThickness(ICommunicationProtocol _communicationProtocol, CancellationToken token)
         {
-            double startvolate = (await _communicationProtocol.ReadStataThree()).AVolate;
+            double startvolate = (await _communicationProtocol.ReadStataThree(token)).AVolate;
             double finishvolate = 0;
-            bool cf = await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 3);
+            bool cf = await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 3, token);
             if (cf)
             {
-                finishvolate = (await _communicationProtocol.ReadStataThree()).AVolate;
-                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 3);
+                finishvolate = (await _communicationProtocol.ReadStataThree(token)).AVolate;
+                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 3, token);
                 if (Math.Abs(startvolate - finishvolate) > 5)
                 {
                     return 1;
@@ -367,23 +368,23 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             return -1;
         }
 
-        public async Task<int> SwitchThincness(bool open, ICommunicationProtocol _communicationProtocol)
+        public async Task<int> SwitchThincness(bool open, ICommunicationProtocol _communicationProtocol, CancellationToken token)
         {
             if (open)
             {
-                if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                if ((await GetCurrentThickness(_communicationProtocol, token)) == 1)
                 {
                     return 1;
                 }
                 else
                 {
                     await _communicationProtocol.ThicknessAdjustable(true);
-                    if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                    if ((await GetCurrentThickness(_communicationProtocol, token)) == 1)
                     {
                         return 1;
                     }
                     await _communicationProtocol.ThicknessAdjustable(false);
-                    if ((await GetCurrentThickness(_communicationProtocol)) == 1)
+                    if ((await GetCurrentThickness(_communicationProtocol, token)) == 1)
                     {
                         return 1;
                     }
@@ -391,19 +392,19 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             else
             {
-                if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                if ((await GetCurrentThickness(_communicationProtocol, token)) == 0)
                 {
                     return 0;
                 }
                 else
                 {
                     await _communicationProtocol.ThicknessAdjustable(false);
-                    if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                    if ((await GetCurrentThickness(_communicationProtocol, token)) == 0)
                     {
                         return 0;
                     }
                     await _communicationProtocol.ThicknessAdjustable(true);
-                    if ((await GetCurrentThickness(_communicationProtocol)) == 0)
+                    if ((await GetCurrentThickness(_communicationProtocol, token)) == 0)
                     {
                         return 0;
                     }
@@ -413,7 +414,37 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             return -1;
         }
 
-
+        public async Task<bool> TestKindVolateOrHgq(bool TestKind)
+        {
+            var rec = new byte[2] { 0xfd, 0xfd };
+            byte[] comman = new byte[3];
+            int recnum = 0;
+            if (TestKind)
+            {
+                comman = new byte[] { 0xc1, 0x01, 0xc2 };
+                await Task.Run(() =>
+                {
+                    recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (recnum == rec.Length && rec[0] == 0xac)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                comman = new byte[] { 0xc1, 0x00, 0xc1 };
+                await Task.Run(() =>
+                {
+                    recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
+                });
+                if (recnum == rec.Length && rec[0] == 0xac)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
     public enum TestKind

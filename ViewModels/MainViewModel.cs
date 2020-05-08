@@ -6,6 +6,7 @@ using StyletIoC;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -71,13 +72,13 @@ namespace PortableEquipment.ViewModels
         }
         public void ShowMessage() => _windowManger.ShowMessageBox(FName);
         public void ShowDataMannege() => _windowManger.ShowDialog(_ChildDialog);
-        public void ShowManuallySet() => _windowManger.ShowDialog(_ManuallySetParametersViewModel);
+        public void ShowManuallySet() => _windowManger.ShowDialog(_ManualVoltageViewModel);
         public void ShowManualVoltage() => _windowManger.ShowDialog(_ManualVoltageViewModel);
         public void ShowParameter() => _windowManger.ShowDialog(_ParameterSettingViewModel);
         public void ShowTransformer() => _windowManger.ShowDialog(_TransformerViewModel);
         public void ShowVoltageTest() => _windowManger.ShowDialog(_VoltageTestViewModel);
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
-        public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
+      //  public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
         public void showdata()
         {
             _eventAggregator.Publish(new HideMessage
@@ -136,12 +137,15 @@ namespace PortableEquipment.ViewModels
             }
             else
             {
-                System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
-                if (c == System.Windows.MessageBoxResult.OK)
-                    this.RequestClose();
+                //if (!Debugger.IsAttached)
+                //{
+                //    System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
+                //    if (c == System.Windows.MessageBoxResult.OK)
+                //        this.RequestClose();
+                //}
             }
 
-             
+
         }
         public void Handle(Stata message)
         {
@@ -151,13 +155,13 @@ namespace PortableEquipment.ViewModels
             }
         }
 
-        public async void Upvolate()
-        {
-            await _communicationProtocol.SetTestPra(TestKind.Start, 2);
-            await Task.Delay(6500);
-            var p = await _setVolate.SettindVolate(System.Convert.ToDouble(_xmlconfig.GetAddNodeValue("needvolatetemp")), _communicationProtocol, _xmlconfig);
-            var c = p;
-        }
+        //public async void Upvolate()
+        //{
+        //    await _communicationProtocol.SetTestPra(TestKind.Start, 2);
+        //    await Task.Delay(6500);
+        //    var p = await _setVolate.SettindVolate(System.Convert.ToDouble(_xmlconfig.GetAddNodeValue("needvolatetemp")), _communicationProtocol, _xmlconfig);
+        //    var c = p;
+        //}
 
         public string Age { get; set; } = "手动调压";
 

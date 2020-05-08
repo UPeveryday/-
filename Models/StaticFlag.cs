@@ -12,5 +12,8 @@ namespace PortableEquipment.Models
         public static bool CFG_FRESH = true;
         public static bool LARGE_SMALL = true;
         public static bool BOOMFLAG = true;
+
+        public static readonly object CgfLock = new object();
+        public static readonly object PowerLock = new object();
     }
 }
