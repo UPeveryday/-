@@ -114,13 +114,14 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="0.8*"></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition Height="0.4*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Background="#242e3b" Margin="0,0,0,2">
@@ -169,7 +170,7 @@
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*"></RowDefinition>
+                                <RowDefinition Height="0.2*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition  Height="0.5*"></RowDefinition>
@@ -179,6 +180,25 @@
                             </Viewbox>
                             <Viewbox  Grid.Row="2" Grid.Column="1">
                                 <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding FreUi,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
+                            </Viewbox>
+                        </Grid>
+                        <Grid Grid.Column="2" Margin="2,0,0,2" Background="#242e3b">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="5*"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition  Height="0.5*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Viewbox  Grid.Row="1" Grid.Column="1" Margin="3">
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Foreground="White">功率因数</TextBlock>
+                            </Viewbox>
+                            <Viewbox  Grid.Row="2" Grid.Column="1">
+                                <TextBlock Style="{StaticResource TextBlockPriview}" Text="{Binding DataPower,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource cvtTwo}}"  Foreground="#00ff7f" ></TextBlock>
                             </Viewbox>
                         </Grid>
 
@@ -297,7 +317,7 @@
                             <TextBlock HorizontalAlignment="Left" Foreground="#545f79" FontWeight="Bold" VerticalAlignment="Center"> 试验项目</TextBlock>
                         </Viewbox>
                     </Grid>
-                    <Grid Grid.Row="2" Background="White">
+                    <Grid Grid.Row="2" Background="White" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -309,7 +329,7 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <Viewbox Margin="5" Grid.Row="1" Grid.Column="0">
-                            <CheckBox Grid.Row="1" HorizontalAlignment="Center"  IsChecked="{Binding FirstTestEnable,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="#545f79" Content="感应耐压"  Grid.Column="0"></CheckBox>
+                            <CheckBox Grid.Row="1"  HorizontalAlignment="Center"  IsChecked="{Binding FirstTestEnable,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Foreground="#545f79" Content="感应耐压"  Grid.Column="0"></CheckBox>
                         </Viewbox>
                         <Viewbox Margin="5"  Grid.Row="1" Grid.Column="1">
                             <CheckBox Grid.Row="1" HorizontalAlignment="Center" IsChecked="{Binding SeconedTestEnable,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center"  Foreground="#545f79"  Content="励磁特性"  Grid.Column="1"></CheckBox>

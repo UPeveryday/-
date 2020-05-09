@@ -17,6 +17,7 @@ namespace PortableEquipment.ViewModels
         public IEventAggregator _eventAggregator;
         public ManuallySetParametersViewModel(IWindowManager windowManager, ManualVoltageViewModel manualVoltageViewModel)
         {
+
             _windowManger = windowManager;
             _ManualVoltageViewModel = manualVoltageViewModel;
         }

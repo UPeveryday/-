@@ -60,7 +60,7 @@
             </Grid.ColumnDefinitions>
             <Viewbox Grid.Column="1" >
                 <Grid >
-                    <TextBlock HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center">便携式现场变压器局放感应耐压实验装置</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center">便携式现场变压器局放感应耐压试验装置</TextBlock>
                 </Grid>
             </Viewbox>
         </Grid>
@@ -292,7 +292,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3号</TextBlock>
+                <TextBlock  Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">上海思创电器设备有限公司 | 软件版本号1.0 | 电话:021-68160537 |地址:上海市浦东新区川沙新镇鹿园工业园区鹿吉路91-3号</TextBlock>
             </Viewbox>
             <!--<TextBlock  Grid.Row="1" Grid.Column="2"  Margin="8"  HorizontalAlignment="Left"  VerticalAlignment="Center">
                     <Hyperlink Hyperlink.NavigateUri="http://www.sceec.com">

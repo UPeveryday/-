@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PortableEquipment.ViewModels
@@ -59,7 +60,7 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("正在开始调压中...");
-                if (await _setVolate.SettindVolate(volate, _communicationProtocol, _xmlconfig))
+                if (await _setVolate.SettindVolate(volate, _communicationProtocol, _xmlconfig, new CancellationTokenSource().Token))
                 {
                     AddHideList("调压至 " + volate + "成功");
                 }
@@ -83,7 +84,7 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("正在开始调压中...");
-                if (await _setVolate.SettindHighVolate(VolateNeed, _communicationProtocol, _xmlconfig))
+                if (await _setVolate.SettindHighVolate(VolateNeed, _communicationProtocol, _xmlconfig, new CancellationTokenSource().Token))
                 {
                     AddHideList("调压至 " + volate + "kV成功");
                 }
@@ -108,12 +109,12 @@ namespace PortableEquipment.ViewModels
                 while (VolateUi < 10)
                 {
                     if (!await _communicationProtocol.GetPowerStata())
-                        await _setVolate.ControlsPowerStata(true, _communicationProtocol);
-                    await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 2);
+                        await _setVolate.ControlsPowerStata(true, _communicationProtocol, new CancellationTokenSource().Token);
+                    await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 2, new CancellationTokenSource().Token);
                     await Task.Delay(20);
                 }
                 AddHideList("正在开始调频率中...");
-                if (await _setVolate.SettingFre(fre, _communicationProtocol))
+                if (await _setVolate.SettingFre(fre, _communicationProtocol, new CancellationTokenSource().Token))
                 {
                     AddHideList("调频率至 " + fre + "成功");
                 }
@@ -153,6 +154,7 @@ namespace PortableEquipment.ViewModels
                 VolateUi = message.stataThree.AVolate;
                 CurrentUi = message.stataThree.ACurrent;
                 FreUi = message.stataThree.Fre;
+                DataPower = message.stataThree.APower;
             }
 
         }
@@ -184,14 +186,14 @@ namespace PortableEquipment.ViewModels
                 {
                     if (await _communicationProtocol.ThicknessAdjustable(true))
                     {
-                        await _communicationProtocol.SetTestPra(ts, (byte)LargeChange);
+                        await _communicationProtocol.SetTestPra(ts, (byte)LargeChange, new CancellationTokenSource().Token);
                     }
                 }
                 else
                 {
                     if (await _communicationProtocol.ThicknessAdjustable(false))
                     {
-                        await _communicationProtocol.SetTestPra(ts, (byte)SmallChange);
+                        await _communicationProtocol.SetTestPra(ts, (byte)SmallChange, new CancellationTokenSource().Token);
                     }
                 }
                 AddHideList("调整频率完成");
@@ -213,7 +215,7 @@ namespace PortableEquipment.ViewModels
             {
                 TestStata = true;
                 AddHideList("开始调整电压...");
-                await _setVolate.SettindVolate(needvolate, _communicationProtocol, _xmlconfig);
+                await _setVolate.SettindVolate(needvolate, _communicationProtocol, _xmlconfig, new CancellationTokenSource().Token);
                 AddHideList("调整电压完成");
 
             }
@@ -232,25 +234,70 @@ namespace PortableEquipment.ViewModels
 
         public async void ShowHeader(string par)
         {
-            for (int i = 0; i < MulTime; i++)
+            try
             {
-                OverVolatetime = (MulTime - i - 1).ToString();
-                await Task.Delay(1000);
+                IsRunning = true;
+                tokenSource = new CancellationTokenSource();
+                token = tokenSource.Token;
+                for (int i = 0; i < MulTime; i++)
+                {
+                    OverVolatetime = (MulTime - i - 1).ToString();
+                    await Task.Delay(1000, token);
+                }
+                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+                OverVolatetime = "FINISH";
             }
-            await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig);
-            OverVolatetime = "FINISH";
+            finally
+            {
+                IsRunning = false;
+            }
+
+
+        }
+        public bool CanShowHeader
+        {
+            get
+            {
+                return MulTime != 0 && IsRunning;
+            }
         }
 
+        public async void TransformerClose()
+        {
+            if (IsRunning)
+            {
+                if (tokenSource != null)
+                    tokenSource.Cancel();
+                IsRunning = false;
+            }
+            if (await _communicationProtocol.GetPowerStata())
+            {
+                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
+                await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
+            }
+            this.RequestClose();
+        }
+
+
+
+
+
+        public bool IsRunning { get; set; } = false;
         #endregion
     }
 
 
     public partial class ManualVoltageViewModel
     {
+
+        static CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationToken token = tokenSource.Token;
+
         #region Bindings
         public string Voltage { get; set; } = "5.5kV";
         public double VolateNeed { get; set; } = 100;
         public double Fre { get; set; } = 50.0;
+        public double DataPower { get; set; }
 
         public string OverVolate { get; set; }
         public string OverCurrent { get; set; }

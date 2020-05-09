@@ -46,9 +46,9 @@ namespace PortableEquipment.Views
                 string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
                 EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
                 WndHost.Child = ea;
-                EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
-                eb.IsOpen = true;
-                WndHost.Child = eb;
+                //EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
+                //eb.IsOpen = true;
+                //WndHost.Child = eb;
             }
         }
 

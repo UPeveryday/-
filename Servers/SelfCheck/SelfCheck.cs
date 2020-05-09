@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PortableEquipment.Servers.SelfCheck
@@ -39,7 +40,7 @@ namespace PortableEquipment.Servers.SelfCheck
             return checkMesssage;
         }
 
-        public async Task<bool> SeleCheck()
+        public async Task<bool> SeleCheck(CancellationToken token)
         {
             bool Power = false;
             bool Set = false;
@@ -47,7 +48,7 @@ namespace PortableEquipment.Servers.SelfCheck
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    var p = await _CommunicationProtocol.ReadStataThree();
+                    var p = await _CommunicationProtocol.ReadStataThree(token);
                     if (p.Checked)
                     {
                         Power = true;

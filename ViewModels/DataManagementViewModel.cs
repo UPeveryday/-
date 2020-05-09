@@ -81,6 +81,8 @@ namespace PortableEquipment.ViewModels
         /// </summary>
         public async void DeleteNeedNotdata()
         {
+            try
+            {
             await Task.Run(() =>
             {
                 foreach (var item in TestMessage)
@@ -101,7 +103,16 @@ namespace PortableEquipment.ViewModels
                 }
                 _entityServer.EfModel.SaveChanges();
                 GetAllTestTask();
+                
+
             });
+            }
+            catch 
+            {
+                _windowManager.ShowMessageBox("删除失败", "警告", System.Windows.MessageBoxButton.OK);
+                return;
+            }
+            _windowManager.ShowMessageBox("删除成功", "警告", System.Windows.MessageBoxButton.OK);
 
         }
 

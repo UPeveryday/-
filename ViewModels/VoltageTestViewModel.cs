@@ -376,16 +376,13 @@ namespace PortableEquipment.ViewModels
                 }
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
             }
-            catch (TaskCanceledException)
+            catch /*(TaskCanceledException)*/
             {
 
                 IsRunning = false;
                 Finish = true;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+         
             finally
             {
                 IsRunning = false;
@@ -453,7 +450,7 @@ namespace PortableEquipment.ViewModels
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 #endregion
             }
-            catch (TaskCanceledException)
+            catch /*(TaskCanceledException)*/
             {
 
                 IsRunning = false;
@@ -515,7 +512,7 @@ namespace PortableEquipment.ViewModels
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 #endregion
             }
-            catch (TaskCanceledException)
+            catch /*(TaskCanceledException)*/
             {
                 IsRunning = false;
                 Finish = true;

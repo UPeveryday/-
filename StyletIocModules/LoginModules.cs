@@ -17,7 +17,7 @@ namespace PortableEquipment.StyletIocModules
             Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginRespontory<>)).WithKey("Lr");
             Bind(typeof(Servers.ILogin<>)).To(typeof(Servers.LoginSingalRespontitory<>)).WithKey("Lrs");
             //Bind<IWriteFile>().ToFactory(container => new WriteDataToFile());
-            //Bind<IWriteFile>().ToInstance(new WriteDataToFile());//绑定新实例到容器
+           // Bind<IWriteFile>().ToInstance(new WriteDataToFile()).dis//绑定新实例到容器
             Bind<IWriteFile>().To<WriteDataToFile>().InSingletonScope(); //.DisposeWithContainer(false);//单个注入,不释放
             Bind<ILogger>().To<LoggerRunning>().InSingletonScope(); //.DisposeWithContainer(false);//单个注入,不释放
             Bind<Servers.IEntityServer>().To<Servers.EntityModelServer>().InSingletonScope(); //.DisposeWithContainer(false)//单个注入,不释放
@@ -36,6 +36,8 @@ namespace PortableEquipment.StyletIocModules
             Bind<ViewModels.ManualVoltageViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.MainViewModel>().ToSelf().InSingletonScope();
             Bind<ViewModels.JfViewModel>().ToSelf().InSingletonScope();
+
+
             Bind<IMessageBoxViewModel>().To<ViewModels.MessageBoxViewModel>();
         }
     }

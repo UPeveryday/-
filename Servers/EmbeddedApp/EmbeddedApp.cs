@@ -80,7 +80,7 @@ namespace PortableEquipment.Servers.EmbeddedApp
 
             appProc = new System.Diagnostics.Process();
             appProc.StartInfo.FileName = appPath;
-            if (!IsOpen)
+            if(!IsOpen)
                 IsOpen = appProc.Start();
             Thread.Sleep(2500);
             hwndHost = FindTheWindow();

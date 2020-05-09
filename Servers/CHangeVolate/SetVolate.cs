@@ -138,7 +138,7 @@ namespace PortableEquipment.Servers.CHangeVolate
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeedHighdouble"));
             double Abs = Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs"));
             await _communicationProtocol.ThicknessAdjustable(true);
-        herel: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 2)
+        herel: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 1)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -153,7 +153,7 @@ namespace PortableEquipment.Servers.CHangeVolate
                 }
             }
             await _communicationProtocol.ThicknessAdjustable(false);
-            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 2)
+            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 1)
             {
                 token.ThrowIfCancellationRequested();
 

@@ -137,12 +137,12 @@ namespace PortableEquipment.ViewModels
             }
             else
             {
-                //if (!Debugger.IsAttached)
-                //{
-                //    System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
-                //    if (c == System.Windows.MessageBoxResult.OK)
-                //        this.RequestClose();
-                //}
+                if (!Debugger.IsAttached)
+                {
+                    System.Windows.MessageBoxResult c = _windowManger.ShowMessageBox(p.hidemessage, "警告", System.Windows.MessageBoxButton.OK);
+                    if (c == System.Windows.MessageBoxResult.OK)
+                        this.RequestClose();
+                }
             }
 
 

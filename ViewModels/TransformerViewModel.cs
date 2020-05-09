@@ -193,17 +193,26 @@ namespace PortableEquipment.ViewModels
 
             if (_container.Get<JfViewModel>().ScreenState == ScreenState.Active)
                 _JfViewModel.RequestClose();
-            if (IsRunning)
+            try
             {
-                if (tokenSource != null)
-                    tokenSource.Cancel();
+                if (IsRunning)
+                {
+                    if (tokenSource != null)
+                        tokenSource.Cancel();
+                   
+                }
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
+                }
+            }
+            catch 
+            {
                 IsRunning = false;
+                _windowManager.ShowMessageBox("试验已经中断", "提示", MessageBoxButton.OK);
             }
-            if (await _communicationProtocol.GetPowerStata())
-            {
-                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
-                await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
-            }
+           
 
             this.RequestClose();
         }
@@ -314,133 +323,160 @@ namespace PortableEquipment.ViewModels
         }
         private async void StartTest()
         {
-            if (!IsRunning && await _SelfCheck.SeleCheck(token))
+            try
             {
-                IsRunning = true;
-                hidetest = "正在测量中...";
-                var data = TestPra.DatagridData.ToArray();
-                InitDataGrid(data);
-                if (await _communicationProtocol.TestKindVolateOrHgq(true))
+                if (!IsRunning && await _SelfCheck.SeleCheck(token))
                 {
-                    IsRunning = false;
-                    return;
-                }
-                #region 调频
-                for (int TestPosition = 1; TestPosition < 4; TestPosition++)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                   {
-                       IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                           "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
-                   });
-                    if (IsokOrCan)
+                    IsRunning = true;
+                    hidetest = "正在测量中...";
+                    var data = TestPra.DatagridData.ToArray();
+                    InitDataGrid(data);
+                    if (await _communicationProtocol.TestKindVolateOrHgq(true))
                     {
-                        await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
-                        while (VolateUi < 12)
+                        IsRunning = false;
+                        return;
+                    }
+                    #region 调频
+                    for (int TestPosition = 1; TestPosition < 4; TestPosition++)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                       {
+                           IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                               "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                       });
+                        if (IsokOrCan)
                         {
-                            await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
-                            await Task.Delay(30);
-                        }
-                        if (await _setVolate.SettingFre(Fre, _communicationProtocol, token))
-                        {
-                            for (int i = 0; i < data.Length; i++)
+                            await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
+                            while (VolateUi < 12)
                             {
-
-                                if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig, token))
+                                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
+                                await Task.Delay(30);
+                            }
+                            if (await _setVolate.SettingFre(Fre, _communicationProtocol, token))
+                            {
+                                for (int i = 0; i < data.Length; i++)
                                 {
-                                    if (UVolateUi > TestPra.Volate)
+
+                                    if (await _setVolate.SettindHighVolate(data[i].TestVolate, _communicationProtocol, _xmlconfig, token))
                                     {
-                                        Application.Current.Dispatcher.Invoke(() =>
+                                        if (UVolateUi > TestPra.Volate)
                                         {
-                                            _windowManager.ShowMessageBox("过压\t\n已经自动退出 试验", "提示", MessageBoxButton.OK);
-                                        });
-                                        hidetest = "空闲中";
-                                        IsRunning = false;
-                                        return;
+                                            Application.Current.Dispatcher.Invoke(() =>
+                                            {
+                                                _windowManager.ShowMessageBox("过压\t\n已经自动退出 试验", "提示", MessageBoxButton.OK);
+                                            });
+                                            hidetest = "空闲中";
+                                            IsRunning = false;
+                                            return;
+                                        }
+                                        for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
+                                        {
+                                            for (int pi = 0; pi < data[i].TestTime * 60; pi++)//
+                                            {
+                                                if (token.IsCancellationRequested)
+                                                {
+                                                    IsRunning = false;
+                                                    throw new OperationCanceledException();
+                                                }
+                                                resetEvent.WaitOne();
+                                                await Task.Delay(1000);
+                                                TimeMul = (data[i].TestTime * 60 - pi - 1).ToString();
+                                            }
+                                            ShowOrHide = true;
+                                            while (true)
+                                            {
+                                                if (SaveFlag)
+                                                {
+                                                    AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
+                                                    ShowOrHide = false;
+                                                    SaveFlag = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (data[i].TestTime % 5 != 0)
+                                        {
+                                            for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
+                                            {
+                                                if (token.IsCancellationRequested)
+                                                {
+                                                    IsRunning = false;
+                                                    throw new OperationCanceledException();
+
+                                                }
+                                                resetEvent.WaitOne();
+                                                await Task.Delay(1000);
+                                                TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString();
+
+                                            }
+                                            ShowOrHide = true;
+
+                                            while (true)
+                                            {
+                                                if (SaveFlag)
+                                                {
+                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString());
+                                                    SaveFlag = false;
+                                                    ShowOrHide = false;
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+
                                     }
-                                    for (int j = 0; j < (int)(data[i].TestTime / 5); j++)
-                                    {
-                                        for (int pi = 0; pi < data[i].TestTime * 60; pi++)//
-                                        {
-                                            if (token.IsCancellationRequested)
-                                            {
-                                                IsRunning = false;
-                                                throw new OperationCanceledException();
-                                            }
-                                            resetEvent.WaitOne();
-                                            await Task.Delay(1000);
-                                            TimeMul = (data[i].TestTime * 60 - pi - 1).ToString();
-                                        }
-                                        ShowOrHide = true;
-                                        while (true)
-                                        {
-                                            if (SaveFlag)
-                                            {
-                                                AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
-                                                ShowOrHide = false;
-                                                SaveFlag = false;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (data[i].TestTime % 5 != 0)
-                                    {
-                                        for (int pi = 0; pi < (data[i].TestTime % 5) * 60; pi++)
-                                        {
-                                            if (token.IsCancellationRequested)
-                                            {
-                                                IsRunning = false;
-                                                throw new OperationCanceledException();
-
-                                            }
-                                            resetEvent.WaitOne();
-                                            await Task.Delay(1000);
-                                            TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString();
-
-                                        }
-                                        ShowOrHide = true;
-
-                                        while (true)
-                                        {
-                                            if (SaveFlag)
-                                            {
-                                                AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString());
-                                                SaveFlag = false;
-                                                ShowOrHide = false;
-                                                break;
-                                            }
-
-                                        }
-                                    }
-
-
                                 }
                             }
-                        }
-                        else
-                        {
+                            else
+                            {
 
-                            _logger.Writer("设置测量频率失败，结束试验");
+                                _logger.Writer("设置测量频率失败，结束试验");
+                            }
+                            IsokOrCan = false;
                         }
-                        IsokOrCan = false;
+                        await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                     }
-                    await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+
+                    #endregion
+
+                    IsRunning = false;
                 }
-
-                #endregion
-
-                IsRunning = false;
+                else
+                {
+                    IsRunning = false;
+                    Application.Current.Dispatcher.Invoke(() =>
+                   {
+                       _windowManager.ShowMessageBox("启动测量失败\t\n请检查接线\t\n请手动结束为结束的测量",
+                          "提示", MessageBoxButton.OK);
+                   });
+                }
+                hidetest = "空闲中";
             }
-            else
+            catch (TaskCanceledException)
             {
                 IsRunning = false;
-                Application.Current.Dispatcher.Invoke(() =>
-               {
-                   _windowManager.ShowMessageBox("启动测量失败\t\n请检查接线\t\n请手动结束为结束的测量",
-                      "提示", MessageBoxButton.OK);
-               });
+                Application.Current.Dispatcher.Invoke(() => {
+                    _windowManager.ShowMessageBox("试验已经中断",
+                              "提示", MessageBoxButton.OK);
+                });
+               
             }
-            hidetest = "空闲中";
+            catch 
+            {
+                IsRunning = false;
+                Application.Current.Dispatcher.Invoke(() => {
+                    _windowManager.ShowMessageBox("试验已经中断",
+                              "提示", MessageBoxButton.OK);
+                });
+
+            }
+            finally
+            {
+                IsRunning = false;
+                StartOpacity = 1;
+              
+            }
         }
 
         private async Task JfControls(Translator TestPra, int currentvolateIndex, double currenttesttime, int MarkPhama, string Jf)
@@ -495,13 +531,12 @@ namespace PortableEquipment.ViewModels
                 tokenSource.Cancel();
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 TimeMul = "--";
-                _windowManager.ShowMessageBox("试验已经结束",
-                              "提示", MessageBoxButton.OK);
+             
             }
-            {
-                _windowManager.ShowMessageBox("未开始试验",
-                            "提示", MessageBoxButton.OK);
-            }
+            //{
+            //    _windowManager.ShowMessageBox("未开始试验",
+            //                "提示", MessageBoxButton.OK);
+            //}
 
             //  await SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
         }

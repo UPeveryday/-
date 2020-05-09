@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,16 +47,17 @@ namespace PortableEquipment.Views
                     string path = System.Environment.CurrentDirectory + "\\Jf\\数字式局部放电检测系统7.0.exe";
                     EmbeddedApp ea = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
                     WndHost.Child = ea;
+
                     EmbeddedApp eb = new EmbeddedApp(WndHost, 100, 100, path, "数字式局部放电检测系统");
                     eb.IsOpen = true;
                     WndHost.Child = eb;
                 }
             }
-            catch 
+            catch
             {
                 StyletLogger.LoggerRunning.WriterByStatic("启动局放软件失败");
             }
-           
+
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

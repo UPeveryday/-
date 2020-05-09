@@ -181,12 +181,12 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             var lc = new StackTrace(new StackFrame(true)).GetFrame(0);
             var rec = new byte[100];
             Models.StaticFlag.UI_FRESH = false;
-            try
+        Start: try
             {
                 int recnum = 0;
-            Start: await Task.Run(() =>
+           await Task.Run(() =>
             {
-                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 1);
+                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 3);
             });
                 if (recnum > 1)
                 {
@@ -203,9 +203,10 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             catch
             {
                 _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "SendComman出错");
+
             }
             Models.StaticFlag.UI_FRESH = true;
-            return -1;
+            goto Start;
         }
 
 
@@ -220,7 +221,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             {
                 await Task.Run(() =>
                 {
-                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 1000);
+                    int recnum = Comport.Serial.upserialport.SendCommand(comman, ref rec, 100);
                 });
                 if (rec[0] == 0xAA && rec[1] == 0x05)
                     return true;
@@ -232,7 +233,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             catch
             {
-                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  ." + "粗细条异常");
+                _logger.Writer(lc.GetFileName() + "  " + lc.GetFileLineNumber().ToString() + " 行  " + "粗细条异常");
             }
             return false;
         }
