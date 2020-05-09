@@ -9,7 +9,7 @@ using PortableEquipment.StyletLogger;
 
 namespace PortableEquipment
 {
-    public class Bootstrapper : Bootstrapper<ViewModels.MainViewModel>
+    public class Bootstrapper : Bootstrapper<MainViewModel>
     {
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {

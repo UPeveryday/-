@@ -264,22 +264,37 @@ namespace PortableEquipment.ViewModels
 
         public async void TransformerClose()
         {
-            if (IsRunning)
+            try
             {
-                if (tokenSource != null)
-                    tokenSource.Cancel();
+                if (IsRunning)
+                {
+                    if (tokenSource != null)
+                        tokenSource.Cancel();
+                }
+                await Task.Delay(500);
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    await SetHide("正在降压...", true);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, new CancellationToken());
+                    await SetHide("正在关闭电源", true, true);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, new CancellationToken());
+                }
+            }
+            catch
+            {
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    await SetHide("正在降压...", true);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, new CancellationToken());
+                    await SetHide("正在关闭电源", true, true);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, new CancellationToken());
+                }
                 IsRunning = false;
+                this.RequestClose();
             }
-            if (await _communicationProtocol.GetPowerStata())
-            {
-                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
-                await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
-            }
+
             this.RequestClose();
         }
-
-
-
 
 
         public bool IsRunning { get; set; } = false;
@@ -292,6 +307,22 @@ namespace PortableEquipment.ViewModels
 
         static CancellationTokenSource tokenSource = new CancellationTokenSource();
         CancellationToken token = tokenSource.Token;
+
+        #region header提示
+        public bool OpenOrcloseHeader { get; set; }
+        public string HideText { get; set; }
+        private async Task SetHide(string hidemessage, bool IsOpen, bool isTimeout = false, int timeout = 1000)
+        {
+            OpenOrcloseHeader = IsOpen;
+            HideText = hidemessage;
+            if (isTimeout)
+            {
+                await Task.Delay(timeout);
+                IsOpen = false;
+                OpenOrcloseHeader = false;
+            }
+        }
+        #endregion
 
         #region Bindings
         public string Voltage { get; set; } = "5.5kV";

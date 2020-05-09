@@ -24,8 +24,12 @@ namespace PortableEquipment.ViewModels
         public Servers.Json.IJsondeel _jsondeel;
         [Inject]//特性注入
         public StyletLogger.ILogger _logger;
-        public WithstandVoltageViewModel(IWindowManager windowManager, TransformerViewModel transformerViewModel, IEventAggregator eventAggregator)
+
+        public IContainer _container;
+        public WithstandVoltageViewModel(IWindowManager windowManager, TransformerViewModel transformerViewModel, 
+            IEventAggregator eventAggregator,IContainer container)
         {
+            _container = container;
             _windowManger = windowManager;
             _TransformerViewModel = transformerViewModel;
             _eventAggregator = eventAggregator;

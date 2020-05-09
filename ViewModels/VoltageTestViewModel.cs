@@ -15,8 +15,11 @@ using System.Windows;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>, IHandle<OutTestResult>, IHandle<string>
+    public partial class VoltageTestViewModel : Screen, IHandle<MutualTranslator>, IHandle<OutTestResult>, IHandle<string>, IDisposable
     {
+        public string ConductorTest { get; set; }
+
+
         #region 
         public IEventAggregator _eventAggregator;
         private MutualTranslator _mutualTranslator;
@@ -77,6 +80,15 @@ namespace PortableEquipment.ViewModels
                     _logger.Writer("Cgf电压解析出错");
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            ScreenState = ScreenState.Deactivated;
+        }
+        ~VoltageTestViewModel()
+        {
+            ScreenState = ScreenState.Closed;
         }
         #endregion
     }
@@ -382,7 +394,7 @@ namespace PortableEquipment.ViewModels
                 IsRunning = false;
                 Finish = true;
             }
-         
+
             finally
             {
                 IsRunning = false;

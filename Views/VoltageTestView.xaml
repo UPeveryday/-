@@ -28,7 +28,6 @@
             <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="9.2*"></RowDefinition>
         </Grid.RowDefinitions>
-
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition ></RowDefinition>
@@ -622,28 +621,30 @@
 
             </Grid>
         </Grid>
-
         <Grid Grid.RowSpan="2">
             <!--{Binding OpenOrclose}-->
-            <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Top" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" >
+            <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Top" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrcloseHeader}" >
                 <materialDesign:DrawerHost.TopDrawerContent>
-                    <Grid MinHeight="80" Width="800" Background="#FF00FF86">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" MinHeight="80" Width="800" Background="#FF00FF86">
-                            <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
-                            <TextBlock Margin="80 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                        </StackPanel>
-                        <Button FontSize="22" Grid.Column="1" HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
+                    <Border Height="80" Width="800" Background="#FF00FF86" CornerRadius="10">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="20 6" >
+                                <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
+                                <TextBlock Margin="80 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                            </StackPanel>
+                            <Button FontSize="22" Grid.Column="1" HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
                                 CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  VerticalAlignment="Center">
-                            CLOSE THIS
-                        </Button>
-                    </Grid>
+                                CLOSE THIS
+                            </Button>
+                        </Grid>
+                    </Border>
                 </materialDesign:DrawerHost.TopDrawerContent>
             </materialDesign:DrawerHost>
         </Grid>
+        <TextBox Height="300" Width="300" Text="{Binding ConductorTest,Mode=TwoWay}" Background="Red"></TextBox>
 
     </Grid>
 </Controls:MetroWindow>

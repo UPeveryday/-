@@ -511,6 +511,31 @@
             </Grid>
         </Grid>
 
+
+        <Grid Grid.RowSpan="2">
+            <materialDesign:DrawerHost HorizontalAlignment="Center"  VerticalAlignment="Top" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrcloseHeader}" >
+                <materialDesign:DrawerHost.TopDrawerContent>
+                    <Border Height="80" Width="1000" Background="#FF00FF86" CornerRadius="10">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="20 6" >
+                                <TextBlock Margin="100 3" Foreground="Black" FontSize="20"  VerticalAlignment="Top">提示 :</TextBlock>
+                                <TextBlock Margin="80 0" Foreground="#FFFF0079" FontSize="30"  VerticalAlignment="Center" Text="{Binding HideText,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                            </StackPanel>
+                            <Button FontSize="22" Grid.Column="1" HorizontalAlignment="Right" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}" 
+                                CommandParameter="{x:Static Dock.Top}"  Style="{DynamicResource MaterialDesignFlatButton}"  VerticalAlignment="Center">
+                                CLOSE THIS
+                            </Button>
+                        </Grid>
+                    </Border>
+                </materialDesign:DrawerHost.TopDrawerContent>
+            </materialDesign:DrawerHost>
+        </Grid>
+
+
         <Grid Grid.RowSpan="2">
             <materialDesign:DrawerHost HorizontalAlignment="Center" MaxHeight="300"  VerticalAlignment="Bottom" BorderThickness="0"  IsBottomDrawerOpen="{Binding OpenOrclose}" >
                 <materialDesign:DrawerHost.BottomDrawerContent>

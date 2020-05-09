@@ -78,7 +78,7 @@ namespace PortableEquipment.ViewModels
         public void ShowTransformer() => _windowManger.ShowDialog(_TransformerViewModel);
         public void ShowVoltageTest() => _windowManger.ShowDialog(_VoltageTestViewModel);
         public void ShowWithstand() => _windowManger.ShowDialog(_WithstandVoltageViewModel);
-      //  public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
+        //  public void Sendcomman() => _CommunicationProtocol.ReadStataThree();
         public void showdata()
         {
             _eventAggregator.Publish(new HideMessage
@@ -133,7 +133,6 @@ namespace PortableEquipment.ViewModels
                     }
                 }, TaskCreationOptions.LongRunning);
                 BoomTest.Start();
-
             }
             else
             {
@@ -143,6 +142,7 @@ namespace PortableEquipment.ViewModels
                     if (c == System.Windows.MessageBoxResult.OK)
                         this.RequestClose();
                 }
+                
             }
 
 

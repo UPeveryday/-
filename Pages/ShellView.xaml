@@ -14,7 +14,7 @@
     </TabControl>-->
     <!--<ContentControl s:View.Model="{Binding ActiveItem}"> </ContentControl>-->
 
-    <!--<Grid >
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -42,10 +42,10 @@
             <ContentControl s:View.Model="{Binding Items[3]}">
             </ContentControl>
         </StackPanel>
-    </Grid>-->
-    <Grid>
+    </Grid>
+    <!--<Grid>
 
-        <!--<Button Height="40" Width="120" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
+        --><!--<Button Height="40" Width="120" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" >
             <Button.CommandParameter>
                 -->
         <!-- the simplest view model of all, a DateTime. the view can be found in the resources of MainWindow.xaml  -->
@@ -58,7 +58,7 @@
         </Button>
         <Button  Height="40" Width="120"  HorizontalAlignment="Left"></Button>-->
 
-        <materialDesign:DrawerHost Margin="64" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" BorderBrush="{DynamicResource MaterialDesignDivider}">
+        <!--<materialDesign:DrawerHost Margin="64" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"  IsTopDrawerOpen="{Binding OpenOrclose}" BorderBrush="{DynamicResource MaterialDesignDivider}">
             <materialDesign:DrawerHost.TopDrawerContent>
                 <StackPanel  Margin="16" HorizontalAlignment="Center"  Orientation="Horizontal">
                     <TextBlock  Margin="4" VerticalAlignment="Center"> TOP BANANA</TextBlock>
@@ -70,7 +70,7 @@
                     </Button>
                 </StackPanel>
             </materialDesign:DrawerHost.TopDrawerContent>
-        </materialDesign:DrawerHost>
+        </materialDesign:DrawerHost>-->
 
 
 
@@ -113,8 +113,8 @@
                               HorizontalAlignment="Right" Grid.Row="0"  Margin="10">
                 <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
             </Button>
-        </materialDesign:DialogHost>-->
+        </materialDesign:DialogHost>--><!--
         <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{s:Action Click}">5555555</Button>
-    </Grid>
+    </Grid>-->
 
 </Window>

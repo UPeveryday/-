@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>, IHandle<JfTestResult>
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>, IHandle<JfTestResult>,IDisposable
     {
         #region 依赖注入
         [Inject]
@@ -43,6 +43,11 @@ namespace PortableEquipment.ViewModels
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
+        }
+
+        public void Dispose()
+        {
+            this.OnClose();
         }
 
         //Ui更新
@@ -184,6 +189,7 @@ namespace PortableEquipment.ViewModels
 
         public async void TransformerClose()
         {
+
             WindowsStataIsOpen = false;
             foreach (var item in Process.GetProcessesByName("数字式局部放电检测系统7.0"))
             {
@@ -199,20 +205,27 @@ namespace PortableEquipment.ViewModels
                 {
                     if (tokenSource != null)
                         tokenSource.Cancel();
-                   
                 }
                 if (await _communicationProtocol.GetPowerStata())
                 {
-                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
-                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
+                    await SetHide("正在降压...", true);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, new CancellationToken());
+                    await SetHide("正在关闭电源", true, true);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, new CancellationToken());
                 }
             }
-            catch 
+            catch
             {
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    await SetHide("正在降压...", true);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, new CancellationToken());
+                    await SetHide("正在关闭电源", true, true);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, new CancellationToken());
+                }
                 IsRunning = false;
-                _windowManager.ShowMessageBox("试验已经中断", "提示", MessageBoxButton.OK);
+                this.RequestClose();
             }
-           
 
             this.RequestClose();
         }
@@ -220,6 +233,21 @@ namespace PortableEquipment.ViewModels
     }
     public partial class TransformerViewModel
     {
+        #region header提示
+        public bool OpenOrcloseHeader { get; set; }
+        public string HideText { get; set; }
+        private async Task SetHide(string hidemessage, bool IsOpen, bool isTimeout = false, int timeout = 1000)
+        {
+            OpenOrcloseHeader = IsOpen;
+            HideText = hidemessage;
+            if (isTimeout)
+            {
+                await Task.Delay(timeout);
+                IsOpen = false;
+                OpenOrcloseHeader = false;
+            }
+        }
+        #endregion
         #region 局放电源设置
         public bool SaveFlag { get; set; }
         public bool JfStataControl { get; set; }
@@ -339,11 +367,16 @@ namespace PortableEquipment.ViewModels
                     #region 调频
                     for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                       {
-                           IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                               "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
-                       });
+                        Execute.OnUIThread(() =>
+                        {
+                            IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                                "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                        });
+                        // Application.Current.Dispatcher.Invoke(() =>
+                        //{
+                        //    IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                        //        "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                        //});
                         if (IsokOrCan)
                         {
                             await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
@@ -415,7 +448,7 @@ namespace PortableEquipment.ViewModels
                                             {
                                                 if (SaveFlag)
                                                 {
-                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString());
+                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString() + "pC," + VolateUi + "V");
                                                     SaveFlag = false;
                                                     ShowOrHide = false;
                                                     break;
@@ -456,16 +489,18 @@ namespace PortableEquipment.ViewModels
             catch (TaskCanceledException)
             {
                 IsRunning = false;
-                Application.Current.Dispatcher.Invoke(() => {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
                     _windowManager.ShowMessageBox("试验已经中断",
                               "提示", MessageBoxButton.OK);
                 });
-               
+
             }
-            catch 
+            catch
             {
                 IsRunning = false;
-                Application.Current.Dispatcher.Invoke(() => {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
                     _windowManager.ShowMessageBox("试验已经中断",
                               "提示", MessageBoxButton.OK);
                 });
@@ -475,7 +510,7 @@ namespace PortableEquipment.ViewModels
             {
                 IsRunning = false;
                 StartOpacity = 1;
-              
+
             }
         }
 
@@ -531,7 +566,7 @@ namespace PortableEquipment.ViewModels
                 tokenSource.Cancel();
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
                 TimeMul = "--";
-             
+
             }
             //{
             //    _windowManager.ShowMessageBox("未开始试验",

@@ -24,8 +24,10 @@ namespace PortableEquipment.ViewModels
         public Servers.Json.IJsondeel _jsondeel;
         [Inject]
         public Servers.IEntityServer entityServer;
-        public ParameterSettingViewModel(IWindowManager windowManager, IEventAggregator eventAggregator)
+        public IContainer _container;
+        public ParameterSettingViewModel(IWindowManager windowManager, IEventAggregator eventAggregator, IContainer container)
         {
+            _container = container;
             _windowManger = windowManager;
             _eventAggregator = eventAggregator;
         }
