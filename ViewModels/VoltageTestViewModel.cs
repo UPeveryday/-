@@ -442,6 +442,15 @@ namespace PortableEquipment.ViewModels
                                     return;
                                 }
                                 PresurreTime = ((int)mutualTranslator.InducedOvervoltageR.TestTime - i - 1).ToString();
+                                if (VolateUi < 1)
+                                {
+                                    await Task.Delay(1300, token);
+                                    if (VolateUi < 1)
+                                    {
+                                        _windowManager.ShowMessageBox("耐压失败", "警告", MessageBoxButton.OK);
+                                        return;
+                                    }
+                                }
                                 await Task.Delay(1000, token);
                             }
                             KeepTestVoltage = VolateUi;

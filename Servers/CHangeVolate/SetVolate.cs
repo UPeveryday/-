@@ -55,7 +55,9 @@ namespace PortableEquipment.Servers.CHangeVolate
                 {
                     ts = (voltage - data.AVolate) > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
                     if (Math.Abs(voltage - data.AVolate) >= 16)
+                    {
                         await _communicationProtocol.SetTestPra(ts, 1, token);
+                    }
                     else
                         break;
                 }

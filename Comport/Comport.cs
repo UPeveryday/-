@@ -17,6 +17,8 @@ namespace PortableEquipment.Comport
 
     {
 
+
+        #region 55
         SerialPort _serialPort = null;
 
         //定义委托
@@ -34,6 +36,7 @@ namespace PortableEquipment.Comport
         //接收事件是否有效 false表示有效
 
         public bool ReceiveEventFlag = false;
+        #endregion
 
         #region 获取串口名
 
