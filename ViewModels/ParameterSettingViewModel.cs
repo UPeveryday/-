@@ -274,7 +274,7 @@ namespace PortableEquipment.ViewModels
             set { _ratadvolateselectindex = value; }
         }
 
-        private double _OutgoingTestVoltage = 110.0;
+        private double _OutgoingTestVoltage = 30;
         public double OutgoingTestVoltage
         {
             get { return _OutgoingTestVoltage; }
@@ -373,10 +373,13 @@ namespace PortableEquipment.ViewModels
         /// <summary>
         /// 获取电压等级并设定
         /// </summary>
-        private double _lctestvolate;
+        private double _lctestvolate=25;
         public double LcTestVolate
         {
-            get { return _lctestvolate; }
+            get {
+                if (GetXmlVoltageRange() != null)
+                    GetDefaultGroupdata(GetXmlVoltageRange());
+                return _lctestvolate; }
             set
             {
                 _lctestvolate = value;
@@ -426,7 +429,7 @@ namespace PortableEquipment.ViewModels
         #endregion
 
         #region 空载
-        public double KzTestVolate { get; set; }
+        public double KzTestVolate { get; set; } = 20;
         public double KzOverCurrent { get; set; } = 3.00;
         public double KzAbs { get; set; } = 125;
 

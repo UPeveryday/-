@@ -18,6 +18,8 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         public IParsingdata _parsingdata;
         [Inject]
         public Xmldata.IXmlconfig _xmlconfig;
+        [Inject]
+        public ICommunicationProtocol _communicationProtocol;
         public StataTwo ReadStataTwo()
         {
             var rec = new byte[34];
@@ -184,10 +186,10 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         Start: try
             {
                 int recnum = 0;
-           await Task.Run(() =>
-            {
-                recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 3);
-            });
+                await Task.Run(() =>
+                 {
+                     recnum = Comport.Serial.Cgfserialport.SendCommand(new byte[3] { 0x46, 0x80, 0x80 }, ref rec, 3);
+                 });
                 if (recnum > 1)
                 {
                     Models.StaticFlag.UI_FRESH = true;
@@ -208,7 +210,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             Models.StaticFlag.UI_FRESH = true;
             goto Start;
         }
-
 
         public async Task<bool> ThicknessAdjustable(bool Adjustt)
         {
@@ -237,7 +238,6 @@ namespace PortableEquipment.Servers.CommunicationProtocol
             }
             return false;
         }
-
 
         public async Task<bool> Boom()
         {

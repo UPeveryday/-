@@ -209,23 +209,32 @@ namespace PortableEquipment.ViewModels
         }
         public async void CloseVolate()
         {
-            await SetHide("正在退出...", true);
-            if (IsRunning)
+            try
             {
-                if (tokenSource != null)
-                    tokenSource.Cancel();
-                IsRunning = false;
-            }
-            if (await _communicationProtocol.GetPowerStata())
-            {
-                await SetHide("正在降压...", true);
-                await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, token);
-                await SetHide("正在关闭电源...", true);
-                await _setVolate.ControlsPowerStata(false, _communicationProtocol, token);
-            }
-            await SetHide("退出成功.", true);
+                await SetHide("正在退出...", true);
+                if (IsRunning)
+                {
+                    if (tokenSource != null)
+                        tokenSource.Cancel();
+                }
+                if (await _communicationProtocol.GetPowerStata())
+                {
+                    await SetHide("正在降压...", true);
+                    await _setVolate.DownVolateZero(_communicationProtocol, _xmlconfig, new CancellationToken());
+                    await SetHide("正在关闭电源...", true);
+                    await _setVolate.ControlsPowerStata(false, _communicationProtocol, new CancellationToken());
+                }
+                await SetHide("退出成功.", true);
 
-            this.RequestClose();
+                this.RequestClose();
+            }
+            catch 
+            {
+                IsRunning = false;
+                Finish = false;
+
+            }
+
         }
         #endregion
         #region TestCommand
@@ -236,15 +245,17 @@ namespace PortableEquipment.ViewModels
         public bool OpenOrclose { get; set; }
         public async Task StartTest()
         {
-            InitUi();
-            await SetHide("已经开始测量", true, true);
-            tokenSource = new CancellationTokenSource();
-            token = tokenSource.Token;
-            resetEvent = new ManualResetEvent(true);
-            StartTestVisibility = false;
-            Finish = true;
-            if (await _communicationProtocol.TestKindVolateOrHgq(false))
+            if(!IsRunning)
             {
+                InitUi();
+                await SetHide("已经开始测量", true, true);
+                tokenSource = new CancellationTokenSource();
+                token = tokenSource.Token;
+                resetEvent = new ManualResetEvent(true);
+                StartTestVisibility = false;
+                Finish = true;
+                //if (await _communicationProtocol.TestKindVolateOrHgq(false))
+                //{
 
                 if (_mutualTranslator.NoLoadCurrentR.Enable && Finish)
                 {
@@ -280,10 +291,12 @@ namespace PortableEquipment.ViewModels
                         await StartVolate();
                     }
                 }
+                //}
+                StartTestVisibility = true;
+                ControlsCurrentTestStata(false, false, false);
+                await SetHide("试验已经结束", true, true);
             }
-            StartTestVisibility = true;
-            ControlsCurrentTestStata(false, false, false);
-            await SetHide("试验已经结束", true, true);
+           
         }
         public async Task StartLc()
         {
@@ -391,8 +404,7 @@ namespace PortableEquipment.ViewModels
             catch /*(TaskCanceledException)*/
             {
 
-                IsRunning = false;
-                Finish = true;
+                Finish = false;
             }
 
             finally
@@ -473,9 +485,7 @@ namespace PortableEquipment.ViewModels
             }
             catch /*(TaskCanceledException)*/
             {
-
-                IsRunning = false;
-                Finish = true;
+                Finish = false;
             }
             finally
             {
@@ -535,8 +545,7 @@ namespace PortableEquipment.ViewModels
             }
             catch /*(TaskCanceledException)*/
             {
-                IsRunning = false;
-                Finish = true;
+                Finish = false;
             }
             finally
             {
@@ -561,9 +570,9 @@ namespace PortableEquipment.ViewModels
                     await SetHide("试验结束失败", true);
                     return;
                 }
-                await Task.Delay(100);
+                await Task.Delay(1000);
             }
-            await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+            await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, new CancellationToken());
             await Task.Delay(1000);
             await SetHide("试验已结束", true, true);
             StartTestVisibility = true;

@@ -367,16 +367,16 @@ namespace PortableEquipment.ViewModels
                     #region 调频
                     for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                     {
-                        Execute.OnUIThread(() =>
-                        {
-                            IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                                "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
-                        });
-                        // Application.Current.Dispatcher.Invoke(() =>
+                        //Execute.OnUIThread(() =>
                         //{
                         //    IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
                         //        "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
                         //});
+                        Application.Current.Dispatcher.Invoke(() =>
+                       {
+                           IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
+                               "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
+                       });
                         if (IsokOrCan)
                         {
                             await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
