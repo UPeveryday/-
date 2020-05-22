@@ -4,6 +4,7 @@ using Stylet;
 using StyletIoC;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -132,19 +133,27 @@ namespace PortableEquipment.ViewModels
 
         public async void ConfireOutVolate()
         {
-            if (!TestStata)
+            try
             {
-                OpenOrclose = true;
-                AddHideList("开始试验...");
-                await ChnageFre(Fre);
-                await ChnageVolate(VolateNeed);
-                AddHideList("试验已结束...");
-                OpenOrclose = false;
+                if (!TestStata)
+                {
+                    OpenOrclose = true;
+                    AddHideList("开始试验...");
+                    await _setVolate.SettingFre(Fre, _communicationProtocol, new CancellationToken());
+                    await ChnageVolate(VolateNeed);
+                    AddHideList("试验已结束...");
+                    OpenOrclose = false;
+                }
+                else
+                {
+                    _windowManager.ShowMessageBox("正在试验中，请等待结结束", "提示", System.Windows.MessageBoxButton.OK);
+                }
             }
-            else
+            catch
             {
-                _windowManager.ShowMessageBox("正在试验中，请等待结结束", "提示", System.Windows.MessageBoxButton.OK);
+                WrongThing();
             }
+
 
         }
         public void Handle(OutTestResult message)
@@ -174,57 +183,97 @@ namespace PortableEquipment.ViewModels
         }
         public async Task AddFre(string addfrestring)
         {
-            TestKind ts = addfrestring.Contains("+") ? TestKind.ControlsFreUp : TestKind.ControlsFreDown;
-            double addfre = Convert.ToDouble(addfrestring.Replace("+", "").Replace("-", ""));
-            int LargeChange = (int)addfre;
-            int SmallChange = (int)((addfre - (int)addfre) * 10); ;
-            if (!TestStata)
+
+            try
             {
-                TestStata = true;
-                AddHideList("开始调整频率...");
-                if (addfre >= 1)
+                TestKind ts = addfrestring.Contains("+") ? TestKind.ControlsFreUp : TestKind.ControlsFreDown;
+                double addfre = Convert.ToDouble(addfrestring.Replace("+", "").Replace("-", ""));
+                int LargeChange = (int)addfre;
+                int SmallChange = (int)((addfre - (int)addfre) * 10); ;
+                if (!TestStata)
                 {
-                    if (await _communicationProtocol.ThicknessAdjustable(true))
+                    TestStata = true;
+                    AddHideList("开始调整频率...");
+                    if (addfre >= 1)
                     {
-                        await _communicationProtocol.SetTestPra(ts, (byte)LargeChange, new CancellationTokenSource().Token);
+                        if (await _communicationProtocol.ThicknessAdjustable(true))
+                        {
+                            await _communicationProtocol.SetTestPra(ts, (byte)LargeChange, new CancellationTokenSource().Token);
+                        }
                     }
+                    else
+                    {
+                        if (await _communicationProtocol.ThicknessAdjustable(false))
+                        {
+                            await _communicationProtocol.SetTestPra(ts, (byte)SmallChange, new CancellationTokenSource().Token);
+                        }
+                    }
+                    AddHideList("调整频率完成");
+
                 }
                 else
                 {
-                    if (await _communicationProtocol.ThicknessAdjustable(false))
-                    {
-                        await _communicationProtocol.SetTestPra(ts, (byte)SmallChange, new CancellationTokenSource().Token);
-                    }
+                    AddHideList("正在试验中，无法操作");
                 }
-                AddHideList("调整频率完成");
-
+                TestStata = false;
             }
-            else
+            catch
             {
-                AddHideList("正在试验中，无法操作");
+                WrongThing();
             }
-            TestStata = false;
+
         }
 
 
         public async Task AddVolatage(string addvolatestring)
         {
-            double changevolate = Convert.ToDouble(addvolatestring);
-            double needvolate = changevolate + VolateUi;
-            if (!TestStata)
+            try
             {
-                TestStata = true;
-                AddHideList("开始调整电压...");
-                await _setVolate.SettindVolate(needvolate, _communicationProtocol, _xmlconfig, new CancellationTokenSource().Token);
-                AddHideList("调整电压完成");
+                double changevolate = Convert.ToDouble(addvolatestring);
+                double needvolate = changevolate + VolateUi;
+                if (needvolate < 0)
+                    needvolate = 0;
+                if (!TestStata)
+                {
+                    TestStata = true;
+                    if (changevolate == 1 || changevolate == -1)
+                    {
+                        TestKind ts;
+                        ts = changevolate > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
+                        await _communicationProtocol.ThicknessAdjustable(false);
+                        await _communicationProtocol.SetTestPra(ts, 1, new CancellationTokenSource().Token);
+                    }
+                    else
+                    {
+                        await _setVolate.SettindVolate(needvolate, _communicationProtocol, _xmlconfig, new CancellationTokenSource().Token);
 
+                    }
+                }
+                else
+                {
+                    AddHideList("正在试验中，无法操作");
+                }
+                TestStata = false;
             }
-            else
+            catch
             {
-                AddHideList("正在试验中，无法操作");
+                WrongThing();
             }
-            TestStata = false;
+
         }
+        private void WrongThing()
+        {
+            TestStata = false;
+            var ret = _windowManager.ShowMessageBox("试验外部中断\t\n确认：关闭仪器\t\n取消:继续其他试验\t\n如果仪器出现警报声请点击确认", "警告", System.Windows.MessageBoxButton.YesNo);
+            if (ret == System.Windows.MessageBoxResult.Yes)
+            {
+                int time = 0;    //单位为：秒
+                Process.Start("c:/windows/system32/shutdown.exe", "-s -t " + time);
+            }
+
+        }
+
+
         private void AddHideList(string content)
         {
             if (HideList == null)

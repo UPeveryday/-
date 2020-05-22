@@ -464,12 +464,12 @@
                         </Style>
                     </DataGrid.RowStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="步骤"  Width="0.6*"></DataGridTextColumn>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Binding="{Binding TestVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="电压(kV)" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding TestTime,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="测量时间(min)" Width="1.3*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding UVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="U(pC/V)" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding VVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="V(pC/V)" Width="1*"></DataGridTextColumn>
-                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W(pC/V)" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn   HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding Stepname,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="步骤"  Width="0.6*"></DataGridTextColumn>
+                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}" Binding="{Binding TestVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="电压(kV)" Width="0.8*"></DataGridTextColumn>
+                        <DataGridTextColumn  HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding TestTime,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="测量时间(min)" Width="1*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"   Binding="{Binding UVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="U(pC/kV/V)" Width="1.8*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding VVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="V(pC/kV/V)" Width="1.8*"></DataGridTextColumn>
+                        <DataGridTextColumn HeaderStyle="{StaticResource dataGridHeaderStyle}"  Binding="{Binding WVoltage,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="W(pC/kV/V)" Width="1.8* " ></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Border  x:Name="WndHost"  Grid.Row="1"></Border>

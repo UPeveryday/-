@@ -13,7 +13,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local1:ParameterSettingViewModel}"
         Title="ParameterSettingView" Height="800" Width="1280" UseNoneWindowStyle="True"
-              Name="Mywindow"        WindowStyle="None" MouseDown="MetroWindow_MouseDown">
+              Name="Mywindow"        WindowStyle="None" MouseDown="MetroWindow_MouseDown" Loaded="{s:Action Load}">
     <Window.Resources>
         <ResourceDictionary>
 
@@ -104,17 +104,17 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions >
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
                     </Grid.RowDefinitions>

@@ -18,8 +18,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
         public IParsingdata _parsingdata;
         [Inject]
         public Xmldata.IXmlconfig _xmlconfig;
-        [Inject]
-        public ICommunicationProtocol _communicationProtocol;
+       
         public StataTwo ReadStataTwo()
         {
             var rec = new byte[34];
@@ -134,7 +133,7 @@ namespace PortableEquipment.Servers.CommunicationProtocol
                 byte[] sendc = new byte[5] { 0xA5, TestKindByte, ClickNum, Mark, (byte)(0xA5 + TestKindByte + ClickNum + Mark) };
                 await Task.Run(() =>
                 {
-                    Comport.Serial.upserialport.SendCommand(sendc, ref rec, ClickNum * 400);
+                    Comport.Serial.upserialport.SendCommand(sendc, ref rec, ClickNum * 1000);
                 });
                 if (rec[0] == 0xaa && rec[1] == Mark)
                 {

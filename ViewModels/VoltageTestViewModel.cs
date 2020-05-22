@@ -7,8 +7,8 @@ using Stylet;
 using StyletIoC;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,35 +19,46 @@ namespace PortableEquipment.ViewModels
     {
         public string ConductorTest { get; set; }
 
+        #region
 
-        #region 
         public IEventAggregator _eventAggregator;
         private MutualTranslator _mutualTranslator;
+
         [Inject]
-        Servers.SqlDeel.ISqlHelp _sqlHelp;
+        private Servers.SqlDeel.ISqlHelp _sqlHelp;
+
         [Inject]
-        Servers.CHangeVolate.ISetVolate _setVolate;
+        private Servers.CHangeVolate.ISetVolate _setVolate;
+
         [Inject]
         public ICommunicationProtocol _communicationProtocol;
+
         [Inject]
         public Servers.Xmldata.IXmlconfig _xmlconfig;
+
         [Inject]
         public StyletLogger.ILogger _logger;
+
         [Inject]
         public IWindowManager _windowManager;
+
         [Inject]
         public Servers.Json.IJsondeel _jsondeel;
+
         [Inject]
         public Servers.SelfCheck.ISelfCheck _SelfCheck;
 
         private static readonly object TestLock = new object();
+
         public VoltageTestViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.Subscribe(this);
             InitCreateChart();
         }
+
         #endregion
+
         #region Handle
 
         public void Handle(MutualTranslator message)
@@ -65,8 +76,8 @@ namespace PortableEquipment.ViewModels
                 FreUi = message.stataThree.Fre;
                 DataPower = message.stataThree.APower;
             }
-
         }
+
         public void Handle(string CGF)
         {
             if (CGF != null)
@@ -86,15 +97,19 @@ namespace PortableEquipment.ViewModels
         {
             ScreenState = ScreenState.Deactivated;
         }
+
         ~VoltageTestViewModel()
         {
             ScreenState = ScreenState.Closed;
         }
+
         #endregion
     }
+
     public partial class VoltageTestViewModel
     {
         #region Commands
+
         /// <summary>
         /// datagrid
         /// </summary>
@@ -136,6 +151,7 @@ namespace PortableEquipment.ViewModels
 
             KeepHighOverVolate = mutualTranslator.InducedOvervoltageR.HighOverVolate + "kV";
         }
+
         public async void SaveTestResult()
         {
             await SetHide("正在保存数据", true);
@@ -156,6 +172,7 @@ namespace PortableEquipment.ViewModels
             _sqlHelp.SaveMutualTranslatorTransformerDataBase(_mutualTranslator);
             await SetHide("数据保存完成", true, true);
         }
+
         /// <summary>
         /// 获取拐点信息
         /// </summary>
@@ -193,6 +210,7 @@ namespace PortableEquipment.ViewModels
                 return new Tuple<string, string>("NONE", "NONE");
             }
         }
+
         /// <summary>
         /// 获取完整charts数据，计算拐点信息
         /// </summary>
@@ -207,6 +225,7 @@ namespace PortableEquipment.ViewModels
             }
             return points;
         }
+
         public async void CloseVolate()
         {
             try
@@ -228,24 +247,36 @@ namespace PortableEquipment.ViewModels
 
                 this.RequestClose();
             }
-            catch 
+            catch
             {
                 IsRunning = false;
                 Finish = false;
-
             }
-
         }
+
         #endregion
+
         #region TestCommand
 
-        static CancellationTokenSource tokenSource = new CancellationTokenSource();
-        CancellationToken token = tokenSource.Token;
-        ManualResetEvent resetEvent = new ManualResetEvent(true);
+        private static CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationToken token = tokenSource.Token;
+        private ManualResetEvent resetEvent = new ManualResetEvent(true);
+
+        private void WrongThing()
+        {
+            var ret = _windowManager.ShowMessageBox("试验外部中断\t\n确认：关闭仪器\t\n取消:继续其他试验\t\n如果仪器出现警报声请点击确认", "警告", System.Windows.MessageBoxButton.YesNo);
+            if (ret == System.Windows.MessageBoxResult.Yes)
+            {
+                int time = 0;    //单位为：秒
+                Process.Start("c:/windows/system32/shutdown.exe", "-s -t " + time);
+            }
+        }
+
         public bool OpenOrclose { get; set; }
+
         public async Task StartTest()
         {
-            if(!IsRunning)
+            if (!IsRunning)
             {
                 InitUi();
                 await SetHide("已经开始测量", true, true);
@@ -256,7 +287,6 @@ namespace PortableEquipment.ViewModels
                 Finish = true;
                 //if (await _communicationProtocol.TestKindVolateOrHgq(false))
                 //{
-
                 if (_mutualTranslator.NoLoadCurrentR.Enable && Finish)
                 {
                     var ret = _windowManager.ShowMessageBox("是否开始空载电流试验", "提示", MessageBoxButton.OKCancel);
@@ -267,7 +297,6 @@ namespace PortableEquipment.ViewModels
                         ControlsCurrentTestStata(false, false, true);
                         await StartKz();
                     }
-
                 }
                 if (_mutualTranslator.ExcitationCharacteristicR.Enable && Finish)
                 {
@@ -296,8 +325,8 @@ namespace PortableEquipment.ViewModels
                 ControlsCurrentTestStata(false, false, false);
                 await SetHide("试验已经结束", true, true);
             }
-           
         }
+
         public async Task StartLc()
         {
             try
@@ -322,7 +351,19 @@ namespace PortableEquipment.ViewModels
                     {
                         while (!TestLcFlag)
                         {
+                            if (VolateUi < 1)
+                            {
+                                await Task.Delay(1300, token);
+                                if (VolateUi < 1)
+                                {
+                                    WrongThing();
+                                    Finish = false;
+                                    return;
+                                }
+                            }
+
                             #region 调压 记录曲线的点
+
                             if (VolateUi < lcdatas[lcdatas.Length - 1])
                             {
                                 await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
@@ -359,8 +400,11 @@ namespace PortableEquipment.ViewModels
                                     goto qs;
                                 }
                             }
+
                             #endregion
+
                             #region 励磁特性
+
                             for (int i = 0; i < lcdatas.Length; i++)//获取五个标准店
                             {
                                 if (!Lc[i] && mutualTranslator.ExcitationCharacteristicR.Enable)
@@ -384,9 +428,9 @@ namespace PortableEquipment.ViewModels
                                     TestLcFlag = true;
                                 }
                             }
+
                             #endregion
                         }
-
                     }
                     else
                     {
@@ -403,16 +447,15 @@ namespace PortableEquipment.ViewModels
             }
             catch /*(TaskCanceledException)*/
             {
-
+                WrongThing();
                 Finish = false;
             }
-
             finally
             {
                 IsRunning = false;
             }
-
         }
+
         public async Task StartVolate()
         {
             try
@@ -420,7 +463,9 @@ namespace PortableEquipment.ViewModels
                 var mutualTranslator = _mutualTranslator;
                 var Presuarvolate = mutualTranslator.InducedOvervoltageR.TestVoltage;
                 var NeedJd = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
+
                 #region 耐压
+
                 if (!IsRunning && mutualTranslator.InducedOvervoltageR.Enable && await _SelfCheck.SeleCheck(token))
                 {
                     IsRunning = true;
@@ -428,7 +473,6 @@ namespace PortableEquipment.ViewModels
                     {
                         if (await _setVolate.SettindVolate(Presuarvolate, _communicationProtocol, _xmlconfig, token))
                         {
-
                             for (int i = 0; i < ((int)mutualTranslator.InducedOvervoltageR.TestTime); i++)
                             {
                                 if (token.IsCancellationRequested)
@@ -459,7 +503,8 @@ namespace PortableEquipment.ViewModels
                                     await Task.Delay(1300, token);
                                     if (VolateUi < 1)
                                     {
-                                        _windowManager.ShowMessageBox("耐压失败", "警告", MessageBoxButton.OK);
+                                        WrongThing();
+                                        Finish = false;
                                         return;
                                     }
                                 }
@@ -481,18 +526,20 @@ namespace PortableEquipment.ViewModels
                     }
                 }
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+
                 #endregion
             }
             catch /*(TaskCanceledException)*/
             {
+                WrongThing();
                 Finish = false;
             }
             finally
             {
                 IsRunning = false;
             }
-
         }
+
         public async Task StartKz()
         {
             try
@@ -500,7 +547,9 @@ namespace PortableEquipment.ViewModels
                 var mutualTranslator = _mutualTranslator;
                 var NoLoadCurrentRVolate = mutualTranslator.NoLoadCurrentR.TestVolate * 1000 / mutualTranslator.NoLoadCurrentR.VariableThan;
                 var NeedJd = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
+
                 #region 空载电流
+
                 if (!IsRunning && mutualTranslator.NoLoadCurrentR.Enable)
                 {
                     IsRunning = true;
@@ -513,10 +562,19 @@ namespace PortableEquipment.ViewModels
                         {
                             for (int i = 0; i < 30; i++)
                             {
+                                if (VolateUi < 1)
+                                {
+                                    await Task.Delay(1300, token);
+                                    if (VolateUi < 1)
+                                    {
+                                        WrongThing();
+                                        Finish = false;
+                                        return;
+                                    }
+                                }
                                 if (token.IsCancellationRequested)
                                 {
                                     throw new OperationCanceledException();
-
                                 }
                                 resetEvent.WaitOne();
                                 PresurreTime = (30 - i - 1).ToString();
@@ -524,7 +582,6 @@ namespace PortableEquipment.ViewModels
                             }
                             KzOverCurrent = p.ACurrent;
                             KzTestVolate = p.AVolate;
-
                         }
                         else
                         {
@@ -541,19 +598,20 @@ namespace PortableEquipment.ViewModels
                     }
                 }
                 await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+
                 #endregion
             }
             catch /*(TaskCanceledException)*/
             {
                 Finish = false;
+                WrongThing();
             }
             finally
             {
                 IsRunning = false;
             }
-
-
         }
+
         /// <summary>
         /// 中断测量过程
         /// </summary>
@@ -584,6 +642,7 @@ namespace PortableEquipment.ViewModels
             SeconedTestEnable = ctrols2;
             ThirdTestEnable = ctrols3;
         }
+
         private async Task SetHide(string hidemessage, bool IsOpen, bool isTimeout = false, int timeout = 1000)
         {
             OpenOrclose = IsOpen;
@@ -595,6 +654,7 @@ namespace PortableEquipment.ViewModels
                 OpenOrclose = false;
             }
         }
+
         #endregion
 
         public void InitUi()
@@ -610,10 +670,13 @@ namespace PortableEquipment.ViewModels
             KeepTestTime = 0;
         }
     }
+
     public partial class VoltageTestViewModel
     {
         #region TestFlag
+
         private bool _isrunning;
+
         public bool IsRunning
         {
             get
@@ -637,10 +700,13 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
+
         private bool Finish = true;
+
         #endregion
 
         #region 实时ui
+
         public double UVolateUi { get; set; }
         public double VolateUi { get; set; }
         public double FreUi { get; set; }
@@ -650,11 +716,12 @@ namespace PortableEquipment.ViewModels
         public bool SeconedTestEnable { get; set; } = false;
         public bool ThirdTestEnable { get; set; } = false;
 
-
         #endregion
 
         #region TestBinding
+
         private Flag _Flag;
+
         public Flag Flag
         {
             get { return _Flag; }
@@ -671,18 +738,23 @@ namespace PortableEquipment.ViewModels
                 }
             }
         }
+
         //耐压倒计时
         public string PresurreTime { get; set; } = "--";
+
         public bool StartTestVisibility { get; set; } = true;
         public string GuaiPointVolate { get; set; } = "0.00kV";
         public string GuaiPointCurrent { get; set; } = "0.00A";
+
         #endregion
 
         #region chart
+
         public Func<double, string> XFormatter { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection LcCurrentVolate { get; set; }
         public ChartValues<ObservablePoint> TanEleVolatevalue { get; set; }
+
         /// <summary>
         /// 初始化chart表格
         /// </summary>
@@ -712,9 +784,11 @@ namespace PortableEquipment.ViewModels
             ObservablePoint a = new ObservablePoint(Xva, yVa);
             LcCurrentVolate[0].Values.Add(a);
         }
+
         #endregion
 
         #region Bindings
+
         public BindableCollection<LcdatagridColletion> LcDatagrid { get; set; } = new BindableCollection<LcdatagridColletion>();
 
         public string TestId { get; set; }
@@ -738,15 +812,19 @@ namespace PortableEquipment.ViewModels
         public string StartTestText { get; set; } = "启动测量";
         public Visibility BarVisibilityEnable { get; set; } = Visibility.Collapsed;
         public double StartOpacity { get; set; } = 1.00;
+
         #endregion
     }
+
     #region Pra
+
     public class LcdatagridColletion
     {
         public string TestNum { get; set; }
         public string TestVoltage { get; set; }
         public string TestCurrent { get; set; }
     }
+
     public struct MulTestResult
     {
         public MutualTranslator mutualTranslatorPra;
@@ -761,6 +839,7 @@ namespace PortableEquipment.ViewModels
         public double PressureFre;
         public double PressureTime;
     }
+
     public enum Flag
     {
         Free = 0,
@@ -774,8 +853,7 @@ namespace PortableEquipment.ViewModels
         FinishLc = 8,
         FinishKz = 9,
         FinishByhand = 10
-
     }
-    #endregion
 
+    #endregion
 }

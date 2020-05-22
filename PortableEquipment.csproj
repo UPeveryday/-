@@ -275,6 +275,7 @@
     <None Include="font_1537638_p3q93e2wf2\iconfont.woff" />
     <None Include="font_1537638_p3q93e2wf2\iconfont.woff2" />
     <None Include="packages.config" />
+    <None Include="ParameterConfig.json" />
     <None Include="PortableEquipment_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

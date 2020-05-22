@@ -23,10 +23,19 @@ namespace PortableEquipment.Servers
 
         public EntityModelServer()
         {
-            EfModel = new jsEntities();
-            EfModel.Transformers.LoadAsync();
-            EfModel.usertables.LoadAsync();
-            EfModel.MutualTranslators.LoadAsync();
+            try
+            {
+                EfModel = new jsEntities();
+                EfModel.Transformers.Load();
+                EfModel.usertables.Load();
+                EfModel.MutualTranslators.Load();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+          
         }
     }
 }

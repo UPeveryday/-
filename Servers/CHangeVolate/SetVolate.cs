@@ -35,7 +35,7 @@ namespace PortableEquipment.Servers.CHangeVolate
             else
                 return (byte)((int)(tpd * 0.5));
         }
-        public async Task<bool> SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, CancellationToken token, int TimeOver = 5)
+        public async Task<bool> SettindVolate(double voltage, ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, CancellationToken token, int TimeOver = 0)
         {
             if (voltage < 0.5)
             {
@@ -46,35 +46,41 @@ namespace PortableEquipment.Servers.CHangeVolate
             await Task.Delay(100, token); int i = 0;
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
             await _communicationProtocol.ThicknessAdjustable(true);
-        heres: while (true)
+            double foredata = 0;
+            while (true)
             {
-                TestKind ts;
-            ReReadPower: var data = await _communicationProtocol.ReadStataThree(token);
                 token.ThrowIfCancellationRequested();
+                TestKind ts;
+                var data = await _communicationProtocol.ReadStataThree(token);
                 if (data.Checked)
                 {
                     ts = (voltage - data.AVolate) > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
                     if (Math.Abs(voltage - data.AVolate) >= 16)
                     {
+                        // byte clicknum = (byte)(Math.Abs(voltage - data.AVolate) / 10);
                         await _communicationProtocol.SetTestPra(ts, 1, token);
                     }
                     else
                         break;
-                }
-                else
-                    goto ReReadPower;
 
+                    if (i++ > 0 && data.AVolate < 1 && foredata < 1)
+                    {
+                        throw new OperationCanceledException();
+
+                    }
+                    foredata = data.AVolate;
+                }
             }
-            await _communicationProtocol.ThicknessAdjustable(false);
+            await _communicationProtocol.ThicknessAdjustable(false); i = 0; foredata = 0;
             while (true)
             {
                 TestKind ts;
-            ReReadPowerTwo: var data = await _communicationProtocol.ReadStataThree(token);
+                var data = await _communicationProtocol.ReadStataThree(token);
                 token.ThrowIfCancellationRequested();
-
                 if (data.Checked)
                 {
                     ts = (voltage - data.AVolate) > 0 ? TestKind.ControlsVolateUP : TestKind.ControlsVolateDown;
+                    //byte clicknum = (byte)(Math.Abs(voltage - data.AVolate) / 1);
                     if (Math.Abs(voltage - data.AVolate) < 16)
                     {
                         if (Math.Abs(voltage - data.AVolate) / voltage > needdouble)
@@ -86,19 +92,26 @@ namespace PortableEquipment.Servers.CHangeVolate
                     }
                     else
                         break;
+
+                    if (i++ > 0 && data.AVolate < 1 && foredata < 1)
+                    {
+                        throw new OperationCanceledException();
+
+                    }
+                    foredata = data.AVolate;
                 }
-                else
-                    goto ReReadPowerTwo;
             }
 
-            if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / voltage > needdouble)
-            {
-                token.ThrowIfCancellationRequested();
+            //if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / voltage > needdouble)
+            //{
+            //    token.ThrowIfCancellationRequested();
 
-                if (++i > TimeOver)
-                    return false;
-                goto heres;
-            }
+
+
+            //    if (++i > TimeOver)
+            //        return false;
+            //    goto heres;
+            //}
             return true;
         }
         public async Task DownVolateZero(ICommunicationProtocol _communicationProtocol, Xmldata.IXmlconfig _xmlconfig, CancellationToken token)
@@ -136,15 +149,15 @@ namespace PortableEquipment.Servers.CHangeVolate
                 return true;
             }
             await ControlsPowerStata(true, _communicationProtocol, token);
-            await Task.Delay(100); int i = 0;
+            await Task.Delay(100); int i = 0; double foredata = 0;
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeedHighdouble"));
             double Abs = Convert.ToDouble(_xmlconfig.GetAddNodeValue("Abs"));
             await _communicationProtocol.ThicknessAdjustable(true);
-        herel: while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 1)
+            while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) >= 1)
             {
                 token.ThrowIfCancellationRequested();
-
-                var needchangecgf = voltage - await _communicationProtocol.GetCgfVolateDouble();
+                var data = await _communicationProtocol.GetCgfVolateDouble();
+                var needchangecgf = voltage - data;
                 if (needchangecgf > 0)
                 {
                     await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
@@ -153,15 +166,20 @@ namespace PortableEquipment.Servers.CHangeVolate
                 {
                     await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, 1, token);
                 }
+                if (i++ > 0 && data < 0.1 && foredata < 0.1)
+                {
+                    throw new OperationCanceledException();
+                }
+                foredata = data;
             }
             await _communicationProtocol.ThicknessAdjustable(false);
             while (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) < 1)
             {
                 token.ThrowIfCancellationRequested();
-
-                if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
+                var data = await _communicationProtocol.GetCgfVolateDouble();
+                var needchangecgf = voltage - data;
+                if (Math.Abs(voltage - data) / voltage > needdouble)
                 {
-                    var needchangecgf = voltage - await _communicationProtocol.GetCgfVolateDouble();
                     if (needchangecgf > 0)
                     {
                         await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
@@ -173,17 +191,23 @@ namespace PortableEquipment.Servers.CHangeVolate
                 }
                 else
                     break;
-            }
-            if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
-            {
-                token.ThrowIfCancellationRequested();
+                if (i++ > 0 && data < 0.1 && foredata < 0.1)
+                {
+                    throw new OperationCanceledException();
+                }
+                foredata = data;
 
-                if (++i > TimeOver)
-                    return false;
-                goto herel;
             }
-            else
-                return true;
+            //if (Math.Abs(voltage - (await _communicationProtocol.GetCgfVolateDouble())) / voltage > needdouble)
+            //{
+            //    token.ThrowIfCancellationRequested();
+
+            //    if (++i > TimeOver)
+            //        return false;
+            //    goto herel;
+            //}
+            //else
+            return true;
         }
 
 
@@ -193,7 +217,7 @@ namespace PortableEquipment.Servers.CHangeVolate
             double needdouble = Convert.ToDouble(_xmlconfig.GetAddNodeValue("UpvolateNeeddouble"));
             await _communicationProtocol.ThicknessAdjustable(true);
             await Task.Delay(100); int i = 0;
-        herep: while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) >= 8)
+            while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) >= 8)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -208,14 +232,12 @@ namespace PortableEquipment.Servers.CHangeVolate
                 {
                     var tf = await _communicationProtocol.SetTestPra(TestKind.ControlsVolateDown, (byte)Math.Abs(ClickTime), token);
                 }
-
             }
             //await _communicationProtocol.SwitchThincness(false, _communicationProtocol);
             await _communicationProtocol.ThicknessAdjustable(false);
             while (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) < 8)
             {
                 token.ThrowIfCancellationRequested();
-
                 if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / voltage > needdouble)
                 {
                     double ClickTime = (voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / 1;
@@ -233,15 +255,14 @@ namespace PortableEquipment.Servers.CHangeVolate
                 else
                     break;
             }
+            //if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / voltage > needdouble)
+            //{
+            //    token.ThrowIfCancellationRequested();
 
-            if (Math.Abs(voltage - (await _communicationProtocol.ReadStataThree(token)).AVolate) / voltage > needdouble)
-            {
-                token.ThrowIfCancellationRequested();
-
-                if (++i > TimeOver)
-                    return false;
-                goto herep;
-            }
+            //    if (++i > TimeOver)
+            //        return false;
+            //    goto herep;
+            //}
             return true;
 
         }
@@ -253,13 +274,21 @@ namespace PortableEquipment.Servers.CHangeVolate
         public async Task<bool> SettingFre(double Fre, ICommunicationProtocol _communicationProtocol, CancellationToken token, int TimeOver = 5)
         {
             await ControlsPowerStata(true, _communicationProtocol, token);
-            await Task.Delay(100); int i = 0;
-            await _communicationProtocol.ThicknessAdjustable(true);
+            await Task.Delay(100); int i = 0; double foredata = 0;
+            await _communicationProtocol.ThicknessAdjustable(false);
             while ((await _communicationProtocol.ReadStataThree(token)).AVolate < 10)
             {
                 await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
-                await Task.Delay(30);
+                await Task.Delay(300);
+                StataThree tpd = await _communicationProtocol.ReadStataThree(token);
+                if (i++ > 0 && tpd.AVolate < 1 && foredata < 1)
+                {
+                    throw new OperationCanceledException();
+                }
+                foredata = tpd.AVolate;
             }
+            await _communicationProtocol.ThicknessAdjustable(true); i = 0;
+
         Heref: while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree(token)).Fre) >= 1)
             {
 
@@ -274,9 +303,15 @@ namespace PortableEquipment.Servers.CHangeVolate
                     await _communicationProtocol.SetTestPra(TestKind.ControlsFreUp, data, token);
                 else
                     await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, data, token);
+                if (i++ > 0 && tpd.AVolate < 1 && foredata < 1)
+                {
+                    throw new OperationCanceledException();
+
+                }
+                foredata = tpd.AVolate;
                 await Task.Delay(100, token);
             }
-            await _communicationProtocol.ThicknessAdjustable(false);
+            await _communicationProtocol.ThicknessAdjustable(false); i = 0;
             while (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree(token)).Fre) < 1)
             {
             p2: var tpd = await _communicationProtocol.ReadStataThree(token);
@@ -292,6 +327,13 @@ namespace PortableEquipment.Servers.CHangeVolate
                     await _communicationProtocol.SetTestPra(TestKind.ControlsFreDown, data, token);
                 else
                     return true;
+                if (i++ > 0 && tpd.AVolate < 1 && foredata < 1)
+                {
+                    //token.ThrowIfCancellationRequested();
+                    throw new OperationCanceledException();
+
+                }
+                foredata = tpd.AVolate;
                 await Task.Delay(100, token);
             }
             if (Math.Abs(Fre - (await _communicationProtocol.ReadStataThree(token)).Fre) == 0)

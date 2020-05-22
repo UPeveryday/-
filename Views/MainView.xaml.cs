@@ -23,7 +23,6 @@ namespace PortableEquipment.Views
         public MainView()
         {
             InitializeComponent();
-            string p = System.Environment.CurrentDirectory;
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

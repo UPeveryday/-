@@ -67,6 +67,44 @@ namespace PortableEquipment.ViewModels
             if (VolataGroup.Count > 0)
                 VolataGroup.Remove(Selectdata);
         }
+
+        public void Load()
+        {
+            try
+            {
+                var data = _xmlconfig.GetAddNodeValue("MulPra");
+                var jsondata = _jsondeel.GetClassFromStr<MutualTranslator>(data);
+                TestId = jsondata.TestId;
+                RatadVolataSelectIndex = jsondata.TestLevel;
+                Humidity = jsondata.Humidity;
+                Temperature = jsondata.Temperature;
+                TestLocation = jsondata.TestLocation;
+                Tester = jsondata.Tester;
+                KeepVolateCheck = jsondata.InducedOvervoltageR.Enable;
+                OutgoingTestVoltage = jsondata.InducedOvervoltageR.OutgoingTestVoltage;
+                TestVoltage = jsondata.InducedOvervoltageR.TestVoltage;
+                HighOverVolate = jsondata.InducedOvervoltageR.HighOverVolate;
+                TestFre = jsondata.InducedOvervoltageR.TestFre;
+                TestTime = jsondata.InducedOvervoltageR.TestTime;
+                VariableThan = jsondata.InducedOvervoltageR.VariableThan;
+                OverVolateCurrent = jsondata.InducedOvervoltageR.OverCurrent;
+                Promotion = jsondata.InducedOvervoltageR.Promotion;
+                LiciCheck = jsondata.ExcitationCharacteristicR.Enable;
+                LcOverCurrent = jsondata.ExcitationCharacteristicR.OverCurrent;
+                LcTestVolate = jsondata.ExcitationCharacteristicR.TestVolate;
+                LcAbs = jsondata.ExcitationCharacteristicR.VariableThan;
+
+                CurrentCheck = jsondata.NoLoadCurrentR.Enable;
+                KzTestVolate = jsondata.NoLoadCurrentR.TestVolate;
+                KzAbs = jsondata.NoLoadCurrentR.VariableThan;
+                KzOverCurrent = jsondata.NoLoadCurrentR.OverCurrent;
+            }
+            catch
+            {
+                _logger.Writer("未加载正常的参数");
+            }
+
+        }
         private MutualTranslator getMutualTranslator()
         {
             return new MutualTranslator
@@ -110,7 +148,12 @@ namespace PortableEquipment.ViewModels
                 }
             };
         }
-        private void SendPra() => _eventAggregator.Publish(getMutualTranslator());
+        private void SendPra()
+        {
+            var data = getMutualTranslator();
+            _xmlconfig.UpdataAllAddNodeConfigXml(_jsondeel.GetJsonByclass(data), "MulPra");
+            _eventAggregator.Publish(data);
+        }
         public void ShowVoltageTestViewModels()
         {
             SendPra();
@@ -373,13 +416,15 @@ namespace PortableEquipment.ViewModels
         /// <summary>
         /// 获取电压等级并设定
         /// </summary>
-        private double _lctestvolate=25;
+        private double _lctestvolate = 25;
         public double LcTestVolate
         {
-            get {
+            get
+            {
                 if (GetXmlVoltageRange() != null)
                     GetDefaultGroupdata(GetXmlVoltageRange());
-                return _lctestvolate; }
+                return _lctestvolate;
+            }
             set
             {
                 _lctestvolate = value;

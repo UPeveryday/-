@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace PortableEquipment.ViewModels
 {
-    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>, IHandle<JfTestResult>,IDisposable
+    public partial class TransformerViewModel : Screen, IHandle<Translator>, IHandle<OutTestResult>, IHandle<string>, IHandle<JfTestResult>, IDisposable
     {
         #region 依赖注入
         [Inject]
@@ -367,11 +367,6 @@ namespace PortableEquipment.ViewModels
                     #region 调频
                     for (int TestPosition = 1; TestPosition < 4; TestPosition++)
                     {
-                        //Execute.OnUIThread(() =>
-                        //{
-                        //    IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
-                        //        "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes ? true : false;
-                        //});
                         Application.Current.Dispatcher.Invoke(() =>
                        {
                            IsokOrCan = _windowManager.ShowMessageBox("开始" + Models.StaticClass.GetPhame(TestPosition) + "测量？\t\n请确保接线正确",
@@ -380,11 +375,6 @@ namespace PortableEquipment.ViewModels
                         if (IsokOrCan)
                         {
                             await _setVolate.ControlsPowerStata(true, _communicationProtocol, token);
-                            while (VolateUi < 12)
-                            {
-                                await _communicationProtocol.SetTestPra(TestKind.ControlsVolateUP, 1, token);
-                                await Task.Delay(30);
-                            }
                             if (await _setVolate.SettingFre(Fre, _communicationProtocol, token))
                             {
                                 for (int i = 0; i < data.Length; i++)
@@ -411,13 +401,14 @@ namespace PortableEquipment.ViewModels
                                                     IsRunning = false;
                                                     throw new OperationCanceledException();
                                                 }
-                                                resetEvent.WaitOne();
+                                                await Cancer(token);
                                                 await Task.Delay(1000);
                                                 TimeMul = (data[i].TestTime * 60 - pi - 1).ToString();
                                             }
                                             ShowOrHide = true;
                                             while (true)
                                             {
+                                                await Cancer(token);
                                                 if (SaveFlag)
                                                 {
                                                     AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
@@ -437,18 +428,18 @@ namespace PortableEquipment.ViewModels
                                                     throw new OperationCanceledException();
 
                                                 }
-                                                resetEvent.WaitOne();
+                                                await Cancer(token);
                                                 await Task.Delay(1000);
                                                 TimeMul = ((data[i].TestTime % 5) * 60 - pi - 1).ToString();
 
                                             }
                                             ShowOrHide = true;
-
                                             while (true)
                                             {
+                                                await Cancer(token);
                                                 if (SaveFlag)
                                                 {
-                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString() + "pC," + VolateUi + "V");
+                                                    AddTestData(TestPra, i, data[i].TestTime, TestPosition, JfData.ToString() + "pC，" + UVolateUi.ToString() + "kV，" + VolateUi.ToString() + "V");
                                                     SaveFlag = false;
                                                     ShowOrHide = false;
                                                     break;
@@ -456,8 +447,6 @@ namespace PortableEquipment.ViewModels
 
                                             }
                                         }
-
-
                                     }
                                 }
                             }
@@ -486,24 +475,10 @@ namespace PortableEquipment.ViewModels
                 }
                 hidetest = "空闲中";
             }
-            catch (TaskCanceledException)
-            {
-                IsRunning = false;
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _windowManager.ShowMessageBox("试验已经中断",
-                              "提示", MessageBoxButton.OK);
-                });
-
-            }
             catch
             {
                 IsRunning = false;
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _windowManager.ShowMessageBox("试验已经中断",
-                              "提示", MessageBoxButton.OK);
-                });
+                WrongThing();
 
             }
             finally
@@ -513,6 +488,31 @@ namespace PortableEquipment.ViewModels
 
             }
         }
+
+        private async Task Cancer(CancellationToken token)
+        {
+            if (VolateUi < 1)
+            {
+                await Task.Delay(1300, token);
+                if (VolateUi < 1)
+                {
+                    IsRunning = false;
+                    WrongThing();
+                    token.ThrowIfCancellationRequested();
+                }
+            }
+        }
+        private void WrongThing()
+        {
+            var ret = _windowManager.ShowMessageBox("试验外部中断\t\n确认：关闭仪器\t\n取消:继续其他试验\t\n如果仪器出现警报声请点击确认", "警告", System.Windows.MessageBoxButton.YesNo);
+            if (ret == System.Windows.MessageBoxResult.Yes)
+            {
+                int time = 0;    //单位为：秒
+                Process.Start("c:/windows/system32/shutdown.exe", "-s -t " + time);
+            }
+
+        }
+
 
         private async Task JfControls(Translator TestPra, int currentvolateIndex, double currenttesttime, int MarkPhama, string Jf)
         {

@@ -394,7 +394,7 @@
                                         <TextBlock Style="{StaticResource TextBlockPriview}">-10.0V</TextBlock>
                                     </Viewbox>
                                 </Button>
-                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="+1"  Style="{StaticResource CommanButton}">
+                                <Button Grid.Column="5"  BorderThickness="0" Margin="3" Grid.Row="3"  Command="{s:Action AddVolatage}" CommandParameter="-1"  Style="{StaticResource CommanButton}">
                                     <Viewbox>
                                         <TextBlock Style="{StaticResource TextBlockPriview}">-1.0V</TextBlock>
                                     </Viewbox>

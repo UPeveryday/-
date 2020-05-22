@@ -24,10 +24,11 @@ namespace PortableEquipment.ViewModels
         public Servers.Json.IJsondeel _jsondeel;
         [Inject]//特性注入
         public StyletLogger.ILogger _logger;
-
+        [Inject]//特性注入
+        public Servers.Xmldata.IXmlconfig _xmlconfig;
         public IContainer _container;
-        public WithstandVoltageViewModel(IWindowManager windowManager, TransformerViewModel transformerViewModel, 
-            IEventAggregator eventAggregator,IContainer container)
+        public WithstandVoltageViewModel(IWindowManager windowManager, TransformerViewModel transformerViewModel,
+            IEventAggregator eventAggregator, IContainer container)
         {
             _container = container;
             _windowManger = windowManager;
@@ -63,7 +64,37 @@ namespace PortableEquipment.ViewModels
                 DateTime = DateTime.Now
             };
         }
-        public void StartTest() => _eventAggregator.Publish(GetTranslatorTest());
+        public void StartTest()
+        {
+            var data = GetTranslatorTest();
+            _xmlconfig.UpdataAllAddNodeConfigXml(_jsondeel.GetJsonByclass(data), "TransPar");
+            _eventAggregator.Publish(data);
+        }
+
+        public void Load()
+        {
+            try
+            {
+                var data = _xmlconfig.GetAddNodeValue("TransPar");
+                var jsondata = _jsondeel.GetClassFromStr<Translator>(data);
+                TestId = jsondata.TestId;
+                RatadvolateSelectIndex = GetIndex(jsondata.RatedVoltage);
+                RatedCapacity = jsondata.RatedCapacity;
+                WindingGroup = jsondata.WindingGroup;
+                Temperature = jsondata.Temperature;
+                Humidity = jsondata.Humidity;
+                TestLocation = jsondata.TestLocation;
+                Tester = jsondata.Tester;
+                Frequency = jsondata.Frequency;
+                Volate = jsondata.Volate;
+                Current = jsondata.Current;
+            }
+            catch 
+            {
+                _logger.Writer("未加载正常的参数");
+            }
+           
+        }
         #endregion
     }
     public partial class WithstandVoltageViewModel
@@ -122,6 +153,22 @@ namespace PortableEquipment.ViewModels
 
         private int _ratadselectindex = 1;
 
+        private int GetIndex(double RatedVoltage)
+        {
+            if (RatedVoltage == 10000)
+                return  0;
+            if (RatedVoltage == 35000)
+                return  1;
+            if (RatedVoltage == 110000)
+                return  2;
+            if (RatedVoltage == 220000)
+                return  3;
+            if (RatedVoltage == 330000)
+                return  4;
+            if (RatedVoltage == 500000)
+                return  5;
+            return 0;
+        }
         public int RatadvolateSelectIndex
         {
             get

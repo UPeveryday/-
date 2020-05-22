@@ -11,7 +11,7 @@
         xmlns:model="clr-namespace:PortableEquipment.Converts"
                       mc:Ignorable="d"
          d:DataContext="{d:DesignInstance local1:WithstandVoltageViewModel}"
-        Title="WithstandVoltage" Height="800" Width="1280"   UseNoneWindowStyle="True" WindowStyle="None">
+        Title="WithstandVoltage" Height="800" Width="1280"   UseNoneWindowStyle="True" WindowStyle="None" Loaded="{s:Action Load}">
     <Window.Resources>
         <ResourceDictionary>
             <model:DoubleConvert x:Key="cvt"></model:DoubleConvert>
