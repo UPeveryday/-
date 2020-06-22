@@ -411,7 +411,7 @@ namespace PortableEquipment.ViewModels
                                                 await Cancer(token);
                                                 if (SaveFlag)
                                                 {
-                                                    AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString());
+                                                    AddTestData(TestPra, i, (j + 1) * 5, TestPosition, JfData.ToString() + "pC，" + UVolateUi.ToString() + "kV，" + VolateUi.ToString() + "V");
                                                     ShowOrHide = false;
                                                     SaveFlag = false;
                                                     break;
@@ -477,8 +477,10 @@ namespace PortableEquipment.ViewModels
             }
             catch
             {
-                IsRunning = false;
                 WrongThing();
+                IsRunning = false;
+                hidetest = "空闲中";
+
 
             }
             finally
@@ -496,20 +498,22 @@ namespace PortableEquipment.ViewModels
                 await Task.Delay(1300, token);
                 if (VolateUi < 1)
                 {
-                    IsRunning = false;
-                    WrongThing();
-                    token.ThrowIfCancellationRequested();
+                    throw new OperationCanceledException();
                 }
             }
         }
         private void WrongThing()
         {
-            var ret = _windowManager.ShowMessageBox("试验外部中断\t\n确认：关闭仪器\t\n取消:继续其他试验\t\n如果仪器出现警报声请点击确认", "警告", System.Windows.MessageBoxButton.YesNo);
-            if (ret == System.Windows.MessageBoxResult.Yes)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                int time = 0;    //单位为：秒
-                Process.Start("c:/windows/system32/shutdown.exe", "-s -t " + time);
-            }
+                var ret = _windowManager.ShowMessageBox("试验外部中断\t\n确认：关闭仪器\t\n取消:继续其他试验\t\n如果仪器出现警报声请点击确认", "警告", MessageBoxButton.YesNo);
+                if (ret == MessageBoxResult.Yes)
+                {
+                    int time = 0;    //单位为：秒
+                    Process.Start("c:/windows/system32/shutdown.exe", "-s -t " + time);
+                }
+            });
+           
 
         }
 
@@ -564,16 +568,11 @@ namespace PortableEquipment.ViewModels
             if (IsRunning)
             {
                 tokenSource.Cancel();
-                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, token);
+                await _setVolate.DownAndClosePower(_communicationProtocol, _xmlconfig, new CancellationToken());
                 TimeMul = "--";
 
             }
-            //{
-            //    _windowManager.ShowMessageBox("未开始试验",
-            //                "提示", MessageBoxButton.OK);
-            //}
-
-            //  await SetDiaSata(true, "试验已经结束", System.Windows.Visibility.Hidden, alarmText: "警告");
+         
         }
         private async Task SetDiaSata(bool openorclose, string hideMessage, Visibility cancerVisibility,
             string alarmText = "警告")

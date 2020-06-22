@@ -54,6 +54,21 @@ namespace PortableEquipment.ViewModels
                 }
                 else
                 {
+                    var data = GetXmlVoltageRange();
+                    double[] dt = new double[data.Length + 1];
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        dt[i] = data[i];
+                    }
+                    dt[dt.Length - 1] = Conetnt; Array.Sort(dt);
+                    GetDefaultGroupdata(dt);
+                    string[] a = new string[dt.Length];
+                    for (int i = 0; i < dt.Length; i++)
+                    {
+                        a[i] = dt[i].ToString();
+                    }
+                    _xmlconfig.UpdataAllAddNodeConfigXml(string.Join(",", a), "VolatageRange");
+
                     tpd.Add(Conetnt);
                     double[] ret = tpd.ToArray();
                     Array.Sort(ret);
@@ -65,7 +80,22 @@ namespace PortableEquipment.ViewModels
         public void Deletedata()
         {
             if (VolataGroup.Count > 0)
+            {
+                string data = _xmlconfig.GetAddNodeValue("VolatageRange");
+                string delper = Selectdata.Split('%', '在')[1];
+                if (data.Contains(delper + ","))
+                {
+                    data = data.Replace(delper + ",", "");
+
+                }
+                if (data.Contains(delper))
+                {
+                    data = data.Replace("," + delper, "");
+                }
+                _xmlconfig.UpdataAllAddNodeConfigXml(data, "VolatageRange");
                 VolataGroup.Remove(Selectdata);
+            }
+
         }
 
         public void Load()
@@ -435,7 +465,11 @@ namespace PortableEquipment.ViewModels
 
         public double LcOverCurrent { get; set; } = 3.00;
 
-        public System.Windows.Visibility VolataGroups { get; set; } = System.Windows.Visibility.Collapsed;
+        public System.Windows.Visibility VolataGroups
+        {
+            get;
+            set;
+        } = System.Windows.Visibility.Collapsed;
 
         public BindableCollection<string> VolataGroup { get; set; } = new BindableCollection<string>();
         private bool _volateRange;

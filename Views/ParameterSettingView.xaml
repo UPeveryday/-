@@ -17,7 +17,7 @@
     <Window.Resources>
         <ResourceDictionary>
 
-            <ContextMenu  x:Key="ContextMenu" Placement="Center"  Background="#2070EA" Foreground="Red">
+            <ContextMenu  x:Key="ContextMenu" Placement="Center"  Background="#2070EA" Foreground="red">
                 <MenuItem    Name="transformer" Click="{s:Action Deletedata}" Header="删除">
                     <MenuItem.Icon>
                         <Image Source="Resources/del.ico"></Image>
